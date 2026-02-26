@@ -4,7 +4,7 @@ import PageHeader from '@/components/ui/PageHeader';
 import { formatDate } from '@/lib/utils';
 import type { Notice } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function SupportPage() {
   let notices: Notice[] = [];

@@ -4,7 +4,7 @@ import CategoryTopBar from '@/components/products/CategoryTopBar';
 import ProductsHeader from '@/components/products/ProductsHeader';
 import type { Category } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function ProductsLayout({
   children,

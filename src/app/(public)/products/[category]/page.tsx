@@ -3,7 +3,7 @@ import ProductGrid from '@/components/products/ProductGrid';
 import type { Product, Category } from '@/types/database';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ category: string }>;

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import ProductGrid from '@/components/products/ProductGrid';
 import type { Product, Category } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function ProductsPage() {
   let products: Product[] = [];

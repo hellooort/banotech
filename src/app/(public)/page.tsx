@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import HomeContent from '@/components/home/HomeContent';
 import type { Category, Product, Notice } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function HomePage() {
   let categories: Category[] = [];

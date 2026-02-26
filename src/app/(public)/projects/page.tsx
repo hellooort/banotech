@@ -4,7 +4,7 @@ import Link from 'next/link';
 import PageHeader from '@/components/ui/PageHeader';
 import type { Project } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function ProjectsPage() {
   let projects: Project[] = [];

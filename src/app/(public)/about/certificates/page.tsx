@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import CertificatesContent from '@/components/about/CertificatesContent';
 import type { Certificate } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export default async function CertificatesPage() {
   let certificates: Certificate[] = [];

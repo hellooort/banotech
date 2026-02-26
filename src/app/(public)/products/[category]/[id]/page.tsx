@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import ProductDetail from '@/components/products/ProductDetail';
 import type { Product, ProductImage, Document as DocType } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ category: string; id: string }>;

@@ -6,7 +6,7 @@ import PageHeader from '@/components/ui/PageHeader';
 import { formatDate } from '@/lib/utils';
 import type { Notice } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ id: string }>;

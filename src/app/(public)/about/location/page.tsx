@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import type { CompanyInfo } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface LocationInfo {
   address?: string;

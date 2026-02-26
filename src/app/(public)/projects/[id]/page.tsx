@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import PageHeader from '@/components/ui/PageHeader';
 import type { Project, ProjectImage } from '@/types/database';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 interface Props {
   params: Promise<{ id: string }>;
