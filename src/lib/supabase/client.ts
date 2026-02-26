@@ -1,14 +1,11 @@
 import { createBrowserClient } from '@supabase/ssr';
 
-export function createClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? '';
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '';
+const PLACEHOLDER_URL = 'https://placeholder.supabase.co';
+const PLACEHOLDER_KEY = 'placeholder-key';
 
-  if (!url || !key) {
-    throw new Error(
-      'Supabase 환경변수가 설정되지 않았습니다. NEXT_PUBLIC_SUPABASE_URL과 NEXT_PUBLIC_SUPABASE_ANON_KEY를 확인하세요.'
-    );
-  }
+export function createClient() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || PLACEHOLDER_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || PLACEHOLDER_KEY;
 
   return createBrowserClient(url, key);
 }
