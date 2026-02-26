@@ -3,10 +3,11 @@ import type { Product } from '@/types/database';
 
 interface ProductGridProps {
   products: Product[];
-  categorySlug: string;
+  categorySlug?: string;
+  slugMap?: Record<string, string>;
 }
 
-export default function ProductGrid({ products, categorySlug }: ProductGridProps) {
+export default function ProductGrid({ products, categorySlug, slugMap }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="flex h-48 items-center justify-center text-sm text-muted">
@@ -18,7 +19,7 @@ export default function ProductGrid({ products, categorySlug }: ProductGridProps
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} categorySlug={categorySlug} />
+        <ProductCard key={product.id} product={product} categorySlug={categorySlug} slugMap={slugMap} />
       ))}
     </div>
   );

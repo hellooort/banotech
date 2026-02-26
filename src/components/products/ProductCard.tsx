@@ -8,16 +8,17 @@ import { getProductName } from '@/lib/i18n/helpers';
 
 interface ProductCardProps {
   product: Product;
-  categorySlug: string;
+  categorySlug?: string;
+  slugMap?: Record<string, string>;
 }
 
-export default function ProductCard({ product, categorySlug }: ProductCardProps) {
+export default function ProductCard({ product, categorySlug, slugMap }: ProductCardProps) {
   const { locale } = useI18n();
   const displayName = getProductName(product, locale);
 
   return (
     <Link
-      href={`/products/${categorySlug}/${product.id}`}
+      href={`/products/${categorySlug || slugMap?.[product.category_id] || 'all'}/${product.id}`}
       className="group block border border-border bg-surface transition-all hover:shadow-sm hover:border-brand/40"
     >
       <div className="relative aspect-square overflow-hidden bg-background">
