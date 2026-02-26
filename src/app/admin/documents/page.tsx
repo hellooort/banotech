@@ -20,10 +20,9 @@ export default function AdminDocumentsPage() {
   const [form, setForm] = useState({ title: '', file_url: '' });
   const [saving, setSaving] = useState(false);
 
-  const supabase = createClient();
-
   const fetchDocuments = async () => {
     setLoading(true);
+    const supabase = createClient();
     const { data } = await supabase.from('documents').select('*').order('created_at', { ascending: false });
     setDocuments(data ?? []);
     setLoading(false);
@@ -39,6 +38,7 @@ export default function AdminDocumentsPage() {
   const handleAdd = async (type: string) => {
     if (!form.title.trim() || !form.file_url) return;
     setSaving(true);
+    const supabase = createClient();
     await supabase.from('documents').insert({
       title: form.title,
       type: type === 'drawing' ? 'drawing' : type,
@@ -53,6 +53,7 @@ export default function AdminDocumentsPage() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('이 자료를 삭제하시겠습니까?')) return;
+    const supabase = createClient();
     await supabase.from('documents').delete().eq('id', id);
     fetchDocuments();
   };

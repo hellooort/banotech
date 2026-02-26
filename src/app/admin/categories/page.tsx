@@ -19,9 +19,8 @@ export default function AdminCategoriesPage() {
   const [saving, setSaving] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
 
-  const supabase = createClient();
-
   const fetchCategories = async () => {
+    const supabase = createClient();
     const { data } = await supabase.from('categories').select('*').order('sort_order');
     setCategories(data ?? []);
   };
@@ -49,6 +48,7 @@ export default function AdminCategoriesPage() {
   const handleAdd = async (parentId: string | null) => {
     if (!form.name.trim()) return;
     setSaving(true);
+    const supabase = createClient();
     const slug = form.slug || autoSlug(form.name_en || form.name);
     const siblings = parentId
       ? categories.filter(c => c.parent_id === parentId)
@@ -71,6 +71,7 @@ export default function AdminCategoriesPage() {
   const handleUpdate = async (id: string) => {
     if (!form.name.trim()) return;
     setSaving(true);
+    const supabase = createClient();
     const slug = form.slug || autoSlug(form.name_en || form.name);
 
     await supabase.from('categories').update({
@@ -108,6 +109,7 @@ export default function AdminCategoriesPage() {
       ? '이 카테고리와 하위 카테고리, 연결된 제품이 모두 삭제됩니다.'
       : '이 카테고리를 삭제하시겠습니까?\n연결된 제품도 함께 삭제됩니다.';
     if (!confirm(msg)) return;
+    const supabase = createClient();
     await supabase.from('categories').delete().eq('id', id);
     fetchCategories();
   };
