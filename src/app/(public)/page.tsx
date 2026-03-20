@@ -13,7 +13,7 @@ export default async function HomePage() {
     const supabase = await createClient();
     const [catRes, prodRes, noticeRes] = await Promise.all([
       supabase.from('categories').select('*').order('sort_order'),
-      supabase.from('products').select('*').order('created_at', { ascending: false }).limit(8),
+      supabase.from('products').select('*').order('created_at', { ascending: false }).limit(10),
       supabase.from('notices').select('*').order('is_pinned', { ascending: false }).order('created_at', { ascending: false }).limit(4),
     ]);
     categories = catRes.data ?? [];

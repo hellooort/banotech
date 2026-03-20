@@ -19,7 +19,7 @@ const translations = {
     },
     hero: {
       subtitle: 'Bathroom Accessories',
-      description: '1999년부터 이어온 욕실 악세서리의 신뢰,\n국산 품질을 고집하는 B2B 전문 카탈로그',
+      description: '1999년부터 이어온 욕실 액세서리의 신뢰,\n국산 품질을 고집하는 전문 제조업체',
       cta: '제품 보기',
     },
     home: {
@@ -38,7 +38,7 @@ const translations = {
       rd: '창의적 디자인 연구',
       rdLabel: 'Creative Design',
       b2b: '신뢰 기반 납품',
-      b2bLabel: 'Trust & Service',
+      b2bLabel: 'Partnership',
     },
     products: {
       title: '제품소개',
@@ -54,7 +54,7 @@ const translations = {
       title: '회사소개',
     },
     footer: {
-      companyDesc: 'B2B 전문 위생도기 및\n욕실 악세서리 제조·납품',
+      companyDesc: '욕실 액세서리 전문제조업체',
       productsResources: '제품·자료',
       copyright: 'BANO. All rights reserved.',
     },
@@ -83,7 +83,7 @@ const translations = {
     },
     hero: {
       subtitle: 'Bathroom Accessories',
-      description: 'Trusted bathroom accessories since 1999,\nB2B professional catalog committed to Korean quality',
+      description: 'Trusted bathroom accessories since 1999,\nProfessional manufacturer committed to Korean quality',
       cta: 'View Products',
     },
     home: {
@@ -102,7 +102,7 @@ const translations = {
       rd: 'Creative design R&D',
       rdLabel: 'Creative Design',
       b2b: 'Trust-based supply',
-      b2bLabel: 'Trust & Service',
+      b2bLabel: 'Partnership',
     },
     products: {
       title: 'Products',
@@ -118,7 +118,7 @@ const translations = {
       title: 'About Us',
     },
     footer: {
-      companyDesc: 'B2B professional sanitary ware\n& bathroom accessories manufacturer',
+      companyDesc: 'Professional bathroom\naccessories manufacturer',
       productsResources: 'Products & Resources',
       copyright: 'BANO. All rights reserved.',
     },

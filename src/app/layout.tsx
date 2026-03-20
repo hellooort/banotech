@@ -3,8 +3,8 @@ import { I18nProvider } from '@/lib/i18n/context';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'BANO | B2B 욕실 자재 카탈로그',
-  description: 'B2B 납품 중심 위생도기 및 욕실 악세서리 제품 카탈로그',
+  title: 'BANO | 욕실 액세서리 전문제조업체',
+  description: '1999년부터 이어온 욕실 액세서리 전문 제조업체 바노테크',
 };
 
 export default function RootLayout({

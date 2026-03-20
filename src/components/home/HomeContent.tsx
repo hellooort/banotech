@@ -1,8 +1,9 @@
 'use client';
 
+import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Award, Factory, Handshake, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Award, Factory, Handshake, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/products/ProductCard';
 import { formatDate } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
@@ -26,6 +27,107 @@ const DEFAULT_CATEGORIES: { name: string; name_en: string }[] = [
   { name: '편의 / 공공 제품', name_en: 'Utility & Public' },
   { name: 'NEW PRODUCTS', name_en: 'New Products' },
 ];
+
+function ProductCarousel({
+  products,
+  catSlugMap,
+  t,
+}: {
+  products: Product[];
+  catSlugMap: Record<string, string>;
+  t: ReturnType<typeof useI18n>['t'];
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || products.length === 0) return;
+
+    let raf: number;
+    let speed = 0.5;
+
+    function step() {
+      if (!isPaused && el) {
+        el.scrollLeft += speed;
+        const half = el.scrollWidth / 2;
+        if (el.scrollLeft >= half) {
+          el.scrollLeft -= half;
+        }
+      }
+      raf = requestAnimationFrame(step);
+    }
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [isPaused, products.length]);
+
+  const scroll = (dir: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * 300, behavior: 'smooth' });
+  };
+
+  const displayProducts = products.length > 0 ? [...products, ...products] : [];
+
+  return (
+    <section className="mt-16">
+      <div className="mx-auto max-w-[1280px] px-6 py-16">
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <p className="text-sm tracking-[0.2em] uppercase text-brand mb-2">{t.home.newArrivalsLabel}</p>
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t.home.newArrivals}</h2>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => scroll(-1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border hover:border-brand hover:text-brand transition-colors bg-white"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <button
+              onClick={() => scroll(1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border hover:border-brand hover:text-brand transition-colors bg-white"
+            >
+              <ChevronRight size={18} />
+            </button>
+            <Link href="/products" className="ml-2 text-sm text-brand hover:text-brand-dark transition-colors flex items-center gap-1 tracking-wider uppercase">
+              {t.home.viewAll} <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+
+        <div
+          ref={scrollRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className="flex gap-4 overflow-x-hidden"
+          style={{ scrollbarWidth: 'none' }}
+        >
+          {displayProducts.length > 0 ? (
+            displayProducts.map((product, i) => (
+              <div key={`${product.id}-${i}`} className="w-[260px] shrink-0">
+                <ProductCard
+                  product={product}
+                  categorySlug={catSlugMap[product.category_id] ?? ''}
+                />
+              </div>
+            ))
+          ) : (
+            Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="w-[260px] shrink-0 border border-border bg-surface rounded-lg">
+                <div className="aspect-square bg-background rounded-t-lg" />
+                <div className="p-3">
+                  <div className="h-3.5 w-24 bg-border rounded" />
+                  <div className="mt-1.5 h-3 w-16 bg-border rounded" />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function HomeContent({ categories, recentProducts, notices, catSlugMap }: HomeContentProps) {
   const { locale, t } = useI18n();
@@ -96,80 +198,48 @@ export default function HomeContent({ categories, recentProducts, notices, catSl
         </div>
       </section>
 
-      {/* New Products */}
-      <section className="mt-16">
-        <div className="mx-auto max-w-[1280px] px-6 py-16">
-          <div className="flex items-center justify-between mb-10">
-            <div>
-              <p className="text-sm tracking-[0.2em] uppercase text-brand mb-2">{t.home.newArrivalsLabel}</p>
-              <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t.home.newArrivals}</h2>
-            </div>
-            <Link href="/products" className="text-sm text-brand hover:text-brand-dark transition-colors flex items-center gap-1 tracking-wider uppercase">
-              {t.home.viewAll} <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          {recentProducts.length > 0 ? (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {recentProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  categorySlug={catSlugMap[product.category_id] ?? ''}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                <div key={i} className="border border-border bg-surface">
-                  <div className="aspect-square bg-background" />
-                  <div className="p-3">
-                    <div className="h-3.5 w-24 bg-border" />
-                    <div className="mt-1.5 h-3 w-16 bg-border" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      {/* New Products — infinite carousel */}
+      <ProductCarousel
+        products={recentProducts}
+        catSlugMap={catSlugMap}
+        t={t}
+      />
 
       {/* Company Stats */}
-      <section className="bg-accent">
+      <section className="bg-brand-light/50 border-y border-brand/10">
         <div className="mx-auto max-w-[1280px] px-6 py-20">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-brand/30">
-                <Factory size={22} className="text-brand" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
+                <Factory size={24} className="text-brand" />
               </div>
-              <p className="text-4xl font-light text-white tracking-tight">25<span className="text-xl">+</span></p>
-              <p className="mt-1.5 text-sm tracking-wider text-white/40 uppercase">{t.stats.yearsLabel}</p>
-              <p className="mt-0.5 text-sm text-white/60">{t.stats.years}</p>
+              <p className="text-4xl font-light text-foreground tracking-tight">25<span className="text-xl">+</span></p>
+              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.yearsLabel}</p>
+              <p className="mt-0.5 text-sm text-secondary">{t.stats.years}</p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-brand/30">
-                <ShieldCheck size={22} className="text-brand" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
+                <ShieldCheck size={24} className="text-brand" />
               </div>
-              <p className="text-4xl font-light text-white tracking-tight">100<span className="text-xl">%</span></p>
-              <p className="mt-1.5 text-sm tracking-wider text-white/40 uppercase">{t.stats.koreaLabel}</p>
-              <p className="mt-0.5 text-sm text-white/60">{t.stats.korea}</p>
+              <p className="text-4xl font-light text-foreground tracking-tight">100<span className="text-xl">%</span></p>
+              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.koreaLabel}</p>
+              <p className="mt-0.5 text-sm text-secondary">{t.stats.korea}</p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-brand/30">
-                <Award size={22} className="text-brand" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
+                <Award size={24} className="text-brand" />
               </div>
-              <p className="text-4xl font-light text-white tracking-tight">R&D</p>
-              <p className="mt-1.5 text-sm tracking-wider text-white/40 uppercase">{t.stats.rdLabel}</p>
-              <p className="mt-0.5 text-sm text-white/60">{t.stats.rd}</p>
+              <p className="text-4xl font-light text-foreground tracking-tight">R&D</p>
+              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.rdLabel}</p>
+              <p className="mt-0.5 text-sm text-secondary">{t.stats.rd}</p>
             </div>
             <div className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center border border-brand/30">
-                <Handshake size={22} className="text-brand" />
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
+                <Handshake size={24} className="text-brand" />
               </div>
-              <p className="text-4xl font-light text-white tracking-tight">B2B</p>
-              <p className="mt-1.5 text-sm tracking-wider text-white/40 uppercase">{t.stats.b2bLabel}</p>
-              <p className="mt-0.5 text-sm text-white/60">{t.stats.b2b}</p>
+              <p className="text-4xl font-light text-foreground tracking-tight">TRUST</p>
+              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.b2bLabel}</p>
+              <p className="mt-0.5 text-sm text-secondary">{t.stats.b2b}</p>
             </div>
           </div>
         </div>
