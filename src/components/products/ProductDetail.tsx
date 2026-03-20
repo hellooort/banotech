@@ -1,14 +1,15 @@
 'use client';
 
-import { useState, lazy, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { ArrowLeft, Download, FileText, FileImage, FileCode, BookOpen } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/context';
 import { getProductName, getProductDescription } from '@/lib/i18n/helpers';
 import type { Product, ProductImage as ProductImageType, Document as DocType } from '@/types/database';
 
-const PdfFlipbook = lazy(() => import('@/components/pdf/PdfFlipbook'));
+const PdfFlipbook = dynamic(() => import('@/components/pdf/PdfFlipbook'), { ssr: false });
 
 interface ProductDetailProps {
   product: Product;

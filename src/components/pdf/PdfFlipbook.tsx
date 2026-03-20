@@ -1,11 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import HTMLFlipBook from 'react-pageflip';
+import dynamic from 'next/dynamic';
 import { X, ChevronLeft, ChevronRight, Download, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
-import * as pdfjsLib from 'pdfjs-dist';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+const HTMLFlipBook = dynamic(() => import('react-pageflip'), { ssr: false });
 
 interface PdfFlipbookProps {
   url: string;
@@ -43,6 +42,8 @@ export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
 
     async function loadPdf() {
       try {
+        const pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
         const pdf = await pdfjsLib.getDocument(url).promise;
         setTotalPages(pdf.numPages);
         const pageImages: string[] = [];
