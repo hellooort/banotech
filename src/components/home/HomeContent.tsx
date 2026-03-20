@@ -141,54 +141,63 @@ export default function HomeContent({ categories, recentProducts, notices, catSl
 
   return (
     <>
-      {/* Hero + Category Bar overlay */}
+      {/* Hero — two-tone: warm grey left + product image right */}
       <section className="relative">
-        <div className="relative flex h-[70vh] min-h-[520px] items-center justify-center bg-accent overflow-hidden pb-12">
-          <Image
-            src="/main_banner.png"
-            alt="메인 배너"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60" />
-          <div className="relative z-10 text-center px-6">
-            <p className="text-sm tracking-[0.3em] uppercase text-white/80 mb-4">
-              {t.hero.subtitle}
-            </p>
-            <div className="flex justify-center">
+        <div className="relative min-h-[560px] md:min-h-[600px] overflow-hidden">
+          {/* Two-tone background */}
+          <div className="absolute inset-0 bg-[#f5f0eb]" />
+          <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-[#e8e2db] hidden md:block" />
+
+          <div className="relative z-10 mx-auto flex max-w-[1280px] items-center min-h-[560px] md:min-h-[600px] px-6">
+            {/* Left — text */}
+            <div className="w-full md:w-1/2 py-20 md:pr-12">
+              <p className="text-xs tracking-[0.3em] uppercase text-brand font-medium mb-5">
+                {t.hero.subtitle}
+              </p>
               <Image
-                src="/logo.png"
+                src="/logo_black.png"
                 alt="BANO"
-                width={200}
-                height={68}
-                className="object-contain brightness-0 invert md:w-[260px]"
+                width={180}
+                height={60}
+                className="object-contain md:w-[220px]"
+                priority
+              />
+              <p className="mt-6 text-base leading-relaxed text-[#555] max-w-md whitespace-pre-line">
+                {t.hero.description}
+              </p>
+              <Link
+                href="/products"
+                className="mt-10 inline-flex items-center gap-2.5 bg-[#333] px-8 py-3.5 text-sm tracking-wider uppercase text-white font-medium transition-all hover:bg-brand"
+              >
+                {t.hero.cta}
+                <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            {/* Right — product image */}
+            <div className="hidden md:block w-1/2 relative min-h-[500px]">
+              <Image
+                src="/main_banner.png"
+                alt="BANO Products"
+                fill
+                className="object-contain object-center"
                 priority
               />
             </div>
-            <p className="mt-5 text-base tracking-wide text-white max-w-lg mx-auto leading-relaxed whitespace-pre-line">
-              {t.hero.description}
-            </p>
-            <Link
-              href="/products"
-              className="mt-10 inline-flex items-center gap-2.5 bg-brand px-8 py-3.5 text-sm tracking-wider uppercase text-white font-medium transition-all hover:bg-brand-dark"
-            >
-              {t.hero.cta}
-              <ArrowRight size={14} />
-            </Link>
           </div>
         </div>
 
-        <div className="relative z-20 mx-auto max-w-[1280px] px-6 -mt-14">
-          <div className="bg-surface border border-border shadow-lg">
-            <div className="flex items-center justify-center overflow-x-auto scrollbar-hide">
+        {/* Category bar */}
+        <div className="relative z-20 mx-auto max-w-[1280px] px-6 -mt-7">
+          <div className="bg-white border border-border/60 shadow-md rounded-sm">
+            <div className="flex items-center justify-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
               {catList.map((cat) => (
                 <Link
                   key={cat.id}
                   href={topCategories.length > 0 ? `/products/${cat.slug}` : '/products'}
-                  className="group shrink-0 px-5 py-4 transition-colors hover:bg-hover hover:text-brand md:px-6"
+                  className="group shrink-0 px-5 py-3.5 transition-colors hover:bg-brand-light md:px-6"
                 >
-                  <span className="text-sm text-secondary group-hover:text-brand transition-colors whitespace-nowrap">
+                  <span className="text-sm text-[#666] group-hover:text-brand font-medium transition-colors whitespace-nowrap">
                     {getCategoryName(cat as Category, locale)}
                   </span>
                 </Link>

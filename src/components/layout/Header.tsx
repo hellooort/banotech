@@ -45,19 +45,16 @@ export default function Header() {
     <header className={cn(
       'sticky top-0 z-40 border-b backdrop-blur-sm transition-colors',
       isHome
-        ? 'border-white/10 bg-accent/90'
+        ? 'border-border/40 bg-[#f5f0eb]/95'
         : 'border-border bg-surface/95'
     )}>
       <div className="mx-auto flex h-16 max-w-[1280px] items-center justify-between px-6">
         <Link href="/" className="relative block h-8 w-24">
           <Image
-            src={isHome ? '/logo.png' : '/logo_black.png'}
+            src="/logo_black.png"
             alt="BANO"
             fill
-            className={cn(
-              'object-contain object-left',
-              isHome ? 'brightness-0 invert' : ''
-            )}
+            className="object-contain object-left"
             priority
           />
         </Link>
@@ -75,9 +72,7 @@ export default function Header() {
                 href={item.href}
                 className={cn(
                   'flex items-center gap-1 px-4 py-5 text-sm tracking-wide transition-colors',
-                  isHome
-                    ? (isActive(item.href) ? 'text-brand font-medium' : 'text-white/60 hover:text-white')
-                    : (isActive(item.href) ? 'text-brand font-medium' : 'text-secondary hover:text-brand')
+                  isActive(item.href) ? 'text-brand font-medium' : 'text-secondary hover:text-brand'
                 )}
               >
                 {item.label}
@@ -110,13 +105,13 @@ export default function Header() {
             <button
               onClick={() => setLocale(locale === 'ko' ? 'en' : 'ko')}
               className={cn(
-                'flex items-center gap-1.5 px-2 py-1 text-xs font-medium tracking-wider uppercase transition-colors',
-                isHome ? 'text-white/60 hover:text-white' : 'text-muted hover:text-foreground'
+                'flex items-center gap-1.5 px-2 py-1 text-[11px] font-medium tracking-wider transition-colors',
+                'text-muted hover:text-foreground'
               )}
             >
-              <span className={cn(locale === 'ko' && 'font-bold', isHome ? (locale === 'ko' ? 'text-brand' : 'text-white/40') : (locale === 'ko' ? 'text-brand' : 'text-muted'))}>KO</span>
-              <span className={cn(isHome ? 'text-white/20' : 'text-border')}>/</span>
-              <span className={cn(locale === 'en' && 'font-bold', isHome ? (locale === 'en' ? 'text-brand' : 'text-white/40') : (locale === 'en' ? 'text-brand' : 'text-muted'))}>EN</span>
+              <span className={cn(locale === 'ko' ? 'text-brand font-bold' : 'text-muted')}>KOREA</span>
+              <span className="text-border">/</span>
+              <span className={cn(locale === 'en' ? 'text-brand font-bold' : 'text-muted')}>ENGLISH</span>
             </button>
           </div>
         </nav>
@@ -125,16 +120,13 @@ export default function Header() {
         <div className="flex items-center gap-3 lg:hidden">
           <button
             onClick={() => setLocale(locale === 'ko' ? 'en' : 'ko')}
-            className={cn(
-              'text-xs font-medium tracking-wider',
-              isHome ? 'text-white/60' : 'text-muted'
-            )}
+            className="text-[10px] font-medium tracking-wider text-muted"
           >
-            {locale === 'ko' ? 'EN' : 'KO'}
+            {locale === 'ko' ? 'ENGLISH' : 'KOREA'}
           </button>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className={cn('lg:hidden', isHome ? 'text-white' : 'text-foreground')}
+            className="lg:hidden text-foreground"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
