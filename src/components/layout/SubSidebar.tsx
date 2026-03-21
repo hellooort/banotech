@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
+import { useI18n } from '@/lib/i18n/context';
+
+type Variant = 'about' | 'resources' | 'support';
 
 interface SubSidebarProps {
-  title: string;
-  items: { label: string; href: string }[];
+  variant: Variant;
 }
 
 function useHash() {
@@ -21,9 +23,47 @@ function useHash() {
   return hash;
 }
 
-export default function SubSidebar({ title, items }: SubSidebarProps) {
+function useMenuConfig(variant: Variant) {
+  const { t } = useI18n();
+
+  return useMemo(() => {
+    switch (variant) {
+      case 'about':
+        return {
+          title: t.about.title,
+          items: [
+            { label: t.navSub.greeting, href: '/about' },
+            { label: t.navSub.history, href: '/about/history' },
+            { label: t.navSub.location, href: '/about/location' },
+          ],
+        };
+      case 'resources':
+        return {
+          title: t.nav.download,
+          items: [
+            { label: t.mega.catalog, href: '/resources#catalog' },
+            { label: t.mega.drawingManual, href: '/resources#drawing' },
+            { label: t.mega.certificates, href: '/resources#certificate' },
+            { label: t.mega.approvalDocs, href: '/resources#approval' },
+            { label: t.mega.otherResources, href: '/resources#other' },
+          ],
+        };
+      case 'support':
+        return {
+          title: t.nav.contactUs,
+          items: [
+            { label: t.mega.notices, href: '/support' },
+            { label: t.mega.inquiry, href: '/support/inquiry' },
+          ],
+        };
+    }
+  }, [variant, t]);
+}
+
+export default function SubSidebar({ variant }: SubSidebarProps) {
   const pathname = usePathname();
   const hash = useHash();
+  const { title, items } = useMenuConfig(variant);
 
   return (
     <aside className="w-52 shrink-0 hidden lg:block">
