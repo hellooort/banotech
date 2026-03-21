@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback, memo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ const PdfFlipbook = dynamic(() => import('@/components/pdf/PdfFlipbook'), { ssr:
 
 type MegaKey = 'company' | 'products' | 'download' | 'contactUs';
 
-export default function Header() {
+export default memo(function Header() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMega, setOpenMega] = useState<MegaKey | null>(null);
@@ -341,4 +341,4 @@ export default function Header() {
       )}
     </header>
   );
-}
+});

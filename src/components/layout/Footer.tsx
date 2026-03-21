@@ -1,10 +1,11 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useI18n } from '@/lib/i18n/context';
 
-export default function Footer() {
+export default memo(function Footer() {
   const { t } = useI18n();
 
   return (
@@ -62,4 +63,4 @@ export default function Footer() {
       </div>
     </footer>
   );
-}
+});
