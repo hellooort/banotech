@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import ProductGrid from '@/components/products/ProductGrid';
 import type { Product, Category } from '@/types/database';
@@ -7,6 +8,21 @@ export const revalidate = 60;
 
 interface Props {
   params: Promise<{ category: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { category: slug } = await params;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from('categories').select('name').eq('slug', slug).single();
+    if (data) {
+      return {
+        title: `${data.name} | VANO`,
+        description: `VANO ${data.name} 제품 목록`,
+      };
+    }
+  } catch { /* fallback */ }
+  return { title: '제품 카테고리 | VANO' };
 }
 
 export default async function CategoryPage({ params }: Props) {

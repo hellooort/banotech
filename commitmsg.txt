@@ -1,1 +1,0 @@
-perf: Header/Footer에 React.memo 적용으로 불필요한 리렌더링 방지

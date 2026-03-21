@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -12,6 +13,22 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from('projects').select('title, location, thumbnail_url').eq('id', id).single();
+    if (data) {
+      return {
+        title: `${data.title} | VANO 프로젝트`,
+        description: data.location ? `VANO 프로젝트 - ${data.title} (${data.location})` : `VANO 프로젝트 - ${data.title}`,
+        openGraph: data.thumbnail_url ? { images: [{ url: data.thumbnail_url }] } : undefined,
+      };
+    }
+  } catch { /* fallback */ }
+  return { title: '프로젝트 | VANO' };
+}
+
 export default async function ProjectDetailPage({ params }: Props) {
   const { id } = await params;
 
@@ -20,22 +37,14 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   try {
     const supabase = await createClient();
-    const { data: projData } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const [projRes, imgRes] = await Promise.all([
+      supabase.from('projects').select('*').eq('id', id).single(),
+      supabase.from('project_images').select('*').eq('project_id', id).order('sort_order'),
+    ]);
 
-    if (!projData) return notFound();
-    project = projData;
-
-    const { data: imgData } = await supabase
-      .from('project_images')
-      .select('*')
-      .eq('project_id', id)
-      .order('sort_order');
-
-    images = imgData ?? [];
+    if (!projRes.data) return notFound();
+    project = projRes.data;
+    images = imgRes.data ?? [];
   } catch {
     return notFound();
   }

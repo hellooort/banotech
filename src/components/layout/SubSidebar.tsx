@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
@@ -41,11 +41,11 @@ function useMenuConfig(variant: Variant) {
         return {
           title: t.nav.download,
           items: [
-            { label: t.mega.catalog, href: '/resources#catalog' },
-            { label: t.mega.drawingManual, href: '/resources#drawing' },
-            { label: t.mega.certificates, href: '/resources#certificate' },
-            { label: t.mega.approvalDocs, href: '/resources#approval' },
-            { label: t.mega.otherResources, href: '/resources#other' },
+            { label: t.mega.catalog, href: '/resources?tab=catalog' },
+            { label: t.mega.drawingManual, href: '/resources?tab=drawing' },
+            { label: t.mega.certificates, href: '/resources?tab=certificate' },
+            { label: t.mega.approvalDocs, href: '/resources?tab=approval' },
+            { label: t.mega.otherResources, href: '/resources?tab=other' },
           ],
         };
       case 'support':
@@ -63,6 +63,7 @@ function useMenuConfig(variant: Variant) {
 export default function SubSidebar({ variant }: SubSidebarProps) {
   const pathname = usePathname();
   const hash = useHash();
+  const params = useSearchParams();
   const { title, items } = useMenuConfig(variant);
 
   return (
@@ -70,17 +71,25 @@ export default function SubSidebar({ variant }: SubSidebarProps) {
       <h3 className="text-base font-semibold text-foreground tracking-tight mb-3">{title}</h3>
       <nav className="space-y-0.5">
         {items.map((item) => {
-          const [path, hashPart] = item.href.split('#');
-          const itemHash = hashPart ? `#${hashPart}` : '';
-          const hashForCompare =
-            pathname === '/resources' && !hash ? '#catalog' : hash;
-          const isActive =
-            pathname === path &&
-            (itemHash ? hashForCompare === itemHash : !item.href.includes('#'));
+          let isActive = false;
+          const url = new URL(item.href, 'http://x');
+
+          if (url.searchParams.has('tab')) {
+            const currentTab = params.get('tab') ?? 'catalog';
+            isActive = pathname === url.pathname && currentTab === url.searchParams.get('tab');
+          } else {
+            const [path, hashPart] = item.href.split('#');
+            const itemHash = hashPart ? `#${hashPart}` : '';
+            const hashForCompare =
+              pathname === '/resources' && !hash ? '#catalog' : hash;
+            isActive =
+              pathname === path &&
+              (itemHash ? hashForCompare === itemHash : !item.href.includes('#'));
+          }
 
           return (
             <Link
-              key={`${path}-${item.label}`}
+              key={item.href}
               href={item.href}
               scroll={false}
               className={cn(

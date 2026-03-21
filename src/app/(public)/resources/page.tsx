@@ -1,68 +1,49 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import { createClient } from '@/lib/supabase/server';
 import { Download, FileText } from 'lucide-react';
-import { createClient } from '@/lib/supabase/client';
 import { formatDate } from '@/lib/utils';
-import { useI18n } from '@/lib/i18n/context';
 import type { Document as DocType } from '@/types/database';
+import ResourcesHashRedirect from '@/components/resources/ResourcesHashRedirect';
+
+export const revalidate = 60;
 
 type TabKey = 'catalog' | 'drawing' | 'certificate' | 'approval' | 'other';
 
-function tabFromHash(): TabKey {
-  if (typeof window === 'undefined') return 'catalog';
-  const h = window.location.hash.replace('#', '');
-  const allowed: TabKey[] = ['catalog', 'drawing', 'certificate', 'approval', 'other'];
-  if (allowed.includes(h as TabKey)) return h as TabKey;
-  return 'catalog';
-}
+const ALLOWED_TABS: TabKey[] = ['catalog', 'drawing', 'certificate', 'approval', 'other'];
 
 function typesForTab(tab: TabKey): string[] {
   if (tab === 'drawing') return ['drawing', 'manual'];
   return [tab];
 }
 
-export default function ResourcesPage() {
-  const { t } = useI18n();
-  const [activeTab, setActiveTab] = useState<TabKey>('catalog');
-  const [documents, setDocuments] = useState<DocType[]>([]);
-  const [loading, setLoading] = useState(true);
+interface Props {
+  searchParams: Promise<{ tab?: string }>;
+}
 
-  useEffect(() => {
-    setActiveTab(tabFromHash());
-    const onHash = () => setActiveTab(tabFromHash());
-    window.addEventListener('hashchange', onHash);
-    return () => window.removeEventListener('hashchange', onHash);
-  }, []);
+export default async function ResourcesPage({ searchParams }: Props) {
+  const { tab: rawTab } = await searchParams;
+  const activeTab: TabKey = ALLOWED_TABS.includes(rawTab as TabKey)
+    ? (rawTab as TabKey)
+    : 'catalog';
 
-  useEffect(() => {
-    async function fetchDocuments() {
-      setLoading(true);
-      try {
-        const supabase = createClient();
-        const types = typesForTab(activeTab);
-        const { data } = await supabase
-          .from('documents')
-          .select('*')
-          .in('type', types)
-          .order('created_at', { ascending: false });
-        setDocuments(data ?? []);
-      } catch {
-        setDocuments([]);
-      }
-      setLoading(false);
-    }
-    fetchDocuments();
-  }, [activeTab]);
+  let documents: DocType[] = [];
+
+  try {
+    const supabase = await createClient();
+    const types = typesForTab(activeTab);
+    const { data } = await supabase
+      .from('documents')
+      .select('*')
+      .in('type', types)
+      .order('created_at', { ascending: false });
+    documents = data ?? [];
+  } catch {
+    // fallback
+  }
 
   return (
     <div>
-
-      {loading ? (
-        <div className="flex items-center justify-center py-12 text-sm text-muted">
-          로딩 중...
-        </div>
-      ) : documents.length > 0 ? (
+      <ResourcesHashRedirect />
+      {documents.length > 0 ? (
         <div className="space-y-3">
           {documents.map((doc) => (
             <a

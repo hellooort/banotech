@@ -1,5 +1,6 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Product } from '@/types/database';
@@ -12,7 +13,7 @@ interface ProductCardProps {
   slugMap?: Record<string, string>;
 }
 
-export default function ProductCard({ product, categorySlug, slugMap }: ProductCardProps) {
+export default memo(function ProductCard({ product, categorySlug, slugMap }: ProductCardProps) {
   const { locale } = useI18n();
   const displayName = getProductName(product, locale);
 
@@ -46,4 +47,4 @@ export default function ProductCard({ product, categorySlug, slugMap }: ProductC
       </div>
     </Link>
   );
-}
+});

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -61,13 +61,16 @@ function ProductCarousel({
     return () => cancelAnimationFrame(raf);
   }, [isPaused, products.length]);
 
-  const scroll = (dir: number) => {
+  const scroll = useCallback((dir: number) => {
     const el = scrollRef.current;
     if (!el) return;
     el.scrollBy({ left: dir * 300, behavior: 'smooth' });
-  };
+  }, []);
 
-  const displayProducts = products.length > 0 ? [...products, ...products] : [];
+  const displayProducts = useMemo(
+    () => (products.length > 0 ? [...products, ...products] : []),
+    [products],
+  );
 
   return (
     <section className="mt-14">
@@ -159,16 +162,16 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
     });
   }, []);
 
-  const topCategories = categories.filter(c => !c.parent_id);
-  const catList = topCategories.length > 0
-    ? topCategories
-    : DEFAULT_CATEGORIES.map((c, i) => ({
-        id: String(i), parent_id: null, name: c.name, name_en: c.name_en, slug: c.name, icon_url: null, sort_order: i, created_at: '',
-      }));
-
-  const categoryMid = Math.ceil(catList.length / 2);
-  const categoryRow1 = catList.slice(0, categoryMid);
-  const categoryRow2 = catList.slice(categoryMid);
+  const { topCategories, categoryRow1, categoryRow2 } = useMemo(() => {
+    const top = categories.filter(c => !c.parent_id);
+    const list = top.length > 0
+      ? top
+      : DEFAULT_CATEGORIES.map((c, i) => ({
+          id: String(i), parent_id: null, name: c.name, name_en: c.name_en, slug: c.name, icon_url: null, sort_order: i, created_at: '',
+        }));
+    const mid = Math.ceil(list.length / 2);
+    return { topCategories: top, categoryRow1: list.slice(0, mid), categoryRow2: list.slice(mid) };
+  }, [categories]);
 
   return (
     <>

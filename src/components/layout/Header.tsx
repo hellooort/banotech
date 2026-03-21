@@ -211,11 +211,11 @@ export default memo(function Header() {
           {openMega === 'download' && (
             <div className="flex gap-4">
               {[
-                { icon: BookOpen, label: t.mega.catalog, desc: locale === 'ko' ? '제품 전체 카탈로그 PDF' : 'Full product catalog PDF', href: '/resources#catalog' },
-                { icon: PenTool, label: t.mega.drawingManual, desc: locale === 'ko' ? 'CAD 도면 및 설치 설명서' : 'CAD drawings & manuals', href: '/resources#drawing' },
-                { icon: ShieldCheck, label: t.mega.certificates, desc: locale === 'ko' ? 'KS 인증서, 시험성적서' : 'KS certificates & test reports', href: '/resources#certificate' },
-                { icon: FileCheck, label: t.mega.approvalDocs, desc: locale === 'ko' ? '관급공사 승인서류' : 'Government project approvals', href: '/resources#approval' },
-                { icon: FolderOpen, label: t.mega.otherResources, desc: locale === 'ko' ? '기타 참고 자료' : 'Other reference materials', href: '/resources#other' },
+                { icon: BookOpen, label: t.mega.catalog, desc: locale === 'ko' ? '제품 전체 카탈로그 PDF' : 'Full product catalog PDF', href: '/resources?tab=catalog' },
+                { icon: PenTool, label: t.mega.drawingManual, desc: locale === 'ko' ? 'CAD 도면 및 설치 설명서' : 'CAD drawings & manuals', href: '/resources?tab=drawing' },
+                { icon: ShieldCheck, label: t.mega.certificates, desc: locale === 'ko' ? 'KS 인증서, 시험성적서' : 'KS certificates & test reports', href: '/resources?tab=certificate' },
+                { icon: FileCheck, label: t.mega.approvalDocs, desc: locale === 'ko' ? '관급공사 승인서류' : 'Government project approvals', href: '/resources?tab=approval' },
+                { icon: FolderOpen, label: t.mega.otherResources, desc: locale === 'ko' ? '기타 참고 자료' : 'Other reference materials', href: '/resources?tab=other' },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -304,11 +304,11 @@ export default memo(function Header() {
                 )}
                 {mobileSection === item.key && item.key === 'download' && (
                   <div className="pb-2 pl-4">
-                    <Link href="/resources#catalog" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.catalog}</Link>
-                    <Link href="/resources#drawing" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.drawingManual}</Link>
-                    <Link href="/resources#certificate" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.certificates}</Link>
-                    <Link href="/resources#approval" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.approvalDocs}</Link>
-                    <Link href="/resources#other" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.otherResources}</Link>
+                    <Link href="/resources?tab=catalog" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.catalog}</Link>
+                    <Link href="/resources?tab=drawing" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.drawingManual}</Link>
+                    <Link href="/resources?tab=certificate" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.certificates}</Link>
+                    <Link href="/resources?tab=approval" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.approvalDocs}</Link>
+                    <Link href="/resources?tab=other" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.otherResources}</Link>
                   </div>
                 )}
                 {mobileSection === item.key && item.key === 'contactUs' && (

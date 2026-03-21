@@ -1,5 +1,13 @@
 import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import './globals.css';
+
+const pretendard = localFont({
+  src: './fonts/PretendardVariable.woff2',
+  display: 'swap',
+  weight: '45 920',
+  variable: '--font-pretendard',
+});
 
 export const metadata: Metadata = {
   title: 'VANO | 욕실 액세서리 전문제조업체',
@@ -12,13 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
-        />
-      </head>
+    <html lang="ko" className={pretendard.variable}>
       <body className="antialiased">{children}</body>
     </html>
   );

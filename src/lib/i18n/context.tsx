@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import type { Locale, Translations } from './translations';
 import { getTranslations } from './translations';
 
@@ -27,10 +27,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('bano-locale', newLocale);
   }, []);
 
-  const t = getTranslations(locale);
+  const t = useMemo(() => getTranslations(locale), [locale]);
+  const value = useMemo(() => ({ locale, setLocale, t }), [locale, setLocale, t]);
 
   return (
-    <I18nContext.Provider value={{ locale, setLocale, t }}>
+    <I18nContext.Provider value={value}>
       {children}
     </I18nContext.Provider>
   );

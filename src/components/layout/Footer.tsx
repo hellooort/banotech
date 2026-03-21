@@ -38,10 +38,10 @@ export default memo(function Footer() {
           <div>
             <h4 className="text-base font-semibold text-white">{t.nav.download}</h4>
             <ul className="mt-3 space-y-2.5">
-              <li><Link href="/resources#catalog" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.catalog}</Link></li>
-              <li><Link href="/resources#drawing" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.drawingManual}</Link></li>
-              <li><Link href="/resources#certificate" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.certificates}</Link></li>
-              <li><Link href="/resources#approval" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.approvalDocs}</Link></li>
+              <li><Link href="/resources?tab=catalog" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.catalog}</Link></li>
+              <li><Link href="/resources?tab=drawing" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.drawingManual}</Link></li>
+              <li><Link href="/resources?tab=certificate" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.certificates}</Link></li>
+              <li><Link href="/resources?tab=approval" className="text-sm text-white/50 hover:text-brand transition-colors">{t.mega.approvalDocs}</Link></li>
             </ul>
           </div>
 

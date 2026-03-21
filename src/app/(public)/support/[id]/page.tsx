@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -10,6 +11,18 @@ export const revalidate = 60;
 
 interface Props {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const supabase = await createClient();
+    const { data } = await supabase.from('notices').select('title').eq('id', id).single();
+    if (data) {
+      return { title: `${data.title} | VANO 공지사항` };
+    }
+  } catch { /* fallback */ }
+  return { title: '공지사항 | VANO' };
 }
 
 export default async function NoticeDetailPage({ params }: Props) {

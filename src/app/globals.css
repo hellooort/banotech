@@ -14,7 +14,7 @@
   --color-brand-light: #fff4de;
   --color-hover: #F5F5F5;
 
-  --font-sans: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: var(--font-pretendard), 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 body {
