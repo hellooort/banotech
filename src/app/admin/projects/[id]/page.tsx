@@ -8,6 +8,7 @@ import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import FileUpload from '@/components/admin/FileUpload';
 import type { Project } from '@/types/database';
+import { revalidateProjects } from '@/app/actions/revalidate';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -50,7 +51,10 @@ export default function EditProjectPage({ params }: Props) {
       year: form.year ? parseInt(form.year) : null,
       thumbnail_url: form.thumbnail_url || null,
     }).eq('id', id);
-    if (!error) router.push('/admin/projects');
+    if (!error) {
+      await revalidateProjects();
+      router.push('/admin/projects');
+    }
     setLoading(false);
   };
 

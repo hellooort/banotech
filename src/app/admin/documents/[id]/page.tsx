@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import FileUpload from '@/components/admin/FileUpload';
 import type { Product, Document as DocType } from '@/types/database';
+import { revalidateDocuments } from '@/app/actions/revalidate';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -52,6 +53,7 @@ export default function EditDocumentPage({ params }: Props) {
       product_id: form.product_id || null,
       file_url: form.file_url,
     }).eq('id', id);
+    await revalidateDocuments();
     router.push('/admin/documents');
     setLoading(false);
   };

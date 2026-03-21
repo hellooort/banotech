@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, useCallback, memo } from 'react';
+import { useMemo, useState, useCallback, useRef, memo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -22,8 +22,13 @@ export default memo(function Header() {
   const { locale, setLocale, t } = useI18n();
   const [catalogPdfUrl, setCatalogPdfUrl] = useState<string | null>(null);
   const [ecatalogueLoading, setEcatalogueLoading] = useState(false);
+  const catalogUrlRef = useRef<string | null>(null);
 
   const openEcatalogueFlipbook = useCallback(async () => {
+    if (catalogUrlRef.current) {
+      setCatalogPdfUrl(catalogUrlRef.current);
+      return;
+    }
     setEcatalogueLoading(true);
     try {
       const supabase = createClient();
@@ -42,6 +47,7 @@ export default memo(function Header() {
         );
         return;
       }
+      catalogUrlRef.current = data.file_url;
       setCatalogPdfUrl(data.file_url);
     } finally {
       setEcatalogueLoading(false);

@@ -6,6 +6,7 @@ import { Plus, Trash2, FileText, Download } from 'lucide-react';
 import FileUpload from '@/components/admin/FileUpload';
 import type { Document as DocType } from '@/types/database';
 import { formatDate } from '@/lib/utils';
+import { revalidateDocuments } from '@/app/actions/revalidate';
 
 const COLUMNS = [
   { type: 'catalog', label: '카탈로그', color: 'text-blue-600', bgColor: 'bg-blue-50' },
@@ -50,6 +51,7 @@ export default function AdminDocumentsPage() {
     setForm({ title: '', file_url: '' });
     setAddingType(null);
     setSaving(false);
+    await revalidateDocuments();
     fetchDocuments();
   };
 
@@ -57,6 +59,7 @@ export default function AdminDocumentsPage() {
     if (!confirm('이 자료를 삭제하시겠습니까?')) return;
     const supabase = createClient();
     await supabase.from('documents').delete().eq('id', id);
+    await revalidateDocuments();
     fetchDocuments();
   };
 

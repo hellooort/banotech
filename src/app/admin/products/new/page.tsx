@@ -9,6 +9,7 @@ import Textarea from '@/components/ui/Textarea';
 import FileUpload from '@/components/admin/FileUpload';
 import CategoryCascadeSelect from '@/components/admin/CategoryCascadeSelect';
 import type { Category } from '@/types/database';
+import { revalidateProducts } from '@/app/actions/revalidate';
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -55,7 +56,10 @@ export default function NewProductPage() {
       drawing_img_url: form.drawing_img_url || null,
     }]);
 
-    if (!error) router.push('/admin/products');
+    if (!error) {
+      await revalidateProducts();
+      router.push('/admin/products');
+    }
     setLoading(false);
   };
 

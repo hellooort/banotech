@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import FileUpload from '@/components/admin/FileUpload';
 import type { Product } from '@/types/database';
+import { revalidateDocuments } from '@/app/actions/revalidate';
 
 export default function NewDocumentPage() {
   const router = useRouter();
@@ -41,7 +42,10 @@ export default function NewDocumentPage() {
       file_url: form.file_url,
     }]);
 
-    if (!error) router.push('/admin/documents');
+    if (!error) {
+      await revalidateDocuments();
+      router.push('/admin/documents');
+    }
     setLoading(false);
   };
 

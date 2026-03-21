@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import FileUpload from '@/components/admin/FileUpload';
+import { revalidateProjects } from '@/app/actions/revalidate';
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -33,7 +34,10 @@ export default function NewProjectPage() {
       thumbnail_url: form.thumbnail_url || null,
     }]);
 
-    if (!error) router.push('/admin/projects');
+    if (!error) {
+      await revalidateProjects();
+      router.push('/admin/projects');
+    }
     setLoading(false);
   };
 

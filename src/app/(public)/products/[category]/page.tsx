@@ -4,7 +4,7 @@ import ProductGrid from '@/components/products/ProductGrid';
 import type { Product, Category } from '@/types/database';
 import { notFound } from 'next/navigation';
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 interface Props {
   params: Promise<{ category: string }>;

@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
 import type { Notice } from '@/types/database';
+import { revalidateNotices } from '@/app/actions/revalidate';
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -35,6 +36,7 @@ export default function EditNoticePage({ params }: Props) {
     setLoading(true);
     const supabase = createClient();
     await supabase.from('notices').update(form).eq('id', id);
+    await revalidateNotices();
     router.push('/admin/notices');
     setLoading(false);
   };

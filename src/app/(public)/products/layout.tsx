@@ -3,7 +3,7 @@ import CategorySidebar from '@/components/products/CategorySidebar';
 import ProductsHeader from '@/components/products/ProductsHeader';
 import type { Category } from '@/types/database';
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export default async function ProductsLayout({
   children,

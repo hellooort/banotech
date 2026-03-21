@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import ProductDetail from '@/components/products/ProductDetail';
 import type { Product, ProductImage, Document as DocType } from '@/types/database';
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 interface Props {
   params: Promise<{ category: string; id: string }>;

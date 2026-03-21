@@ -8,6 +8,7 @@ import DataTable from '@/components/admin/DataTable';
 import { Plus, Trash2 } from 'lucide-react';
 import type { Project } from '@/types/database';
 import { formatDate } from '@/lib/utils';
+import { revalidateProjects } from '@/app/actions/revalidate';
 
 export default function AdminProjectsPage() {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function AdminProjectsPage() {
     if (!confirm('이 프로젝트를 삭제하시겠습니까?')) return;
     const supabase = createClient();
     await supabase.from('projects').delete().eq('id', id);
+    await revalidateProjects();
     fetchProjects();
   };
 

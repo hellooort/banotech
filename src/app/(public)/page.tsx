@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import HomeContent from '@/components/home/HomeContent';
 import type { Category, Product } from '@/types/database';
 
-export const revalidate = 60;
+export const revalidate = 300;
 
 export default async function HomePage() {
   let categories: Category[] = [];

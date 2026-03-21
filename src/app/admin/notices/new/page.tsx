@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
+import { revalidateNotices } from '@/app/actions/revalidate';
 
 export default function NewNoticePage() {
   const router = useRouter();
@@ -19,7 +20,10 @@ export default function NewNoticePage() {
 
     const supabase = createClient();
     const { error } = await supabase.from('notices').insert([form]);
-    if (!error) router.push('/admin/notices');
+    if (!error) {
+      await revalidateNotices();
+      router.push('/admin/notices');
+    }
     setLoading(false);
   };
 

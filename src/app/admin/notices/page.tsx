@@ -8,6 +8,7 @@ import DataTable from '@/components/admin/DataTable';
 import { Plus, Trash2 } from 'lucide-react';
 import type { Notice } from '@/types/database';
 import { formatDate } from '@/lib/utils';
+import { revalidateNotices } from '@/app/actions/revalidate';
 
 export default function AdminNoticesPage() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function AdminNoticesPage() {
     if (!confirm('이 공지사항을 삭제하시겠습니까?')) return;
     const supabase = createClient();
     await supabase.from('notices').delete().eq('id', id);
+    await revalidateNotices();
     fetchNotices();
   };
 

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { Pencil, Trash2, ChevronRight, Plus, Check, X } from 'lucide-react';
 import type { Category } from '@/types/database';
+import { revalidateCategories } from '@/app/actions/revalidate';
 
 interface InlineForm {
   name: string;
@@ -65,6 +66,7 @@ export default function AdminCategoriesPage() {
 
     cancelAll();
     setSaving(false);
+    await revalidateCategories();
     fetchCategories();
   };
 
@@ -82,6 +84,7 @@ export default function AdminCategoriesPage() {
 
     cancelAll();
     setSaving(false);
+    await revalidateCategories();
     fetchCategories();
   };
 
@@ -111,6 +114,7 @@ export default function AdminCategoriesPage() {
     if (!confirm(msg)) return;
     const supabase = createClient();
     await supabase.from('categories').delete().eq('id', id);
+    await revalidateCategories();
     fetchCategories();
   };
 

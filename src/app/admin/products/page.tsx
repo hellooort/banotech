@@ -8,6 +8,7 @@ import Button from '@/components/ui/Button';
 import { Plus, Trash2, Search, Package } from 'lucide-react';
 import type { Product, Category } from '@/types/database';
 import { formatDate } from '@/lib/utils';
+import { revalidateProducts } from '@/app/actions/revalidate';
 
 interface ProductWithCat extends Product {
   categories?: Category;
@@ -47,6 +48,7 @@ export default function AdminProductsPage() {
     if (!confirm('이 제품을 삭제하시겠습니까?')) return;
     const supabase = createClient();
     await supabase.from('products').delete().eq('id', id);
+    await revalidateProducts();
     fetchProducts();
   };
 
