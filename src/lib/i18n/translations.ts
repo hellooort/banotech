@@ -82,7 +82,7 @@ const translations = {
     footer: {
       companyDesc: '욕실 액세서리 전문제조업체',
       productsResources: '제품·자료',
-      copyright: 'BANO. All rights reserved.',
+      copyright: 'VANO. All rights reserved.',
     },
     common: {
       noImage: '이미지 없음',
@@ -150,7 +150,7 @@ const translations = {
       title: 'About Us',
     },
     mega: {
-      companyDesc: 'Explore BANO company profile, history, and certificates.',
+      companyDesc: 'Explore VANO company profile, history, and certificates.',
       productsDesc: 'Browse key product groups and view the full catalog.',
       downloadDesc: 'Download catalogs, drawings/manuals, certificates, approvals, and other resources.',
       contactDesc: 'Check notices and contact us through inquiry channels.',
@@ -172,7 +172,7 @@ const translations = {
     footer: {
       companyDesc: 'Professional bathroom\naccessories manufacturer',
       productsResources: 'Products & Resources',
-      copyright: 'BANO. All rights reserved.',
+      copyright: 'VANO. All rights reserved.',
     },
     common: {
       noImage: 'No Image',

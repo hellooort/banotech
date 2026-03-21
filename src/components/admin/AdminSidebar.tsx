@@ -39,7 +39,7 @@ export default function AdminSidebar() {
     <aside className="flex h-screen w-56 shrink-0 flex-col border-r border-border bg-surface">
       <div className="flex h-16 items-center gap-2 px-6 border-b border-border">
         <Link href="/admin" className="flex items-center gap-2">
-          <Image src="/logo_black.png" alt="BANO" width={72} height={24} className="object-contain" />
+          <Image src="/logo_black.png" alt="VANO" width={72} height={24} className="object-contain" />
           <span className="text-xs text-muted font-medium">Admin</span>
         </Link>
       </div>

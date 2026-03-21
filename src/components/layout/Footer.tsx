@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="mx-auto max-w-[1280px] px-6 py-16">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-5">
           <div>
-            <Image src="/logo.png" alt="BANO" width={94} height={32} className="object-contain brightness-0 invert" />
+            <Image src="/logo.png" alt="VANO" width={94} height={32} className="object-contain brightness-0 invert" />
             <p className="mt-4 text-sm leading-relaxed text-white/55 whitespace-pre-line">
               {t.footer.companyDesc}
             </p>

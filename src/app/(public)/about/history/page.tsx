@@ -86,7 +86,7 @@ const HISTORY_DATA: HistoryYear[] = [
   {
     year: '2000',
     events: [
-      { month: '09', ko: "바노 회사설립 및 'vano' 브랜드 런칭 [서울 군자동]", en: "Founded BANO & launched 'vano' brand [Gunja-dong, Seoul]" },
+      { month: '09', ko: "바노 회사설립 및 'vano' 브랜드 런칭 [서울 군자동]", en: "Founded VANO & launched 'vano' brand [Gunja-dong, Seoul]" },
     ],
   },
   {

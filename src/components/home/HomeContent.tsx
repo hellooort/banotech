@@ -188,7 +188,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
               <Image
                 key={src}
                 src={src}
-                alt={`BANO Product ${index + 1}`}
+                alt={`VANO Product ${index + 1}`}
                 fill
                 sizes="50vw"
                 className={`object-cover object-center origin-center scale-[1.15] transition-opacity duration-700 ${
@@ -206,7 +206,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
             <div className="w-full max-w-xl py-20 md:max-w-[min(100%,36rem)] md:pr-8">
               <Image
                 src="/logo.png"
-                alt="BANO"
+                alt="VANO"
                 width={300}
                 height={90}
                 className="object-contain brightness-0 invert md:w-[340px]"

@@ -85,7 +85,7 @@ export default function Header() {
         <Link href="/" className="relative block h-8 w-24 shrink-0">
           <Image
             src="/logo_black.png"
-            alt="BANO"
+            alt="VANO"
             fill
             className="object-contain object-left"
             priority
@@ -159,7 +159,7 @@ export default function Header() {
           {openMega === 'company' && (
             <div className="flex gap-6">
               {[
-                { icon: Building2, label: t.navSub.greeting, desc: locale === 'ko' ? '바노테크를 소개합니다' : 'About BANO', href: '/about' },
+                { icon: Building2, label: t.navSub.greeting, desc: locale === 'ko' ? '바노테크를 소개합니다' : 'About VANO', href: '/about' },
                 { icon: History, label: t.navSub.history, desc: locale === 'ko' ? '1999년부터 이어온 여정' : 'Our journey since 1999', href: '/about/history' },
                 { icon: MapPin, label: t.navSub.location, desc: locale === 'ko' ? '본사 및 공장 위치 안내' : 'Office & factory location', href: '/about/location' },
               ].map((item) => (

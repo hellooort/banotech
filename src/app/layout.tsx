@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'BANO | 욕실 액세서리 전문제조업체',
+  title: 'VANO | 욕실 액세서리 전문제조업체',
   description: '1999년부터 이어온 욕실 액세서리 전문 제조업체 바노테크',
 };
 

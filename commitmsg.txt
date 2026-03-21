@@ -1,6 +1,4 @@
-perf: loading.tsx 추가, 레이아웃 서버 컴포넌트 전환, 패키지 최적화
+fix: BANO → VANO 브랜드명 전체 변경
 
-- loading.tsx 3개 추가: (public), products, [category] 스켈레톤 UI
-- about/resources/support layout을 서버 컴포넌트로 전환
-- SubSidebar를 variant 기반으로 리팩토링 (내부에서 useI18n 처리)
-- next.config에 optimizePackageImports 추가 (lucide-react, supabase)
+- 메타 타이틀, alt 텍스트, copyright, 인사말, 연혁 등 사용자에게 노출되는 모든 BANO를 VANO로 수정
+- localStorage 키(bano-locale)는 내부용이므로 유지

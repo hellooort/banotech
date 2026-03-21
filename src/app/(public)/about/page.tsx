@@ -77,14 +77,14 @@ function GreetingEn() {
       </h2>
 
       <p className="text-base leading-[1.9] text-foreground font-semibold mb-8">
-        BANO Tech Co., Ltd. will create a HIGHEND bathroom culture.
+        VANO Tech Co., Ltd. will create a HIGHEND bathroom culture.
       </p>
 
       <div className="space-y-6 text-base leading-[2] text-secondary">
         <p>Thank you sincerely for visiting our website.</p>
 
         <div>
-          <p>BANO Tech Co., Ltd.</p>
+          <p>VANO Tech Co., Ltd.</p>
           <p>
             Starting with bathroom accessory design development in late 1999, we have been creating only HIGHEND products
             that deeply reflect customer needs through relentless R&D and creative, original designs.
@@ -100,7 +100,7 @@ function GreetingEn() {
       </h3>
       <div className="space-y-2 text-base leading-[2] text-secondary">
         <p><strong>VANO</strong> puts the <span className="text-brand font-semibold">soul</span> of every person who makes our products into every item.</p>
-        <p><strong>VANO</strong> does not compete with others. We develop only original products with <span className="text-brand font-semibold">creative</span> designs unique to BANO.</p>
+        <p><strong>VANO</strong> does not compete with others. We develop only original products with <span className="text-brand font-semibold">creative</span> designs unique to VANO.</p>
         <p><strong>VANO</strong> values <span className="text-brand font-semibold">communication</span> with all our customers.</p>
       </div>
 
@@ -118,12 +118,12 @@ function GreetingEn() {
       <div className="h-px bg-border my-10" />
 
       <div className="space-y-2 text-base leading-[2] text-secondary">
-        <p>BANO Tech Co., Ltd.</p>
+        <p>VANO Tech Co., Ltd.</p>
         <p>We will keep our founding spirit and stand by our customers as a trusted, responsible company.</p>
       </div>
 
       <div className="flex items-end justify-end gap-4 mt-12 pb-4">
-        <span className="text-base text-foreground font-medium">BANO Tech Co., Ltd. All employees</span>
+        <span className="text-base text-foreground font-medium">VANO Tech Co., Ltd. All employees</span>
         <Image src="/hungyong.png" alt="CEO Signature" width={100} height={50} className="object-contain" />
       </div>
     </div>

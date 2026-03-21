@@ -39,7 +39,7 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background">
       <div className="w-full max-w-sm border border-border bg-surface p-8">
         <div className="flex justify-center">
-          <Image src="/logo_black.png" alt="BANO" width={100} height={34} className="object-contain" />
+          <Image src="/logo_black.png" alt="VANO" width={100} height={34} className="object-contain" />
         </div>
         <p className="mt-2 text-center text-xs text-muted">관리자 로그인</p>
 

@@ -79,7 +79,7 @@ export default async function LocationPage() {
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium">이메일</td>
                 <td className="py-3 text-foreground">
-                  {locationInfo.email || 'info@bano.co.kr'}
+                  {locationInfo.email || 'info@vano.co.kr'}
                 </td>
               </tr>
             </tbody>
