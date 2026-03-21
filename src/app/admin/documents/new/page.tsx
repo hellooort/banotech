@@ -59,6 +59,8 @@ export default function NewDocumentPage() {
             <option value="catalog">카탈로그</option>
             <option value="drawing">도면</option>
             <option value="manual">설명서</option>
+            <option value="certificate">인증서</option>
+            <option value="approval">승인서류</option>
             <option value="other">기타</option>
           </select>
         </div>

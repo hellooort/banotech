@@ -8,6 +8,12 @@ const translations = {
       projects: '프로젝트',
       resources: '자료실',
       support: '고객지원',
+      company: '회사소개',
+      download: '자료실',
+      contactUs: '고객지원',
+      ecatalogue: 'e-카탈로그',
+      langKo: '한국어',
+      langEn: 'English',
     },
     navSub: {
       greeting: '인사말',
@@ -18,27 +24,27 @@ const translations = {
       inquiry: '문의하기',
     },
     hero: {
-      subtitle: 'Bathroom Accessories',
+      subtitle: '욕실 액세서리',
       description: '1999년부터 이어온 욕실 액세서리의 신뢰,\n국산 품질을 고집하는 전문 제조업체',
       cta: '제품 보기',
     },
     home: {
       newArrivals: '신제품',
-      newArrivalsLabel: 'New Arrivals',
+      newArrivalsLabel: '신제품',
       viewAll: '전체 보기',
       notice: '공지사항',
-      noticeLabel: 'Notice',
+      noticeLabel: '공지',
       pinned: '공지',
     },
     stats: {
       years: '1999년 설립',
-      yearsLabel: 'Years of History',
+      yearsLabel: '역사',
       korea: '나사 하나까지 국산',
-      koreaLabel: 'Made in Korea',
+      koreaLabel: '국내 생산',
       rd: '창의적 디자인 연구',
-      rdLabel: 'Creative Design',
+      rdLabel: '창의 디자인',
       b2b: '신뢰 기반 납품',
-      b2bLabel: 'Partnership',
+      b2bLabel: '파트너십',
     },
     products: {
       title: '제품소개',
@@ -53,13 +59,33 @@ const translations = {
     about: {
       title: '회사소개',
     },
+    mega: {
+      companyDesc: '바노테크의 소개와 연혁, 인증 정보를 확인하세요.',
+      productsDesc: '주요 제품군을 빠르게 탐색하고 전체 제품을 확인하세요.',
+      downloadDesc: '카탈로그, 도면·설명서, 인증서, 승인서류, 기타 자료를 다운로드하세요.',
+      contactDesc: '공지사항 확인 및 문의 접수 채널을 제공합니다.',
+      viewAllProducts: '전체 제품 보기',
+      catalog: '카탈로그',
+      drawingManual: '도면 및 설명서',
+      certificates: '인증서',
+      approvalDocs: '승인서류',
+      otherResources: '기타 자료',
+      notices: '공지사항',
+      inquiry: '문의하기',
+      emailInquiry: '이메일문의',
+      productsGroup1: '걸이류',
+      productsGroup2: '선반/매립형',
+      productsGroup3: '액세서리',
+      productsGroup4: '편의/기타',
+      newProducts: '신제품',
+    },
     footer: {
       companyDesc: '욕실 액세서리 전문제조업체',
       productsResources: '제품·자료',
       copyright: 'BANO. All rights reserved.',
     },
     common: {
-      noImage: 'No Image',
+      noImage: '이미지 없음',
       siteOpenNotice: '사이트 오픈 안내',
       catalogUpdate: '2026년 상반기 카탈로그 업데이트',
       holidayNotice: '설 연휴 배송 일정 안내',
@@ -72,6 +98,12 @@ const translations = {
       projects: 'Projects',
       resources: 'Resources',
       support: 'Support',
+      company: 'COMPANY',
+      download: 'DOWNLOAD',
+      contactUs: 'CONTACT US',
+      ecatalogue: 'e-catalogue',
+      langKo: 'KOREA',
+      langEn: 'ENGLISH',
     },
     navSub: {
       greeting: 'Greeting',
@@ -117,6 +149,26 @@ const translations = {
     about: {
       title: 'About Us',
     },
+    mega: {
+      companyDesc: 'Explore BANO company profile, history, and certificates.',
+      productsDesc: 'Browse key product groups and view the full catalog.',
+      downloadDesc: 'Download catalogs, drawings/manuals, certificates, approvals, and other resources.',
+      contactDesc: 'Check notices and contact us through inquiry channels.',
+      viewAllProducts: 'View all products',
+      catalog: 'Catalog',
+      drawingManual: 'Drawing & Manual',
+      certificates: 'Certificates',
+      approvalDocs: 'Approval Documents',
+      otherResources: 'Other Resources',
+      notices: 'Notices',
+      inquiry: 'Inquiry',
+      emailInquiry: 'Email Inquiry',
+      productsGroup1: 'Holders',
+      productsGroup2: 'Shelves/Recessed',
+      productsGroup3: 'Accessories',
+      productsGroup4: 'Utility/Others',
+      newProducts: 'New Products',
+    },
     footer: {
       companyDesc: 'Professional bathroom\naccessories manufacturer',
       productsResources: 'Products & Resources',
@@ -132,6 +184,8 @@ const translations = {
 };
 
 export type Translations = typeof translations['ko'];
+
+const _checkEn: Translations = translations['en'];
 
 export function getTranslations(locale: Locale): Translations {
   return translations[locale] as Translations;

@@ -10,6 +10,8 @@ import { formatDate } from '@/lib/utils';
 const COLUMNS = [
   { type: 'catalog', label: '카탈로그', color: 'text-blue-600', bgColor: 'bg-blue-50' },
   { type: 'drawing', label: '도면 및 설명서', color: 'text-green-600', bgColor: 'bg-green-50' },
+  { type: 'certificate', label: '인증서', color: 'text-amber-700', bgColor: 'bg-amber-50' },
+  { type: 'approval', label: '승인서류', color: 'text-violet-700', bgColor: 'bg-violet-50' },
   { type: 'other', label: '기타 자료', color: 'text-gray-600', bgColor: 'bg-gray-50' },
 ];
 
@@ -62,10 +64,10 @@ export default function AdminDocumentsPage() {
     <div>
       <div>
         <h1 className="text-xl font-semibold text-foreground">자료 관리</h1>
-        <p className="mt-1 text-sm text-muted">카탈로그, 도면 및 설명서, 기타 자료를 관리합니다</p>
+        <p className="mt-1 text-sm text-muted">카탈로그, 도면 및 설명서, 인증서, 승인서류, 기타 자료를 관리합니다</p>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-3">
+      <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-5">
         {COLUMNS.map((col) => {
           const docs = getDocsByType(col.type);
           const isAdding = addingType === col.type;

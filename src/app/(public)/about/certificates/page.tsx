@@ -1,22 +1,13 @@
-import { createClient } from '@/lib/supabase/server';
-import CertificatesContent from '@/components/about/CertificatesContent';
-import type { Certificate } from '@/types/database';
+'use client';
 
-export const revalidate = 60;
+import { useEffect } from 'react';
 
-export default async function CertificatesPage() {
-  let certificates: Certificate[] = [];
-
-  try {
-    const supabase = await createClient();
-    const { data } = await supabase
-      .from('certificates')
-      .select('*')
-      .order('sort_order');
-    certificates = data ?? [];
-  } catch {
-    // fallback
-  }
-
-  return <CertificatesContent certificates={certificates} />;
+/** 인증서 자료는 자료실(DOWNLOAD) → 인증서 탭으로 이동 */
+export default function CertificatesRedirectPage() {
+  useEffect(() => {
+    window.location.replace('/resources#certificate');
+  }, []);
+  return (
+    <div className="py-12 text-center text-sm text-muted">자료실로 이동 중…</div>
+  );
 }

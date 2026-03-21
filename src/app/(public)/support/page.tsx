@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 import Link from 'next/link';
-import PageHeader from '@/components/ui/PageHeader';
 import { formatDate } from '@/lib/utils';
 import type { Notice } from '@/types/database';
 
@@ -22,18 +21,16 @@ export default async function SupportPage() {
   }
 
   return (
-    <>
-      <PageHeader title="고객지원" description="공지사항 및 문의" />
-      <div className="mx-auto max-w-[1280px] px-6 py-10">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-medium text-foreground">공지사항</h2>
-          <Link
-            href="/support/inquiry"
-            className="text-sm text-muted hover:text-foreground transition-colors"
-          >
-            문의하기 &rarr;
-          </Link>
-        </div>
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-lg font-semibold text-foreground">공지사항</h2>
+        <Link
+          href="/support/inquiry"
+          className="text-sm text-muted hover:text-foreground transition-colors"
+        >
+          문의하기 &rarr;
+        </Link>
+      </div>
 
         {notices.length > 0 ? (
           <div className="divide-y divide-border border-t border-b border-border">
@@ -56,7 +53,6 @@ export default async function SupportPage() {
         ) : (
           <p className="text-sm text-muted py-12 text-center">등록된 공지사항이 없습니다.</p>
         )}
-      </div>
-    </>
+    </div>
   );
 }

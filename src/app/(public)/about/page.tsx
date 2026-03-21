@@ -6,100 +6,63 @@ import { useI18n } from '@/lib/i18n/context';
 function GreetingKo() {
   return (
     <div className="max-w-3xl">
-      <div className="mb-12">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground leading-snug">
-          끊임없이 변화하는 기업, 창의적인 기업,
-          <br />
-          소통하는 기업
-        </h2>
-        <p className="mt-3 text-lg text-secondary">
-          <span className="text-brand font-medium">&lsquo; (주)바노테크 &rsquo;</span>가 미래를 만들어 나아가겠습니다.
-        </p>
-      </div>
+      {/* Title */}
+      <h2 className="text-2xl font-bold tracking-tight leading-snug mb-8">
+        <span className="text-brand">끊임없이 연구개발하는 기업, 독창성을 추구하는 기업, 소통하는 기업</span>
+      </h2>
 
-      <div className="h-px bg-border" />
+      <p className="text-base leading-[1.9] text-foreground font-semibold mb-8">
+        [주]바노테크&apos; 가 HIGHEND 욕실문화를 만들어 가겠습니다.
+      </p>
 
-      <div className="py-10 space-y-6 text-base leading-[1.9] text-secondary">
-        <p>당사 홈페이지를 방문해 주신 고객 여러분 진심으로 감사를 드립니다.</p>
+      <div className="space-y-6 text-base leading-[2] text-secondary">
+        <p>홈페이지를 방문해 주신 고객 여러분, 진심으로 감사드립니다.</p>
+
         <div>
-          <p>(주)바노테크는</p>
+          <p>[주]바노테크는</p>
           <p>
-            1999년말 욕실액세서리의 디자인 개발을 시작으로 현재까지 한계단 한계단 지속적으로 성장 발전해왔습니다.
-            이렇게 지속적으로 성장 발전해온데는 당사 제품에 대한 고객 여러분의 두터운 신뢰가 밑바탕에 있었기에
-            가능했다고 봅니다.
-          </p>
-        </div>
-        <p>
-          작은 나사하나까지도 국산만을 고집해온 &ldquo;vano&rdquo;는 원자재의 급등으로 여러 유혹과 어려움이 있었지만
-          이에 현혹되지 않고, 여러분의 신뢰와 상도를 지키며 미래를 준비하고 있습니다.
-        </p>
-      </div>
-
-      <div className="h-px bg-border" />
-
-      <div className="py-10">
-        <h3 className="text-xl font-bold text-foreground mb-6">
-          바노의 경영철학은 <span className="text-brand">魂(혼)</span>, <span className="text-brand">創(창)</span>, <span className="text-brand">通(통)</span>입니다.
-        </h3>
-        <div className="border-l-2 border-brand pl-6 space-y-2.5">
-          <p className="text-base text-secondary leading-relaxed">
-            <span className="text-foreground font-medium">바노의 모든 제품에는 모든 직원들의 혼이 담아 있습니다.</span>
-          </p>
-          <p className="text-base text-secondary leading-relaxed">
-            <span className="text-foreground font-medium">바노는 남들과 경쟁하지 않습니다.</span>{' '}
-            바노만의 경쟁력있는 창의적인 디자인 제품만을 연구합니다.
-          </p>
-          <p className="text-base text-secondary leading-relaxed">
-            <span className="text-foreground font-medium">바노는 직원뿐만 아니라 고객 여러분과의 소통(Communication)을 중요시 합니다.</span>
+            1999년 말, 욕실액세사리의 디자인 개발을 시작으로 끊임없는 연구개발과 창의적이고 독창적인 디자인을 바탕으로
+            고객의 NEEDS를 깊이 있게 반영한 HIGHEND급 제품만을 만들고 있습니다. 이러한 노력들이 밑거름이 되어 지금은
+            욕실액세사리의 트렌드를 LEAD하는 기업으로 성장발전해왔습니다.
           </p>
         </div>
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-border my-10" />
 
-      <div className="py-10">
-        <h3 className="text-xl font-bold text-foreground mb-6">
-          바노의 비전은 <span className="text-brand">고객만족 서비스 실천</span>,{' '}
-          <span className="text-brand">R&D의 적극적인 투자</span>,{' '}
-          <span className="text-brand">기업의 글로벌화제이션</span>입니다.
-        </h3>
-        <div className="space-y-4">
-          <div className="flex gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            <div className="text-base text-secondary leading-relaxed">
-              <span className="text-foreground font-medium">바노는 &ldquo;고객만족 서비스를 실천하는 기업입니다.</span>
-              <br />
-              고객만족이라는 구호만을 외치는 것이 아니라 고객을 위한 서비스를 실천하는 기업입니다.
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            <p className="text-base text-secondary leading-relaxed">
-              <span className="text-foreground font-medium">바노는 욕실액세서리 브랜드를 리드하는 기업으로</span>{' '}
-              끊임없이 R&D에 적극적으로 투자하는 기업입니다.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            <p className="text-base text-secondary leading-relaxed">
-              <span className="text-foreground font-medium">바노는 내수시장을 뛰어 넘어</span>{' '}
-              기업이 글로벌화 하지 않으면 생존할 수 없다고 판단, 글로벌 네트워크형성을 지향하는 기업입니다.
-            </p>
-          </div>
-        </div>
+      {/* Philosophy */}
+      <h3 className="text-xl font-bold text-foreground mb-6">
+        <span className="text-brand">魂</span>(혼), <span className="text-brand">創</span>(창), <span className="text-brand">通</span>(통)의 정신은 <strong>vano</strong>의 경영철학입니다.
+      </h3>
+      <div className="space-y-2 text-base leading-[2] text-secondary">
+        <p><strong>vano</strong>는 전 제품에 제품을 만드는 분들의 혼(<span className="text-brand font-semibold">魂</span>)이 담겨져 있습니다.</p>
+        <p><strong>vano</strong>는 동종사와 경쟁하지 않습니다., 바노만의 창의적 디자인으로 독창(<span className="text-brand font-semibold">創</span>)적인 제품만을 연구개발합니다.</p>
+        <p><strong>vano</strong>는 고객 여러분과의 소통(<span className="text-brand font-semibold">通</span>)를 중요시 합니다.</p>
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-border my-10" />
 
-      <div className="py-10">
-        <p className="text-base leading-[1.9] text-secondary">
-          바노는 영원히 초심을 잃지 않고 끝까지 최선을 다하는 좋은 기업, 착한기업으로 남겠습니다.
-        </p>
-        <p className="mt-2 text-base text-secondary">감사합니다.</p>
+      {/* Vision */}
+      <h3 className="text-xl font-bold text-foreground mb-6">
+        <span className="text-brand">고객만족</span>, <span className="text-brand">R&D투자</span>, <span className="text-brand">세계화</span>의 정신은 <strong>vano</strong>의 비젼입니다.
+      </h3>
+      <div className="space-y-2 text-base leading-[2] text-secondary">
+        <p><strong>vano</strong>는 &lsquo;고객만족 서비스&rsquo;를 실천하는 기업입니다.</p>
+        <p><strong>vano</strong>는 끊임없이 R&D에 투자하는 기업입니다.</p>
+        <p><strong>vano</strong>는 세계화(globalization)를 추구하는 기업입니다.</p>
       </div>
 
-      <div className="flex items-end justify-end gap-4 pb-4">
-        <span className="text-base text-foreground font-medium">대표이사 허용</span>
+      <div className="h-px bg-border my-10" />
+
+      {/* Closing */}
+      <div className="space-y-2 text-base leading-[2] text-secondary">
+        <p>[주]바노테크는</p>
+        <p>시작할 때의 마음가짐을 유지하면서 신뢰받는 기업, 착한기업으로 고객 여러분의 곁을 지키겠습니다.</p>
+      </div>
+
+      {/* Signature */}
+      <div className="flex items-end justify-end gap-4 mt-12 pb-4">
+        <span className="text-base text-foreground font-medium">[주]바노테크 임직원 일동</span>
         <Image src="/hungyong.png" alt="대표이사 서명" width={100} height={50} className="object-contain" />
       </div>
     </div>
@@ -109,100 +72,58 @@ function GreetingKo() {
 function GreetingEn() {
   return (
     <div className="max-w-3xl">
-      <div className="mb-12">
-        <h2 className="text-3xl font-bold tracking-tight text-foreground leading-snug">
-          A company that constantly evolves,
-          <br />
-          creates, and communicates
-        </h2>
-        <p className="mt-3 text-lg text-secondary">
-          <span className="text-brand font-medium">&lsquo; BANO Tech Co., Ltd. &rsquo;</span> is building the future.
-        </p>
-      </div>
+      <h2 className="text-2xl font-bold tracking-tight leading-snug mb-8">
+        <span className="text-brand">A company that constantly innovates, pursues originality, and communicates</span>
+      </h2>
 
-      <div className="h-px bg-border" />
+      <p className="text-base leading-[1.9] text-foreground font-semibold mb-8">
+        BANO Tech Co., Ltd. will create a HIGHEND bathroom culture.
+      </p>
 
-      <div className="py-10 space-y-6 text-base leading-[1.9] text-secondary">
-        <p>Thank you for visiting our website.</p>
+      <div className="space-y-6 text-base leading-[2] text-secondary">
+        <p>Thank you sincerely for visiting our website.</p>
+
         <div>
           <p>BANO Tech Co., Ltd.</p>
           <p>
-            Since late 1999, starting with bathroom accessory design development, we have been growing steadily step by step.
-            This continued growth has been made possible by the deep trust our customers have placed in our products.
-          </p>
-        </div>
-        <p>
-          &ldquo;BANO&rdquo; has insisted on using only Korean-made materials, down to the smallest screw.
-          Despite temptations from rising raw material costs, we have stayed true to our principles,
-          maintaining your trust while preparing for the future.
-        </p>
-      </div>
-
-      <div className="h-px bg-border" />
-
-      <div className="py-10">
-        <h3 className="text-xl font-bold text-foreground mb-6">
-          Our management philosophy: <span className="text-brand">Soul</span>, <span className="text-brand">Creativity</span>, <span className="text-brand">Communication</span>
-        </h3>
-        <div className="border-l-2 border-brand pl-6 space-y-2.5">
-          <p className="text-base text-secondary leading-relaxed">
-            <span className="text-foreground font-medium">Every BANO product contains the soul and dedication of our entire team.</span>
-          </p>
-          <p className="text-base text-secondary leading-relaxed">
-            <span className="text-foreground font-medium">BANO does not compete with others.</span>{' '}
-            We focus exclusively on researching our own uniquely competitive and creative designs.
-          </p>
-          <p className="text-base text-secondary leading-relaxed">
-            <span className="text-foreground font-medium">BANO values communication — not only among employees, but with all our customers.</span>
+            Starting with bathroom accessory design development in late 1999, we have been creating only HIGHEND products
+            that deeply reflect customer needs through relentless R&D and creative, original designs.
+            These efforts have become the foundation for our growth as a company that now leads bathroom accessory trends.
           </p>
         </div>
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-border my-10" />
 
-      <div className="py-10">
-        <h3 className="text-xl font-bold text-foreground mb-6">
-          Our vision: <span className="text-brand">Customer Satisfaction</span>,{' '}
-          <span className="text-brand">R&D Investment</span>,{' '}
-          <span className="text-brand">Globalization</span>
-        </h3>
-        <div className="space-y-4">
-          <div className="flex gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            <div className="text-base text-secondary leading-relaxed">
-              <span className="text-foreground font-medium">BANO is a company that practices customer satisfaction service.</span>
-              <br />
-              We don&apos;t just proclaim customer satisfaction — we practice it.
-            </div>
-          </div>
-          <div className="flex gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            <p className="text-base text-secondary leading-relaxed">
-              <span className="text-foreground font-medium">As a leading bathroom accessory brand,</span>{' '}
-              BANO continuously and actively invests in R&D.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
-            <p className="text-base text-secondary leading-relaxed">
-              <span className="text-foreground font-medium">BANO looks beyond the domestic market,</span>{' '}
-              recognizing that globalization is essential for survival, and strives to build a global network.
-            </p>
-          </div>
-        </div>
+      <h3 className="text-xl font-bold text-foreground mb-6">
+        The spirit of <span className="text-brand">Soul</span>, <span className="text-brand">Creativity</span>, <span className="text-brand">Communication</span> is <strong>VANO</strong>&apos;s management philosophy.
+      </h3>
+      <div className="space-y-2 text-base leading-[2] text-secondary">
+        <p><strong>VANO</strong> puts the <span className="text-brand font-semibold">soul</span> of every person who makes our products into every item.</p>
+        <p><strong>VANO</strong> does not compete with others. We develop only original products with <span className="text-brand font-semibold">creative</span> designs unique to BANO.</p>
+        <p><strong>VANO</strong> values <span className="text-brand font-semibold">communication</span> with all our customers.</p>
       </div>
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-border my-10" />
 
-      <div className="py-10">
-        <p className="text-base leading-[1.9] text-secondary">
-          BANO will forever remain true to its founding spirit — a good company that gives its best until the end.
-        </p>
-        <p className="mt-2 text-base text-secondary">Thank you.</p>
+      <h3 className="text-xl font-bold text-foreground mb-6">
+        <span className="text-brand">Customer satisfaction</span>, <span className="text-brand">R&D investment</span>, <span className="text-brand">Globalization</span> — <strong>VANO</strong>&apos;s vision.
+      </h3>
+      <div className="space-y-2 text-base leading-[2] text-secondary">
+        <p><strong>VANO</strong> is a company that practices &lsquo;customer satisfaction service.&rsquo;</p>
+        <p><strong>VANO</strong> is a company that constantly invests in R&D.</p>
+        <p><strong>VANO</strong> is a company that pursues globalization.</p>
       </div>
 
-      <div className="flex items-end justify-end gap-4 pb-4">
-        <span className="text-base text-foreground font-medium">CEO Huh Yong</span>
+      <div className="h-px bg-border my-10" />
+
+      <div className="space-y-2 text-base leading-[2] text-secondary">
+        <p>BANO Tech Co., Ltd.</p>
+        <p>We will keep our founding spirit and stand by our customers as a trusted, responsible company.</p>
+      </div>
+
+      <div className="flex items-end justify-end gap-4 mt-12 pb-4">
+        <span className="text-base text-foreground font-medium">BANO Tech Co., Ltd. All employees</span>
         <Image src="/hungyong.png" alt="CEO Signature" width={100} height={50} className="object-contain" />
       </div>
     </div>

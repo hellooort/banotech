@@ -3,28 +3,28 @@
 import { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Award, Factory, Handshake, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '@/components/products/ProductCard';
-import { formatDate } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
 import { getCategoryName } from '@/lib/i18n/helpers';
-import type { Category, Product, Notice } from '@/types/database';
+import type { Category, Product } from '@/types/database';
 
 interface HomeContentProps {
   categories: Category[];
   recentProducts: Product[];
-  notices: Notice[];
   catSlugMap: Record<string, string>;
 }
 
 const DEFAULT_CATEGORIES: { name: string; name_en: string }[] = [
   { name: '수건걸이', name_en: 'Towel Rack' },
-  { name: '휴지걸이', name_en: 'Paper Holder' },
-  { name: '컵대 / 비누대', name_en: 'Tumbler / Soap Dish' },
-  { name: '선반', name_en: 'Shelves' },
+  { name: '휴지걸이[노출형]', name_en: 'Paper Holder [Wall]' },
+  { name: '컵대/비누대', name_en: 'Tumbler/Soap Dish' },
   { name: '옷걸이', name_en: 'Robe Hook' },
-  { name: '욕실 액세서리', name_en: 'Accessories' },
-  { name: '편의 / 공공 제품', name_en: 'Utility & Public' },
+  { name: '선반', name_en: 'Shelves' },
+  { name: '면도경', name_en: 'Mirror' },
+  { name: '청소솔', name_en: 'Brush' },
+  { name: '편의품', name_en: 'Utility' },
+  { name: '기타', name_en: 'Others' },
   { name: 'NEW PRODUCTS', name_en: 'New Products' },
 ];
 
@@ -70,39 +70,40 @@ function ProductCarousel({
   const displayProducts = products.length > 0 ? [...products, ...products] : [];
 
   return (
-    <section className="mt-16">
+    <section className="mt-14">
       <div className="mx-auto max-w-[1280px] px-6 py-16">
-        <div className="flex items-center justify-between mb-10">
+        <div className="mb-10 flex items-center justify-between">
           <div>
-            <p className="text-sm tracking-[0.2em] uppercase text-brand mb-2">{t.home.newArrivalsLabel}</p>
+            <p className="text-sm tracking-[0.2em] uppercase text-muted mb-2">{t.home.newArrivalsLabel}</p>
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t.home.newArrivals}</h2>
           </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => scroll(-1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border hover:border-brand hover:text-brand transition-colors bg-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white transition-colors hover:border-foreground hover:text-foreground"
             >
               <ChevronLeft size={18} />
             </button>
             <button
               onClick={() => scroll(1)}
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border hover:border-brand hover:text-brand transition-colors bg-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-white transition-colors hover:border-foreground hover:text-foreground"
             >
               <ChevronRight size={18} />
             </button>
-            <Link href="/products" className="ml-2 text-sm text-brand hover:text-brand-dark transition-colors flex items-center gap-1 tracking-wider uppercase">
+            <Link href="/products" className="ml-2 flex items-center gap-1 text-sm tracking-wider text-foreground uppercase transition-colors hover:text-secondary">
               {t.home.viewAll} <ArrowRight size={14} />
             </Link>
           </div>
         </div>
 
-        <div
-          ref={scrollRef}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          className="flex gap-4 overflow-x-hidden"
-          style={{ scrollbarWidth: 'none' }}
-        >
+        <div className="rounded-2xl border border-border/80 bg-white p-4 shadow-[0_8px_24px_rgba(0,0,0,0.04)] md:p-5">
+          <div
+            ref={scrollRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+            className="flex gap-4 overflow-x-hidden"
+            style={{ scrollbarWidth: 'none' }}
+          >
           {displayProducts.length > 0 ? (
             displayProducts.map((product, i) => (
               <div key={`${product.id}-${i}`} className="w-[260px] shrink-0">
@@ -123,14 +124,40 @@ function ProductCarousel({
               </div>
             ))
           )}
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-export default function HomeContent({ categories, recentProducts, notices, catSlugMap }: HomeContentProps) {
+const BANNER_IMAGES = [
+  '/images/1.png',
+  '/images/2.png',
+  '/images/3.png',
+  '/images/4.png',
+  '/images/5.png',
+  '/images/6.png',
+];
+
+export default function HomeContent({ categories, recentProducts, catSlugMap }: HomeContentProps) {
   const { locale, t } = useI18n();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % BANNER_IMAGES.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // 배너 이미지 전부 미리 로드 (6→1 전환 시 디코딩 지연으로 흰 화면 나오는 것 방지)
+  useEffect(() => {
+    BANNER_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
 
   const topCategories = categories.filter(c => !c.parent_id);
   const catList = topCategories.length > 0
@@ -139,68 +166,87 @@ export default function HomeContent({ categories, recentProducts, notices, catSl
         id: String(i), parent_id: null, name: c.name, name_en: c.name_en, slug: c.name, icon_url: null, sort_order: i, created_at: '',
       }));
 
+  const categoryMid = Math.ceil(catList.length / 2);
+  const categoryRow1 = catList.slice(0, categoryMid);
+  const categoryRow2 = catList.slice(categoryMid);
+
   return (
     <>
-      {/* Hero — two-tone: warm grey left + product image right */}
+      {/* Hero — two-tone: brand color left + product image right */}
       <section className="relative">
-        <div className="relative min-h-[560px] md:min-h-[600px] overflow-hidden">
-          {/* Two-tone background */}
-          <div className="absolute inset-0 bg-[#f5f0eb]" />
-          <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-[#e8e2db] hidden md:block" />
+        <div className="relative min-h-[560px] overflow-hidden md:min-h-[600px]">
+          {/* Left half — brand color */}
+          <div className="absolute inset-0 bg-[#f59e02]" />
+          {/* Right half — white for product image */}
+          <div className="absolute right-0 top-0 bottom-0 hidden w-1/2 bg-white md:block" />
 
-          <div className="relative z-10 mx-auto flex max-w-[1280px] items-center min-h-[560px] md:min-h-[600px] px-6">
-            {/* Left — text */}
-            <div className="w-full md:w-1/2 py-20 md:pr-12">
-              <p className="text-xs tracking-[0.3em] uppercase text-brand font-medium mb-5">
-                {t.hero.subtitle}
-              </p>
+          {/* Right half — 화면 오른쪽 50% 전체에 꽉 차게 (max-width 밖으로 분리) + 살짝 확대 크롭 */}
+          <div className="absolute right-0 top-0 bottom-0 z-[5] hidden w-1/2 overflow-hidden md:block">
+            {BANNER_IMAGES.map((src, index) => {
+              const active = index === currentImageIndex;
+              return (
               <Image
-                src="/logo_black.png"
+                key={src}
+                src={src}
+                alt={`BANO Product ${index + 1}`}
+                fill
+                sizes="50vw"
+                className={`object-cover object-center origin-center scale-[1.15] transition-opacity duration-700 ${
+                  active ? 'z-10 opacity-100' : 'z-0 opacity-0'
+                }`}
+                priority={index === 0}
+                loading="eager"
+              />
+              );
+            })}
+          </div>
+
+          <div className="relative z-10 mx-auto flex min-h-[560px] max-w-[1280px] items-center px-6 md:min-h-[600px]">
+            {/* Left — text on brand color (right column is only images above, full half-vw) */}
+            <div className="w-full max-w-xl py-20 md:max-w-[min(100%,36rem)] md:pr-8">
+              <Image
+                src="/logo.png"
                 alt="BANO"
-                width={180}
-                height={60}
-                className="object-contain md:w-[220px]"
+                width={300}
+                height={90}
+                className="object-contain brightness-0 invert md:w-[340px]"
                 priority
               />
-              <p className="mt-6 text-base leading-relaxed text-[#555] max-w-md whitespace-pre-line">
+              <p className="mt-8 max-w-lg whitespace-pre-line text-xl leading-relaxed text-white/90 font-medium">
                 {t.hero.description}
               </p>
               <Link
                 href="/products"
-                className="mt-10 inline-flex items-center gap-2.5 bg-[#333] px-8 py-3.5 text-sm tracking-wider uppercase text-white font-medium transition-all hover:bg-brand"
+                className="mt-12 inline-flex items-center gap-3 rounded-full bg-white px-10 py-4 text-base tracking-wider text-[#f59e02] uppercase font-bold transition-all hover:-translate-y-0.5 hover:bg-white/90 shadow-lg"
               >
                 {t.hero.cta}
-                <ArrowRight size={14} />
+                <ArrowRight size={18} />
               </Link>
-            </div>
-
-            {/* Right — product image */}
-            <div className="hidden md:block w-1/2 relative min-h-[500px]">
-              <Image
-                src="/main_banner.png"
-                alt="BANO Products"
-                fill
-                className="object-contain object-center"
-                priority
-              />
             </div>
           </div>
         </div>
 
-        {/* Category bar */}
-        <div className="relative z-20 mx-auto max-w-[1280px] px-6 -mt-7">
-          <div className="bg-white border border-border/60 shadow-md rounded-sm">
-            <div className="flex items-center justify-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-              {catList.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={topCategories.length > 0 ? `/products/${cat.slug}` : '/products'}
-                  className="group shrink-0 px-5 py-3.5 transition-colors hover:bg-brand-light md:px-6"
+        {/* Category bar — 2 balanced rows (split by count, not by width) */}
+        <div className="relative z-20 mx-auto -mt-7 max-w-[1280px] px-6">
+          <div className="rounded-2xl border border-border/70 bg-white shadow-[0_8px_20px_rgba(0,0,0,0.05)] px-3 py-3">
+            <div className="flex flex-col items-stretch gap-2">
+              {[categoryRow1, categoryRow2].filter((row) => row.length > 0).map((row, rowIdx) => (
+                <div
+                  key={rowIdx}
+                  className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1"
                 >
-                  <span className="text-sm text-[#666] group-hover:text-brand font-medium transition-colors whitespace-nowrap">
-                    {getCategoryName(cat as Category, locale)}
-                  </span>
-                </Link>
+                  {row.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      href={topCategories.length > 0 ? `/products/${cat.slug}` : '/products'}
+                      className="group rounded-full px-4 py-2 transition-colors hover:bg-brand-light"
+                    >
+                      <span className="text-sm text-foreground group-hover:text-brand font-medium transition-colors whitespace-nowrap">
+                        {getCategoryName(cat as Category, locale)}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
@@ -214,94 +260,6 @@ export default function HomeContent({ categories, recentProducts, notices, catSl
         t={t}
       />
 
-      {/* Company Stats */}
-      <section className="bg-brand-light/50 border-y border-brand/10">
-        <div className="mx-auto max-w-[1280px] px-6 py-20">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
-                <Factory size={24} className="text-brand" />
-              </div>
-              <p className="text-4xl font-light text-foreground tracking-tight">25<span className="text-xl">+</span></p>
-              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.yearsLabel}</p>
-              <p className="mt-0.5 text-sm text-secondary">{t.stats.years}</p>
-            </div>
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
-                <ShieldCheck size={24} className="text-brand" />
-              </div>
-              <p className="text-4xl font-light text-foreground tracking-tight">100<span className="text-xl">%</span></p>
-              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.koreaLabel}</p>
-              <p className="mt-0.5 text-sm text-secondary">{t.stats.korea}</p>
-            </div>
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
-                <Award size={24} className="text-brand" />
-              </div>
-              <p className="text-4xl font-light text-foreground tracking-tight">R&D</p>
-              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.rdLabel}</p>
-              <p className="mt-0.5 text-sm text-secondary">{t.stats.rd}</p>
-            </div>
-            <div className="text-center">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm border border-brand/20">
-                <Handshake size={24} className="text-brand" />
-              </div>
-              <p className="text-4xl font-light text-foreground tracking-tight">TRUST</p>
-              <p className="mt-1.5 text-xs tracking-wider text-brand uppercase font-medium">{t.stats.b2bLabel}</p>
-              <p className="mt-0.5 text-sm text-secondary">{t.stats.b2b}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Notices */}
-      <section className="bg-surface border-t border-border">
-        <div className="mx-auto max-w-[1280px] px-6 py-16">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <p className="text-sm tracking-[0.2em] uppercase text-brand mb-2">{t.home.noticeLabel}</p>
-              <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t.home.notice}</h2>
-            </div>
-            <Link href="/support" className="text-sm text-brand hover:text-brand-dark transition-colors flex items-center gap-1 tracking-wider uppercase">
-              {t.home.viewAll} <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          {notices.length > 0 ? (
-            <div className="divide-y divide-border border-t border-b border-border">
-              {notices.map((notice) => (
-                <Link
-                  key={notice.id}
-                  href={`/support/${notice.id}`}
-                  className="flex items-center gap-4 py-4 px-1 hover:bg-hover transition-colors"
-                >
-                  {notice.is_pinned && (
-                    <span className="shrink-0 text-xs font-semibold text-brand border border-brand px-2 py-0.5 uppercase tracking-wide">
-                      {t.home.pinned}
-                    </span>
-                  )}
-                  <span className="flex-1 text-base text-foreground truncate">{notice.title}</span>
-                  <span className="shrink-0 text-sm text-muted">{formatDate(notice.created_at)}</span>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="divide-y divide-border border-t border-b border-border">
-              {[t.common.siteOpenNotice, t.common.catalogUpdate, t.common.holidayNotice].map((title, i) => (
-                <div key={i} className="flex items-center gap-4 py-4 px-1">
-                  {i === 0 && (
-                    <span className="shrink-0 text-xs font-semibold text-brand border border-brand px-2 py-0.5 uppercase tracking-wide">
-                      {t.home.pinned}
-                    </span>
-                  )}
-                  <span className="flex-1 text-base text-foreground truncate">{title}</span>
-                  <span className="shrink-0 text-sm text-muted">2026.02.25</span>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
     </>
   );
 }

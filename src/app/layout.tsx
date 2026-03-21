@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { I18nProvider } from '@/lib/i18n/context';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -20,11 +19,7 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
       </head>
-      <body className="antialiased">
-        <I18nProvider>
-          {children}
-        </I18nProvider>
-      </body>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }

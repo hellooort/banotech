@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase/server';
 import CategorySidebar from '@/components/products/CategorySidebar';
-import CategoryTopBar from '@/components/products/CategoryTopBar';
 import ProductsHeader from '@/components/products/ProductsHeader';
 import type { Category } from '@/types/database';
 
@@ -27,8 +26,7 @@ export default async function ProductsLayout({
   return (
     <>
       <ProductsHeader />
-      <CategoryTopBar categories={categories} />
-      <div className="mx-auto flex max-w-[1280px] gap-8 px-6 py-10">
+      <div className="mx-auto flex max-w-[1280px] gap-6 px-6 py-10">
         <CategorySidebar categories={categories} />
         <div className="min-w-0 flex-1">{children}</div>
       </div>

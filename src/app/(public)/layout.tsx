@@ -1,18 +1,5 @@
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import PublicLayoutShell from '@/components/layout/PublicLayoutShell';
 
-export default function PublicLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <Header />
-      <main className="min-h-[calc(100vh-64px)]">
-        {children}
-      </main>
-      <Footer />
-    </>
-  );
+export default function PublicLayout({ children }: { children: React.ReactNode }) {
+  return <PublicLayoutShell>{children}</PublicLayoutShell>;
 }

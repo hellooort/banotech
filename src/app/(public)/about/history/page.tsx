@@ -15,79 +15,84 @@ interface HistoryYear {
 
 const HISTORY_DATA: HistoryYear[] = [
   {
+    year: '2026',
+    events: [
+      { month: '06', ko: '롯데호텔[명동] 납품', en: 'Supplied to Lotte Hotel [Myeongdong]' },
+    ],
+  },
+  {
+    year: '2025',
+    events: [
+      { month: '11', ko: '서울 파르나스_WESTIN SEOUL HOTEL 납품', en: 'Supplied to Parnas_WESTIN SEOUL HOTEL' },
+    ],
+  },
+  {
     year: '2021',
     events: [
-      { month: '03', ko: '롯데호텔 월드 납품', en: 'Supplied to Lotte Hotel World' },
+      { month: '03', ko: '롯데호텔[잠실] 납품', en: 'Supplied to Lotte Hotel [Jamsil]' },
     ],
   },
   {
     year: '2020',
     events: [
-      { month: '11', ko: '그랜드 인터컨티넨탈 서울 파르나스 납품', en: 'Supplied to Grand InterContinental Seoul Parnas' },
-    ],
-  },
-  {
-    year: '2019',
-    events: [
-      { month: '03', ko: '그랜드 하얏트 서울 납품', en: 'Supplied to Grand Hyatt Seoul' },
+      { month: '11', ko: '그랜드 인터컨티넨탈_서울 파르나스호텔 납품', en: 'Supplied to Grand InterContinental_Seoul Parnas Hotel' },
     ],
   },
   {
     year: '2015',
     events: [
-      { month: '01', ko: 'Shilla Hotel, Shilla Stay 비지니스호텔 납품', en: 'Supplied to Shilla Hotel & Shilla Stay Business Hotel' },
+      { month: '01', ko: 'Shilla Stay Hotel 국내 15개현장 납품', en: 'Supplied to 15 Shilla Stay Hotel locations in Korea' },
     ],
   },
   {
     year: '2014',
     events: [
-      { month: '07', ko: '한화건설(해외 신도시 PROJECT), 이라크(Iraq) 100,000세대 PROJECT 수주', en: 'Hanwha E&C overseas new city project, Iraq 100,000-unit project contract' },
-      { month: '11', ko: '베트남(Hanoi) 수출', en: 'Export to Vietnam (Hanoi)' },
+      { month: '11', ko: 'Vietnam Hanoi 수출', en: 'Export to Vietnam Hanoi' },
+      { month: '07', ko: '한화건설 [Iraq 비즈마야 신도시 100,000세대 PROJECT 수주]', en: 'Hanwha E&C [Iraq Bismayah New City 100,000-unit PROJECT contract]' },
     ],
   },
   {
     year: '2013',
     events: [
-      { month: '10', ko: '사옥 신축 및 이전 (남양주 진접)', en: 'New headquarters construction & relocation (Jinjeop, Namyangju)' },
+      { month: '10', ko: '공장사옥 신축 및 이전 [남양주 진접]', en: 'New factory & headquarters construction and relocation [Jinjeop, Namyangju]' },
     ],
   },
   {
     year: '2010',
     events: [
-      { month: '01', ko: 'KS 인증획득 (수건걸이, 휴지걸이)', en: 'KS certification acquired (Towel rack, Paper holder)' },
-      { month: '06', ko: '요르단 2차 수출', en: '2nd export to Jordan' },
+      { month: '01', ko: 'KS인증획득 [수건걸이, 휴지걸이]', en: 'KS certification acquired [Towel rack, Paper holder]' },
     ],
   },
   {
     year: '2009',
     events: [
-      { month: '10', ko: '중동지역(요르단) 수출', en: 'Export to Middle East (Jordan)' },
+      { month: '10', ko: '중동지역(Jordan) 수출', en: 'Export to Middle East (Jordan)' },
     ],
   },
   {
     year: '2008',
     events: [
-      { month: '08', ko: '남양주로 공장 확장 이전', en: 'Factory expansion & relocation to Namyangju' },
       { month: '09', ko: 'ISO 9001 : 2008 인증획득', en: 'ISO 9001:2008 certification acquired' },
+      { month: '08', ko: '경기 남양주로 공장확장 이전 [남양주 진건]', en: 'Factory expansion & relocation to Namyangju [Jingeon]' },
     ],
   },
   {
     year: '2003',
     events: [
-      { month: '05', ko: '(주)바노테크 법인전환', en: 'Incorporated as Vano Tech Co., Ltd.' },
-      { month: '05', ko: '욕실 액세서리 공장등록', en: 'Bathroom accessories factory registration' },
+      { month: '10', ko: '욕실액세사리 공장등록', en: 'Bathroom accessories factory registration' },
+      { month: '05', ko: '[주]바노테크 법인전환', en: 'Incorporated as Vano Tech Co., Ltd.' },
     ],
   },
   {
     year: '2000',
     events: [
-      { month: '09', ko: "서울 군자동 'vano' 회사 설립", en: "Founded 'vano' in Gunja-dong, Seoul" },
+      { month: '09', ko: "바노 회사설립 및 'vano' 브랜드 런칭 [서울 군자동]", en: "Founded BANO & launched 'vano' brand [Gunja-dong, Seoul]" },
     ],
   },
   {
     year: '1999',
     events: [
-      { month: '05', ko: '욕실 액세서리 디자인 개발', en: 'Bathroom accessories design & development' },
+      { month: '05', ko: '욕실액세사리 디자인 개발 착수', en: 'Initiated bathroom accessories design & development' },
     ],
   },
 ];
@@ -96,8 +101,8 @@ export default function HistoryPage() {
   const { locale, t } = useI18n();
 
   const slogan = locale === 'ko'
-    ? "끊임없이 변화하는 기업, 창의적인 기업, 소통하는 기업\n'㈜바노테크'가 미래를 만들어 나아가겠습니다."
-    : "A company that constantly evolves, innovates, and communicates.\nVano Tech Co., Ltd. will shape the future.";
+    ? "독창이고 창의적인 디자인으로\n[주]바노테크는 HIGHEND제품을 만듭니다."
+    : "With original and creative design,\nVano Tech creates HIGHEND products.";
 
   return (
     <div className="max-w-3xl">

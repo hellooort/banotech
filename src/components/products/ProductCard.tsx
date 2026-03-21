@@ -19,15 +19,15 @@ export default function ProductCard({ product, categorySlug, slugMap }: ProductC
   return (
     <Link
       href={`/products/${categorySlug || slugMap?.[product.category_id] || 'all'}/${product.id}`}
-      className="group block border border-border bg-surface transition-all hover:shadow-sm hover:border-brand/40"
+      className="group block overflow-hidden rounded-2xl border border-border/80 bg-surface transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_10px_24px_rgba(0,0,0,0.07)]"
     >
-      <div className="relative aspect-square overflow-hidden bg-background">
+      <div className="relative aspect-square overflow-hidden bg-[#faf9f7]">
         {product.thumbnail_url ? (
           <Image
             src={product.thumbnail_url}
             alt={displayName}
             fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (
@@ -37,7 +37,7 @@ export default function ProductCard({ product, categorySlug, slugMap }: ProductC
         )}
       </div>
       <div className="p-4 text-center">
-        <h3 className="text-base font-medium text-foreground truncate group-hover:text-brand transition-colors">
+        <h3 className="truncate text-base font-semibold text-foreground transition-colors group-hover:text-brand">
           {displayName}
         </h3>
         {product.model_name && (
