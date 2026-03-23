@@ -33,14 +33,15 @@ const Page = ({ src, pageNum }: PageProps) => (
 const INITIAL_BATCH = 4;
 const RENDER_SCALE = 1.5;
 
-async function renderPage(pdf: { getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number; height: number }; render: (opts: { canvasContext: CanvasRenderingContext2D; canvas: HTMLCanvasElement; viewport: { width: number; height: number } }) => { promise: Promise<void> } }> }, pageNum: number): Promise<string> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function renderPage(pdf: any, pageNum: number): Promise<string> {
   const page = await pdf.getPage(pageNum);
   const viewport = page.getViewport({ scale: RENDER_SCALE });
   const canvas = document.createElement('canvas');
   canvas.width = viewport.width;
   canvas.height = viewport.height;
   const ctx = canvas.getContext('2d')!;
-  await page.render({ canvasContext: ctx, canvas, viewport }).promise;
+  await page.render({ canvasContext: ctx, viewport }).promise;
   const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
   canvas.width = 0;
   canvas.height = 0;
