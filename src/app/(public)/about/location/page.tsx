@@ -61,25 +61,25 @@ export default async function LocationPage() {
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium w-20">주소</td>
                 <td className="py-3 text-foreground">
-                  {locationInfo.address || '주소를 입력하세요'}
+                  {locationInfo.address || '경기도 남양주시 진접읍 금강로 1881-37'}
                 </td>
               </tr>
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium">전화</td>
                 <td className="py-3 text-foreground">
-                  {locationInfo.phone || '02-0000-0000'}
+                  {locationInfo.phone || '031-529-1224'}
                 </td>
               </tr>
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium">팩스</td>
                 <td className="py-3 text-foreground">
-                  {locationInfo.fax || '02-0000-0000'}
+                  {locationInfo.fax || '031-529-1224'}
                 </td>
               </tr>
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium">이메일</td>
                 <td className="py-3 text-foreground">
-                  {locationInfo.email || 'info@vano.co.kr'}
+                  {locationInfo.email || 'vanovano@naver.com'}
                 </td>
               </tr>
             </tbody>

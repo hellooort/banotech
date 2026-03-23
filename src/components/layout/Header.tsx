@@ -4,8 +4,8 @@ import { useMemo, useState, useCallback, useRef, memo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, BookOpen, Building2, History, MapPin, FileText, PenTool, ShieldCheck, FileCheck, FolderOpen, Bell, MessageSquare, Mail, ArrowRight } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Menu, X, ChevronDown, BookOpen, Building2, History, MapPin, FileText, PenTool, ShieldCheck, FileCheck, FolderOpen, Bell, MessageSquare, Mail, ArrowRight, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
 import { createClient } from '@/lib/supabase/client';
@@ -16,6 +16,7 @@ type MegaKey = 'company' | 'products' | 'download' | 'contactUs';
 
 export default memo(function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMega, setOpenMega] = useState<MegaKey | null>(null);
   const [mobileSection, setMobileSection] = useState<MegaKey | null>(null);
@@ -23,6 +24,16 @@ export default memo(function Header() {
   const [catalogPdfUrl, setCatalogPdfUrl] = useState<string | null>(null);
   const [ecatalogueLoading, setEcatalogueLoading] = useState(false);
   const catalogUrlRef = useRef<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  const handleSearch = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    const q = searchQuery.trim();
+    if (!q) return;
+    setSearchQuery('');
+    router.push(`/products?q=${encodeURIComponent(q)}`);
+  }, [searchQuery, router]);
 
   const openEcatalogueFlipbook = useCallback(async () => {
     if (catalogUrlRef.current) {
@@ -79,6 +90,7 @@ export default memo(function Header() {
   }, [locale, t.mega]);
 
   return (
+    <>
     <header
       className={cn(
         'sticky top-0 z-40 bg-white backdrop-blur-md transition-[box-shadow,border-color] duration-150',
@@ -128,7 +140,7 @@ export default memo(function Header() {
         </nav>
 
         {/* 3열: 언어 토글 + 모바일 햄버거 */}
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center justify-end gap-2">
           {/* 데스크톱 언어 토글 */}
           <button
             type="button"
@@ -155,6 +167,38 @@ export default memo(function Header() {
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+      </div>
+
+      {/* Search bar — always visible, aligned under nav (2nd column) */}
+      <div className="hidden lg:block bg-white">
+        <div className="mx-auto grid max-w-[1280px] grid-cols-[auto_1fr_160px] gap-4 px-6">
+          <div />
+          <form onSubmit={handleSearch} className="flex items-center gap-2 border-t border-border/40 py-2">
+            <Search size={16} className="shrink-0 text-muted" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={t.search.placeholder}
+              className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
+            />
+          </form>
+          <div />
+        </div>
+      </div>
+      {/* Mobile search bar */}
+      <div className="lg:hidden bg-white border-t border-border/40">
+        <form onSubmit={handleSearch} className="mx-auto flex max-w-[1280px] items-center gap-2 px-6 py-2">
+          <Search size={16} className="shrink-0 text-muted" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder={t.search.placeholder}
+            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
+          />
+        </form>
       </div>
 
       {/* Desktop Mega Panel */}
@@ -342,9 +386,11 @@ export default memo(function Header() {
         </div>
       )}
 
-      {catalogPdfUrl && (
-        <PdfFlipbook url={catalogPdfUrl} onClose={() => setCatalogPdfUrl(null)} />
-      )}
     </header>
+
+    {catalogPdfUrl && (
+      <PdfFlipbook url={catalogPdfUrl} onClose={() => setCatalogPdfUrl(null)} />
+    )}
+    </>
   );
 });

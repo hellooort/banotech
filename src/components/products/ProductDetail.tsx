@@ -4,7 +4,7 @@ import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { ArrowLeft, Download, FileText, FileImage, FileCode, BookOpen } from 'lucide-react';
+import { ArrowLeft, Download, FileText, FileImage, FileCode } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/context';
 import { getProductName, getProductDescription } from '@/lib/i18n/helpers';
 import type { Product, ProductImage as ProductImageType, Document as DocType } from '@/types/database';
@@ -18,6 +18,15 @@ interface ProductDetailProps {
   categorySlug: string;
 }
 
+const SPEC_FIELDS = [
+  { key: 'model_number', label: '품  번', label_en: 'Model No.' },
+  { key: 'product_name', label: '품  명', label_en: 'Product' },
+  { key: 'finish_color', label: '마감색상', label_en: 'Finish' },
+  { key: 'size', label: '사 이 즈', label_en: 'Size' },
+  { key: 'brand', label: '브 랜 드', label_en: 'Brand' },
+  { key: 'manufacturer', label: '제 조 사', label_en: 'Manufacturer' },
+] as const;
+
 export default function ProductDetail({ product, images, documents, categorySlug }: ProductDetailProps) {
   const { locale, t } = useI18n();
   const [pdfViewerUrl, setPdfViewerUrl] = useState<string | null>(null);
@@ -26,24 +35,43 @@ export default function ProductDetail({ product, images, documents, categorySlug
   const displayDesc = getProductDescription(product, locale);
   const specs = product.specs ?? {};
 
+  const getSpecValue = (key: string) => {
+    if (locale === 'en' && specs[`${key}_en`]) return specs[`${key}_en`];
+    return specs[key] || '';
+  };
+
+  const hasModelFallback = !specs['model_number'] && product.model_name;
+  const hasNameFallback = !specs['product_name'] && product.name;
+
+  const getDisplaySpec = (key: string) => {
+    const val = getSpecValue(key);
+    if (val) return val;
+    if (key === 'model_number' && hasModelFallback) return product.model_name!;
+    if (key === 'product_name' && hasNameFallback) {
+      return locale === 'en' && product.name_en ? product.name_en : product.name;
+    }
+    return '';
+  };
+
+  const hasAnySpec = SPEC_FIELDS.some(f => getDisplaySpec(f.key));
+
   const drawings = [
-    { label: 'PDF', icon: FileText, url: product.drawing_pdf_url, color: 'text-red-500' },
-    { label: 'DWG', icon: FileCode, url: product.drawing_dwg_url, color: 'text-blue-500' },
-    { label: 'IMG', icon: FileImage, url: product.drawing_img_url, color: 'text-green-600' },
-  ].filter((d) => d.url);
+    { label: 'IMG', displayLabel: locale === 'en' ? 'Image' : '이미지', icon: FileImage, url: product.drawing_img_url },
+    { label: 'PDF', displayLabel: 'PDF', icon: FileText, url: product.drawing_pdf_url },
+    { label: 'DWG', displayLabel: 'DWG', icon: FileCode, url: product.drawing_dwg_url },
+  ];
 
   return (
     <div>
-      <Link
-        href={`/products/${categorySlug}`}
-        className="mb-6 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors"
-      >
-        <ArrowLeft size={16} /> {t.products.backToList}
-      </Link>
-
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1px_1fr] lg:gap-0">
         {/* Images */}
-        <div>
+        <div className="lg:pr-10 pt-6">
+          <Link
+            href={`/products/${categorySlug}`}
+            className="mb-6 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors"
+          >
+            <ArrowLeft size={16} /> {t.products.backToList}
+          </Link>
           <div className="relative aspect-square overflow-hidden border border-border bg-background">
             {product.thumbnail_url ? (
               <Image
@@ -71,87 +99,62 @@ export default function ProductDetail({ product, images, documents, categorySlug
           )}
         </div>
 
+        {/* Vertical divider */}
+        <div className="hidden lg:block bg-border" />
+
         {/* Info */}
-        <div>
-          <h1 className="text-xl font-semibold text-foreground">{displayName}</h1>
-          {product.model_name && (
-            <p className="mt-1 text-sm text-muted">{product.model_name}</p>
-          )}
+        <div className="lg:pl-10 pt-6 lg:pt-[4.25rem] flex flex-col">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground tracking-tight">
+              {product.model_name || displayName}
+            </h1>
 
-          {displayDesc && (
-            <p className="mt-4 text-sm leading-relaxed text-secondary">
-              {displayDesc}
-            </p>
-          )}
-
-          {/* Specs */}
-          {Object.keys(specs).length > 0 && (
-            <div className="mt-8">
-              <h2 className="text-sm font-medium text-foreground mb-3">{t.products.productInfo}</h2>
-              <table className="w-full text-sm">
+            {/* Spec Table */}
+            {hasAnySpec && (
+              <table className="mt-8 text-sm">
                 <tbody>
-                  {Object.entries(specs).map(([key, value]) => (
-                    <tr key={key} className="border-b border-border">
-                      <td className="py-2.5 pr-4 text-muted w-32">{key}</td>
-                      <td className="py-2.5 text-foreground">{value}</td>
-                    </tr>
-                  ))}
+                  {SPEC_FIELDS.map((field) => {
+                    const val = getDisplaySpec(field.key);
+                    if (!val) return null;
+                    return (
+                      <tr key={field.key}>
+                        <td className="whitespace-nowrap py-1.5 pr-4 text-[13px] font-semibold text-foreground/70" style={{ letterSpacing: '0.25em' }}>
+                          {locale === 'en' ? field.label_en : field.label}
+                        </td>
+                        <td className="py-1.5 text-[14px] font-medium text-foreground">{val}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Drawing Downloads */}
-          {drawings.length > 0 && (
-            <div className="mt-8">
-              <h2 className="text-sm font-medium text-foreground mb-3">{t.products.drawingDownload}</h2>
-              <div className="grid grid-cols-3 gap-3">
-                {drawings.map((d) => {
-                  const Icon = d.icon;
-                  const isPdf = d.label === 'PDF';
-                  return (
-                    <div key={d.label} className="flex flex-col border border-border bg-background transition-all hover:border-brand/40 hover:shadow-sm">
-                      {isPdf ? (
-                        <button
-                          onClick={() => setPdfViewerUrl(d.url!)}
-                          className="group flex flex-col items-center gap-2 px-4 pt-5 pb-3 cursor-pointer"
-                        >
-                          <Icon size={24} className={d.color} />
-                          <span className="text-xs font-semibold text-foreground tracking-wide">{d.label}</span>
-                          <span className="text-[10px] text-brand group-hover:text-brand-dark transition-colors flex items-center gap-1">
-                            <BookOpen size={10} /> {locale === 'ko' ? '뷰어로 보기' : 'View'}
-                          </span>
-                        </button>
-                      ) : (
-                        <a
-                          href={d.url!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="group flex flex-col items-center gap-2 px-4 pt-5 pb-3"
-                        >
-                          <Icon size={24} className={d.color} />
-                          <span className="text-xs font-semibold text-foreground tracking-wide">{d.label}</span>
-                          <span className="text-[10px] text-muted group-hover:text-foreground transition-colors flex items-center gap-1">
-                            <Download size={10} /> {t.products.download}
-                          </span>
-                        </a>
-                      )}
-                      {isPdf && (
-                        <a
-                          href={d.url!}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="border-t border-border text-[10px] text-muted hover:text-foreground py-1.5 text-center transition-colors flex items-center justify-center gap-1"
-                        >
-                          <Download size={9} /> {t.products.download}
-                        </a>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <div className="mt-auto flex gap-0">
+            {drawings.map((d) => {
+              return d.url ? (
+                <a
+                  key={d.label}
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex flex-1 flex-col items-center justify-center border border-r-0 last:border-r border-border px-4 py-4 transition-all hover:bg-brand"
+                >
+                  <span className="text-[15px] font-bold text-foreground group-hover:text-white">{d.displayLabel}</span>
+                  <span className="mt-1 text-[11px] text-muted group-hover:text-white/80">[DOWNLOAD]</span>
+                </a>
+              ) : (
+                <div
+                  key={d.label}
+                  className="flex flex-1 flex-col items-center justify-center border border-r-0 last:border-r border-foreground/20 px-4 py-4 opacity-30"
+                >
+                  <span className="text-[15px] font-bold text-foreground">{d.displayLabel}</span>
+                  <span className="mt-1 text-[11px] text-foreground/70">[DOWNLOAD]</span>
+                </div>
+              );
+            })}
+          </div>
 
           {/* PDF Flipbook Viewer Modal */}
           {pdfViewerUrl && (
@@ -163,6 +166,7 @@ export default function ProductDetail({ product, images, documents, categorySlug
           {/* Other Documents */}
           {documents.length > 0 && (
             <div className="mt-8">
+              <div className="h-px bg-border mb-4" />
               <h2 className="text-sm font-medium text-foreground mb-3">{t.products.relatedDocs}</h2>
               <div className="space-y-2">
                 {documents.map((doc) => (

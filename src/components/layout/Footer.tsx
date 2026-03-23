@@ -55,8 +55,12 @@ export default memo(function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6">
-          <p className="text-sm text-white/45">
+        <div className="mt-10 border-t border-white/10 pt-6 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div className="space-y-1 text-xs text-white/40 leading-relaxed">
+            <p>(주)바노테크 | 사업자등록번호 206-81-81110 | 경기도 남양주시 진접읍 금강로 1881-37</p>
+            <p>TEL 031-529-1224 | E-mail vanovano@naver.com</p>
+          </div>
+          <p className="text-sm text-white/45 shrink-0">
             &copy; {new Date().getFullYear()} {t.footer.copyright}
           </p>
         </div>

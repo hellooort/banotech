@@ -59,7 +59,7 @@ export default async function CategoryPage({ params }: Props) {
   }
 
   return (
-    <div>
+    <div className="pt-6">
       <h2 className="mb-6 text-base font-medium text-foreground">{category?.name}</h2>
       <ProductGrid products={products} categorySlug={categorySlug} />
     </div>

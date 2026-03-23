@@ -73,7 +73,7 @@ export default function AdminProductsPage() {
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="제품명, 모델명, 카테고리로 검색..."
+          placeholder="검색할 품번이나 품명을 입력하세요"
           className="h-10 w-full border border-border bg-surface pl-10 pr-4 text-sm text-foreground placeholder:text-muted focus:border-brand focus:outline-none"
         />
       </div>

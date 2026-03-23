@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import { Plus, Trash2, FileText, Download } from 'lucide-react';
+import { Plus, Trash2, FileText, Download, BookOpen, RefreshCw } from 'lucide-react';
 import FileUpload from '@/components/admin/FileUpload';
 import type { Document as DocType } from '@/types/database';
 import { formatDate } from '@/lib/utils';
@@ -63,11 +63,107 @@ export default function AdminDocumentsPage() {
     fetchDocuments();
   };
 
+  const currentEcatalog = useMemo(
+    () => documents.find(d => d.type === 'catalog'),
+    [documents],
+  );
+
+  const [replacingEcatalog, setReplacingEcatalog] = useState(false);
+  const [ecatalogForm, setEcatalogForm] = useState({ title: '', file_url: '' });
+  const [ecatalogSaving, setEcatalogSaving] = useState(false);
+
+  const handleReplaceEcatalog = async () => {
+    if (!ecatalogForm.title.trim() || !ecatalogForm.file_url) return;
+    setEcatalogSaving(true);
+    const supabase = createClient();
+    await supabase.from('documents').insert({
+      title: ecatalogForm.title,
+      type: 'catalog',
+      file_url: ecatalogForm.file_url,
+      product_id: null,
+    });
+    setEcatalogForm({ title: '', file_url: '' });
+    setReplacingEcatalog(false);
+    setEcatalogSaving(false);
+    await revalidateDocuments();
+    fetchDocuments();
+  };
+
   return (
     <div>
       <div>
         <h1 className="text-xl font-semibold text-foreground">자료 관리</h1>
         <p className="mt-1 text-sm text-muted">카탈로그, 도면 및 설명서, 인증서, 승인서류, 기타 자료를 관리합니다</p>
+      </div>
+
+      {/* E-카탈로그 현황 */}
+      <div className="mt-6 border border-blue-200 bg-blue-50/50 px-5 py-4">
+        <div className="flex items-center gap-2 mb-2">
+          <BookOpen size={16} className="text-blue-600" />
+          <h2 className="text-sm font-semibold text-blue-900">E-카탈로그 (홈페이지 플립북)</h2>
+        </div>
+        {currentEcatalog ? (
+          <div className="flex items-center gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-foreground truncate">{currentEcatalog.title}</p>
+              <p className="text-xs text-muted mt-0.5">
+                등록일: {formatDate(currentEcatalog.created_at)} · 카탈로그 컬럼의 가장 최신 파일이 E-카탈로그로 사용됩니다
+              </p>
+            </div>
+            <a
+              href={currentEcatalog.file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="shrink-0 text-xs text-blue-600 hover:text-blue-800 underline"
+            >
+              미리보기
+            </a>
+            <button
+              onClick={() => setReplacingEcatalog(!replacingEcatalog)}
+              className="shrink-0 flex items-center gap-1.5 text-xs font-medium text-blue-700 hover:text-blue-900 border border-blue-300 px-3 py-1.5 hover:bg-blue-100 transition-colors"
+            >
+              <RefreshCw size={13} /> 교체
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-4">
+            <p className="flex-1 text-sm text-muted">등록된 카탈로그 PDF가 없습니다. 아래 카탈로그 컬럼에서 등록하면 E-카탈로그로 사용됩니다.</p>
+          </div>
+        )}
+
+        {replacingEcatalog && (
+          <div className="mt-3 border-t border-blue-200 pt-3 space-y-3">
+            <input
+              value={ecatalogForm.title}
+              onChange={(e) => setEcatalogForm({ ...ecatalogForm, title: e.target.value })}
+              placeholder="카탈로그 제목 (예: 2026년 상반기 카탈로그)"
+              className="h-9 w-full border border-blue-300 bg-white px-3 text-sm text-foreground focus:border-blue-500 focus:outline-none"
+              autoFocus
+            />
+            <FileUpload
+              bucket="documents"
+              folder="catalog"
+              accept=".pdf"
+              onUploaded={(url) => setEcatalogForm({ ...ecatalogForm, file_url: url })}
+              currentUrl={ecatalogForm.file_url || undefined}
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={handleReplaceEcatalog}
+                disabled={ecatalogSaving || !ecatalogForm.title.trim() || !ecatalogForm.file_url}
+                className="h-8 bg-blue-600 text-white text-xs font-medium px-4 hover:bg-blue-700 disabled:bg-muted disabled:cursor-not-allowed transition-colors"
+              >
+                {ecatalogSaving ? '등록 중...' : '새 카탈로그 등록'}
+              </button>
+              <button
+                onClick={() => { setReplacingEcatalog(false); setEcatalogForm({ title: '', file_url: '' }); }}
+                className="h-8 px-3 border border-blue-300 text-xs text-muted hover:text-foreground transition-colors"
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-5">

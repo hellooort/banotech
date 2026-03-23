@@ -84,6 +84,11 @@ const translations = {
       productsResources: '제품·자료',
       copyright: 'VANO. All rights reserved.',
     },
+    search: {
+      placeholder: '검색할 품번이나 품명을 입력하세요',
+      noResults: '검색 결과가 없습니다.',
+      resultCount: '검색 결과',
+    },
     common: {
       noImage: '이미지 없음',
       siteOpenNotice: '사이트 오픈 안내',
@@ -173,6 +178,11 @@ const translations = {
       companyDesc: 'Professional bathroom\naccessories manufacturer',
       productsResources: 'Products & Resources',
       copyright: 'VANO. All rights reserved.',
+    },
+    search: {
+      placeholder: 'Search by model number or product name',
+      noResults: 'No results found.',
+      resultCount: 'Search results',
     },
     common: {
       noImage: 'No Image',

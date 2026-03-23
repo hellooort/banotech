@@ -45,7 +45,7 @@ function ProductCarousel({
     if (!el || products.length === 0) return;
 
     let raf: number;
-    let speed = 0.5;
+    let speed = 0.3;
 
     function step() {
       if (!isPaused && el) {
@@ -215,16 +215,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
                 className="object-contain brightness-0 invert md:w-[340px]"
                 priority
               />
-              <p className="mt-8 max-w-lg whitespace-pre-line text-xl leading-relaxed text-white/90 font-medium">
-                {t.hero.description}
-              </p>
-              <Link
-                href="/products"
-                className="mt-12 inline-flex items-center gap-3 rounded-full bg-white px-10 py-4 text-base tracking-wider text-[#f59e02] uppercase font-bold transition-all hover:-translate-y-0.5 hover:bg-white/90 shadow-lg"
-              >
-                {t.hero.cta}
-                <ArrowRight size={18} />
-              </Link>
+              
             </div>
           </div>
         </div>

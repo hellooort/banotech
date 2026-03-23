@@ -22,17 +22,38 @@ const Page = ({ src, pageNum }: PageProps) => (
       // eslint-disable-next-line @next/next/no-img-element
       <img src={src} alt={`Page ${pageNum}`} className="w-full h-full object-contain" />
     ) : (
-      <div className="text-muted text-sm">Loading...</div>
+      <div className="flex flex-col items-center gap-2 text-muted text-sm">
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-muted border-t-brand" />
+        <span>Page {pageNum}</span>
+      </div>
     )}
   </div>
 );
+
+const INITIAL_BATCH = 4;
+const RENDER_SCALE = 1.5;
+
+async function renderPage(pdf: { getPage: (n: number) => Promise<{ getViewport: (opts: { scale: number }) => { width: number; height: number }; render: (opts: { canvasContext: CanvasRenderingContext2D; canvas: HTMLCanvasElement; viewport: { width: number; height: number } }) => { promise: Promise<void> } }> }, pageNum: number): Promise<string> {
+  const page = await pdf.getPage(pageNum);
+  const viewport = page.getViewport({ scale: RENDER_SCALE });
+  const canvas = document.createElement('canvas');
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  const ctx = canvas.getContext('2d')!;
+  await page.render({ canvasContext: ctx, canvas, viewport }).promise;
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+  canvas.width = 0;
+  canvas.height = 0;
+  return dataUrl;
+}
 
 export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
   const [pages, setPages] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [scale, setScale] = useState(1);
+  const [ready, setReady] = useState(false);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const [scale, setScale] = useState(2);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const flipBookRef = useRef<{ pageFlip: () => { flipNext: () => void; flipPrev: () => void; turnToPage: (n: number) => void } }>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,34 +62,44 @@ export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
     let cancelled = false;
 
     async function loadPdf() {
-      try {
-        const pdfjsLib = await import('pdfjs-dist');
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
-        const pdf = await pdfjsLib.getDocument(url).promise;
-        setTotalPages(pdf.numPages);
-        const pageImages: string[] = [];
+      const pdfjsLib = await import('pdfjs-dist');
+      pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const viewport = page.getViewport({ scale: 2 });
-          const canvas = document.createElement('canvas');
-          canvas.width = viewport.width;
-          canvas.height = viewport.height;
-          const ctx = canvas.getContext('2d')!;
-          await page.render({ canvasContext: ctx, canvas, viewport }).promise;
-          pageImages.push(canvas.toDataURL('image/jpeg', 0.92));
-          if (cancelled) return;
-        }
+      const pdf = await pdfjsLib.getDocument(url).promise;
+      if (cancelled) return;
 
-        setPages(pageImages);
-        setLoading(false);
-      } catch (err) {
-        console.error('PDF load error:', err);
-        setLoading(false);
+      const numPages = pdf.numPages;
+      setTotalPages(numPages);
+
+      const blanks = new Array<string>(numPages).fill('');
+      setPages(blanks);
+
+      const initialCount = Math.min(INITIAL_BATCH, numPages);
+      const rendered = [...blanks];
+
+      for (let i = 1; i <= initialCount; i++) {
+        if (cancelled) return;
+        rendered[i - 1] = await renderPage(pdf, i);
+        setLoadedCount(i);
+      }
+
+      if (cancelled) return;
+      setPages([...rendered]);
+      setReady(true);
+
+      for (let i = initialCount + 1; i <= numPages; i++) {
+        if (cancelled) return;
+        rendered[i - 1] = await renderPage(pdf, i);
+        setPages([...rendered]);
+        setLoadedCount(i);
       }
     }
 
-    loadPdf();
+    loadPdf().catch((err) => {
+      console.error('PDF load error:', err);
+      setReady(true);
+    });
+
     return () => { cancelled = true; };
   }, [url]);
 
@@ -117,6 +148,8 @@ export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
   const bookHeight = Math.min(availH, 850);
   const bookWidth = Math.min(bookHeight / 1.414, availW / 2);
 
+  const progressPct = totalPages > 0 ? Math.round((loadedCount / totalPages) * 100) : 0;
+
   return (
     <div
       ref={containerRef}
@@ -125,15 +158,24 @@ export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
     >
       {/* Top bar */}
       <div className="flex shrink-0 items-center justify-between px-6 py-3">
-        <div className="text-white/70 text-sm font-medium">
-          {loading ? 'PDF 로딩중...' : `${currentPage + 1} / ${totalPages}`}
+        <div className="text-white/70 text-sm font-medium flex items-center gap-3">
+          {!ready ? (
+            <>PDF 로딩중... {progressPct}%</>
+          ) : (
+            <>
+              {currentPage + 1} / {totalPages}
+              {loadedCount < totalPages && (
+                <span className="text-white/40 text-xs">({loadedCount}/{totalPages} 로드됨)</span>
+              )}
+            </>
+          )}
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={() => setScale(s => Math.max(0.5, s - 0.1))} className="p-2 text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/10" title="축소">
+          <button onClick={() => setScale(s => Math.max(0.7, s - 0.1))} className="p-2 text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/10" title="축소">
             <ZoomOut size={18} />
           </button>
           <span className="text-white/50 text-xs min-w-[3rem] text-center">{Math.round(scale * 100)}%</span>
-          <button onClick={() => setScale(s => Math.min(1.5, s + 0.1))} className="p-2 text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/10" title="확대">
+          <button onClick={() => setScale(s => Math.min(4.0, s + 0.1))} className="p-2 text-white/60 hover:text-white transition-colors rounded-lg hover:bg-white/10" title="확대">
             <ZoomIn size={18} />
           </button>
           <div className="mx-1 h-4 w-px bg-white/20" />
@@ -150,9 +192,16 @@ export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
         </div>
       </div>
 
+      {/* Progress bar (while background loading) */}
+      {ready && loadedCount < totalPages && (
+        <div className="h-0.5 bg-white/10 mx-6">
+          <div className="h-full bg-brand transition-all duration-300" style={{ width: `${progressPct}%` }} />
+        </div>
+      )}
+
       {/* Flipbook area */}
       <div className="flex flex-1 items-center justify-center overflow-hidden">
-        {!loading && pages.length > 0 && (
+        {ready && pages.length > 0 && (
           <div className="flex items-center gap-2" style={{ transform: `scale(${scale})`, transformOrigin: 'center center', transition: 'transform 0.2s' }}>
             <button
               onClick={goPrev}
@@ -206,16 +255,21 @@ export default function PdfFlipbook({ url, onClose }: PdfFlipbookProps) {
           </div>
         )}
 
-        {loading && (
+        {!ready && (
           <div className="flex flex-col items-center gap-4">
             <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-brand" />
-            <p className="text-white/60 text-sm">PDF 페이지를 준비하고 있습니다...</p>
+            <p className="text-white/60 text-sm">
+              {totalPages > 0
+                ? `페이지 준비 중... ${loadedCount} / ${totalPages}`
+                : 'PDF를 불러오는 중...'
+              }
+            </p>
           </div>
         )}
       </div>
 
       {/* Bottom page indicator */}
-      {!loading && totalPages > 0 && (
+      {ready && totalPages > 0 && (
         <div className="flex shrink-0 items-center justify-center gap-4 py-3">
           <input
             type="range"

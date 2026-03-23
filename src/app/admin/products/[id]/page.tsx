@@ -32,6 +32,14 @@ export default function EditProductPage({ params }: Props) {
     drawing_dwg_url: '',
     drawing_img_url: '',
   });
+  const [specs, setSpecs] = useState({
+    model_number: '', model_number_en: '',
+    product_name: '', product_name_en: '',
+    finish_color: '', finish_color_en: '',
+    size: '', size_en: '',
+    brand: '', brand_en: '',
+    manufacturer: '', manufacturer_en: '',
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -55,6 +63,21 @@ export default function EditProductPage({ params }: Props) {
           drawing_dwg_url: p.drawing_dwg_url ?? '',
           drawing_img_url: p.drawing_img_url ?? '',
         });
+        const s = p.specs ?? {};
+        setSpecs({
+          model_number: s.model_number ?? '',
+          model_number_en: s.model_number_en ?? '',
+          product_name: s.product_name ?? '',
+          product_name_en: s.product_name_en ?? '',
+          finish_color: s.finish_color ?? '',
+          finish_color_en: s.finish_color_en ?? '',
+          size: s.size ?? '',
+          size_en: s.size_en ?? '',
+          brand: s.brand ?? '',
+          brand_en: s.brand_en ?? '',
+          manufacturer: s.manufacturer ?? '',
+          manufacturer_en: s.manufacturer_en ?? '',
+        });
       }
     }
     fetchData();
@@ -66,6 +89,9 @@ export default function EditProductPage({ params }: Props) {
     setLoading(true);
 
     const supabase = createClient();
+    const cleanSpecs: Record<string, string> = {};
+    Object.entries(specs).forEach(([k, v]) => { if (v.trim()) cleanSpecs[k] = v.trim(); });
+
     const { error } = await supabase.from('products').update({
       name: form.name,
       name_en: form.name_en || null,
@@ -77,6 +103,7 @@ export default function EditProductPage({ params }: Props) {
       drawing_pdf_url: form.drawing_pdf_url || null,
       drawing_dwg_url: form.drawing_dwg_url || null,
       drawing_img_url: form.drawing_img_url || null,
+      specs: cleanSpecs,
     }).eq('id', id);
 
     if (!error) {
@@ -111,6 +138,38 @@ export default function EditProductPage({ params }: Props) {
 
         <Textarea id="description_en" label="설명 (영문)" placeholder="Product description in English" value={form.description_en}
           onChange={(e) => setForm({ ...form, description_en: e.target.value })} />
+
+        {/* 제품 스펙 */}
+        <div className="border-t border-border pt-5">
+          <h3 className="text-sm font-semibold text-foreground mb-4">제품 상세 정보</h3>
+          <div className="space-y-3">
+            {([
+              { key: 'model_number', label: '품번' },
+              { key: 'product_name', label: '품명' },
+              { key: 'finish_color', label: '마감색상' },
+              { key: 'size', label: '사이즈' },
+              { key: 'brand', label: '브랜드' },
+              { key: 'manufacturer', label: '제조사' },
+            ] as const).map(({ key, label }) => (
+              <div key={key} className="grid grid-cols-2 gap-3">
+                <Input
+                  id={key}
+                  label={`${label} (한글)`}
+                  placeholder={label}
+                  value={specs[key]}
+                  onChange={(e) => setSpecs({ ...specs, [key]: e.target.value })}
+                />
+                <Input
+                  id={`${key}_en`}
+                  label={`${label} (영문)`}
+                  placeholder={`${label} in English`}
+                  value={specs[`${key}_en` as keyof typeof specs]}
+                  onChange={(e) => setSpecs({ ...specs, [`${key}_en`]: e.target.value })}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div>
           <label className="mb-1.5 block text-sm font-medium text-foreground">대표 이미지</label>
