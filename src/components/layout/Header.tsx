@@ -169,28 +169,27 @@ export default memo(function Header() {
         </div>
       </div>
 
-      {/* Search bar — always visible, aligned under nav (2nd column) */}
+      {/* Search bar — right-aligned under nav */}
       <div className="hidden lg:block bg-white">
-        <div className="mx-auto grid max-w-[1280px] grid-cols-[auto_1fr_160px] gap-4 px-6">
-          <div />
-          <form onSubmit={handleSearch} className="flex items-center gap-2 border-t border-border/40 py-2">
-            <Search size={16} className="shrink-0 text-muted" />
+        <div className="mx-auto flex max-w-[1280px] justify-end px-6 pb-2">
+          <form onSubmit={handleSearch} className="flex w-[280px] items-center gap-2 border border-border rounded px-3 py-1.5">
             <input
               ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t.search.placeholder}
-              className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
+              className="flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted"
             />
+            <button type="submit" className="shrink-0 text-muted hover:text-foreground transition-colors">
+              <Search size={16} />
+            </button>
           </form>
-          <div />
         </div>
       </div>
       {/* Mobile search bar */}
       <div className="lg:hidden bg-white border-t border-border/40">
         <form onSubmit={handleSearch} className="mx-auto flex max-w-[1280px] items-center gap-2 px-6 py-2">
-          <Search size={16} className="shrink-0 text-muted" />
           <input
             type="text"
             value={searchQuery}
@@ -198,6 +197,9 @@ export default memo(function Header() {
             placeholder={t.search.placeholder}
             className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
           />
+          <button type="submit" className="shrink-0 text-muted hover:text-foreground transition-colors">
+            <Search size={16} />
+          </button>
         </form>
       </div>
 

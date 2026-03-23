@@ -114,10 +114,10 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
                   key={child.id}
                   href={childHref}
                   className={cn(
-                    'block rounded-md px-2 py-1.5 text-[13px] transition-colors',
+                    'block rounded-md px-2 py-1.5 text-[13px] font-bold transition-colors',
                     childActive
-                      ? 'bg-brand text-white font-semibold shadow-sm'
-                      : 'text-secondary hover:text-foreground hover:bg-hover'
+                      ? 'bg-brand text-white shadow-sm'
+                      : 'text-foreground hover:text-brand hover:bg-hover'
                   )}
                 >
                   {getCategoryName(child, locale)}

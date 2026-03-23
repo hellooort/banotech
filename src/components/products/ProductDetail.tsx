@@ -19,12 +19,12 @@ interface ProductDetailProps {
 }
 
 const SPEC_FIELDS = [
-  { key: 'model_number', label: '품  번', label_en: 'Model No.' },
-  { key: 'product_name', label: '품  명', label_en: 'Product' },
+  { key: 'model_number', label: '품 번', label_en: 'Model No.' },
+  { key: 'product_name', label: '품 명', label_en: 'Product' },
   { key: 'finish_color', label: '마감색상', label_en: 'Finish' },
-  { key: 'size', label: '사 이 즈', label_en: 'Size' },
-  { key: 'brand', label: '브 랜 드', label_en: 'Brand' },
-  { key: 'manufacturer', label: '제 조 사', label_en: 'Manufacturer' },
+  { key: 'size', label: '사이즈', label_en: 'Size' },
+  { key: 'brand', label: '브랜드', label_en: 'Brand' },
+  { key: 'manufacturer', label: '제조사', label_en: 'Manufacturer' },
 ] as const;
 
 export default function ProductDetail({ product, images, documents, categorySlug }: ProductDetailProps) {
@@ -118,8 +118,12 @@ export default function ProductDetail({ product, images, documents, categorySlug
                     if (!val) return null;
                     return (
                       <tr key={field.key}>
-                        <td className="whitespace-nowrap py-1.5 pr-4 text-[13px] font-semibold text-foreground/70" style={{ letterSpacing: '0.25em' }}>
-                          {locale === 'en' ? field.label_en : field.label}
+                        <td className="whitespace-nowrap py-1.5 pr-6 text-[13px] font-semibold text-foreground/70">
+                          {locale === 'en' ? field.label_en : (
+                            <span className="inline-flex w-[4em] justify-between">
+                              {field.label.split('').map((ch, i) => <span key={i}>{ch}</span>)}
+                            </span>
+                          )}
                         </td>
                         <td className="py-1.5 text-[14px] font-medium text-foreground">{val}</td>
                       </tr>
@@ -131,29 +135,19 @@ export default function ProductDetail({ product, images, documents, categorySlug
           </div>
 
           {/* Drawing Downloads */}
-          <div className="mt-auto flex gap-0">
-            {drawings.map((d) => {
-              return d.url ? (
-                <a
-                  key={d.label}
-                  href={d.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-1 flex-col items-center justify-center border border-r-0 last:border-r border-border px-4 py-4 transition-all hover:bg-brand"
-                >
-                  <span className="text-[15px] font-bold text-foreground group-hover:text-white">{d.displayLabel}</span>
-                  <span className="mt-1 text-[11px] text-muted group-hover:text-white/80">[DOWNLOAD]</span>
-                </a>
-              ) : (
-                <div
-                  key={d.label}
-                  className="flex flex-1 flex-col items-center justify-center border border-r-0 last:border-r border-foreground/20 px-4 py-4 opacity-30"
-                >
-                  <span className="text-[15px] font-bold text-foreground">{d.displayLabel}</span>
-                  <span className="mt-1 text-[11px] text-foreground/70">[DOWNLOAD]</span>
-                </div>
-              );
-            })}
+          <div className="mt-auto grid grid-cols-3 gap-0">
+            {drawings.map((d) => (
+              <a
+                key={d.label}
+                href={d.url || '#'}
+                download
+                onClick={d.url ? undefined : (e) => e.preventDefault()}
+                className="group flex flex-col items-center justify-center border border-r-0 last:border-r border-black px-4 py-4 transition-all hover:bg-brand hover:border-brand"
+              >
+                <span className="text-[15px] font-bold text-black group-hover:text-white">{d.displayLabel}</span>
+                <span className="mt-1 text-[11px] text-black/60 group-hover:text-white/80">[DOWNLOAD]</span>
+              </a>
+            ))}
           </div>
 
           {/* PDF Flipbook Viewer Modal */}
