@@ -33,7 +33,7 @@ export default function NewProductPage() {
     finish_color: '', finish_color_en: '',
     size: '', size_en: '',
     brand: 'vano', brand_en: 'vano',
-    manufacturer: '(주)바노테크', manufacturer_en: 'VANO Tech Co., Ltd',
+    manufacturer: '(주)바노테크', manufacturer_en: 'VANOTECH CO., LTD.',
   });
 
   useEffect(() => {
