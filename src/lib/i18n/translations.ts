@@ -18,6 +18,7 @@ const translations = {
     navSub: {
       greeting: '인사말',
       history: '연혁',
+      productionLine: '국내생산라인',
       certificates: '인증서',
       location: '오시는 길',
       notices: '공지사항',
@@ -80,7 +81,7 @@ const translations = {
       newProducts: '신제품',
     },
     footer: {
-      companyDesc: '욕실 액세서리 전문제조업체',
+      companyDesc: 'value & noble\nbathroom accessories',
       productsResources: '제품·자료',
       copyright: 'VANO. All rights reserved.',
     },
@@ -113,6 +114,7 @@ const translations = {
     navSub: {
       greeting: 'Greeting',
       history: 'History',
+      productionLine: 'Production Line',
       certificates: 'Certificates',
       location: 'Location',
       notices: 'Notices',
@@ -175,7 +177,7 @@ const translations = {
       newProducts: 'New Products',
     },
     footer: {
-      companyDesc: 'Professional bathroom\naccessories manufacturer',
+      companyDesc: 'value & noble\nbathroom accessories',
       productsResources: 'Products & Resources',
       copyright: 'VANO. All rights reserved.',
     },

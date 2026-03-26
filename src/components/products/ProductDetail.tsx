@@ -68,7 +68,7 @@ export default function ProductDetail({ product, images, documents, categorySlug
         <div className="lg:pr-10 pt-6">
           <Link
             href={`/products/${categorySlug}`}
-            className="mb-6 inline-flex items-center gap-1 text-sm text-muted hover:text-foreground transition-colors"
+            className="mb-6 inline-flex items-center gap-1 text-[15px] text-muted hover:text-foreground transition-colors"
           >
             <ArrowLeft size={16} /> {t.products.backToList}
           </Link>
@@ -111,21 +111,21 @@ export default function ProductDetail({ product, images, documents, categorySlug
 
             {/* Spec Table */}
             {hasAnySpec && (
-              <table className="mt-8 text-sm">
+              <table className="mt-8 text-base">
                 <tbody>
                   {SPEC_FIELDS.map((field) => {
                     const val = getDisplaySpec(field.key);
                     if (!val) return null;
                     return (
                       <tr key={field.key}>
-                        <td className="whitespace-nowrap py-1.5 pr-6 text-[13px] font-semibold text-foreground/70">
+                        <td className="whitespace-nowrap py-2 pr-6 text-[15px] font-semibold text-foreground/70">
                           {locale === 'en' ? field.label_en : (
                             <span className="inline-flex w-[4em] justify-between">
                               {field.label.split('').map((ch, i) => <span key={i}>{ch}</span>)}
                             </span>
                           )}
                         </td>
-                        <td className="py-1.5 text-[14px] font-medium text-foreground">{val}</td>
+                        <td className="py-2 text-[16px] font-medium text-foreground">{val}</td>
                       </tr>
                     );
                   })}
@@ -136,18 +136,21 @@ export default function ProductDetail({ product, images, documents, categorySlug
 
           {/* Drawing Downloads */}
           <div className="mt-auto grid grid-cols-3 gap-0">
-            {drawings.map((d) => (
-              <a
-                key={d.label}
-                href={d.url || '#'}
-                download
-                onClick={d.url ? undefined : (e) => e.preventDefault()}
-                className="group flex flex-col items-center justify-center border border-r-0 last:border-r border-black px-4 py-4 transition-all hover:bg-brand hover:border-brand"
-              >
-                <span className="text-[15px] font-bold text-black group-hover:text-white">{d.displayLabel}</span>
-                <span className="mt-1 text-[11px] text-black/60 group-hover:text-white/80">[DOWNLOAD]</span>
-              </a>
-            ))}
+            {drawings.map((d) => {
+              const downloadUrl = d.url ? (d.url.includes('supabase') ? `${d.url}?download=` : d.url) : '#';
+              return (
+                <a
+                  key={d.label}
+                  href={downloadUrl}
+                  {...(d.url && !d.url.includes('supabase') ? { download: true } : {})}
+                  onClick={d.url ? undefined : (e) => e.preventDefault()}
+                  className="group flex flex-col items-center justify-center border border-r-0 last:border-r border-black px-4 py-4 transition-all hover:bg-brand hover:border-brand"
+                >
+                  <span className="text-[17px] font-bold text-black group-hover:text-white">{d.displayLabel}</span>
+                  <span className="mt-1 text-[13px] text-black/60 group-hover:text-white/80">[DOWNLOAD]</span>
+                </a>
+              );
+            })}
           </div>
 
           {/* PDF Flipbook Viewer Modal */}
@@ -161,7 +164,7 @@ export default function ProductDetail({ product, images, documents, categorySlug
           {documents.length > 0 && (
             <div className="mt-8">
               <div className="h-px bg-border mb-4" />
-              <h2 className="text-sm font-medium text-foreground mb-3">{t.products.relatedDocs}</h2>
+              <h2 className="text-base font-medium text-foreground mb-3">{t.products.relatedDocs}</h2>
               <div className="space-y-2">
                 {documents.map((doc) => (
                   <a
@@ -169,7 +172,7 @@ export default function ProductDetail({ product, images, documents, categorySlug
                     href={doc.file_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 border border-border px-4 py-2.5 text-sm text-secondary hover:text-foreground hover:border-brand transition-colors"
+                    className="flex items-center gap-2 border border-border px-4 py-3 text-[15px] text-secondary hover:text-foreground hover:border-brand transition-colors"
                   >
                     <Download size={16} className="text-muted" />
                     {doc.title}

@@ -109,7 +109,7 @@ export default function HistoryPage() {
       <h2 className="text-2xl font-bold text-foreground">
         {locale === 'ko' ? '회사 연혁' : 'Company History'}
       </h2>
-      <p className="mt-4 text-sm leading-relaxed text-secondary whitespace-pre-line">{slogan}</p>
+      <p className="mt-4 text-base leading-relaxed text-secondary whitespace-pre-line">{slogan}</p>
 
       <div className="mt-10 relative">
         {/* Timeline line */}
@@ -119,7 +119,7 @@ export default function HistoryPage() {
           <div key={item.year} className="relative flex mb-8 last:mb-0">
             {/* Year */}
             <div className="w-[60px] flex-shrink-0 pt-0.5">
-              <span className="text-lg font-bold text-brand">{item.year}</span>
+              <span className="text-xl font-bold text-brand">{item.year}</span>
             </div>
 
             {/* Dot */}
@@ -128,7 +128,7 @@ export default function HistoryPage() {
             {/* Events */}
             <div className="pl-8 pt-0.5 space-y-1.5">
               {item.events.map((event, i) => (
-                <p key={i} className="text-sm text-secondary">
+                <p key={i} className="text-[15px] text-secondary">
                   <span className="text-muted mr-1.5">{event.month}.</span>
                   {locale === 'ko' ? event.ko : event.en}
                 </p>

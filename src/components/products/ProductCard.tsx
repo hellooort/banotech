@@ -38,11 +38,11 @@ export default memo(function ProductCard({ product, categorySlug, slugMap }: Pro
         )}
       </div>
       <div className="p-4 text-center">
-        <h3 className="truncate text-base font-semibold text-foreground transition-colors group-hover:text-brand">
+        <h3 className="truncate text-lg font-semibold text-foreground transition-colors group-hover:text-brand">
           {displayName}
         </h3>
         {product.model_name && (
-          <p className="mt-1 text-sm text-muted truncate">{product.model_name}</p>
+          <p className="mt-1 text-[15px] text-muted truncate">{product.model_name}</p>
         )}
       </div>
     </Link>

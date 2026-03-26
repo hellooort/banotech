@@ -77,7 +77,6 @@ function ProductCarousel({
       <div className="mx-auto max-w-[1280px] px-6 py-16">
         <div className="mb-10 flex items-center justify-between">
           <div>
-            <p className="text-sm tracking-[0.2em] uppercase text-muted mb-2">{t.home.newArrivalsLabel}</p>
             <h2 className="text-2xl font-semibold tracking-tight text-foreground">{t.home.newArrivals}</h2>
           </div>
           <div className="flex items-center gap-3">
@@ -179,7 +178,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
       <section className="relative">
         <div className="relative min-h-[560px] overflow-hidden md:min-h-[600px]">
           {/* Left half — brand color */}
-          <div className="absolute inset-0 bg-[#f59e02]" />
+          <div className="absolute inset-0 bg-[#25282d]" />
           {/* Right half — white for product image */}
           <div className="absolute right-0 top-0 bottom-0 hidden w-1/2 bg-white md:block" />
 
@@ -212,7 +211,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
                 alt="VANO"
                 width={300}
                 height={90}
-                className="object-contain brightness-0 invert md:w-[340px]"
+                className="object-contain md:w-[340px]"
                 priority
               />
               
@@ -235,7 +234,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
                       href={topCategories.length > 0 ? `/products/${cat.slug}` : '/products'}
                       className="group rounded-full px-4 py-2 transition-colors hover:bg-brand-light"
                     >
-                      <span className="text-sm text-foreground group-hover:text-brand font-medium transition-colors whitespace-nowrap">
+                      <span className="text-[15px] text-foreground group-hover:text-brand font-medium transition-colors whitespace-nowrap">
                         {getCategoryName(cat as Category, locale)}
                       </span>
                     </Link>

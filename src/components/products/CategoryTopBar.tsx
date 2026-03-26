@@ -34,7 +34,7 @@ export default function CategoryTopBar({ categories }: CategoryTopBarProps) {
                 key={cat.id}
                 href={href}
                 className={cn(
-                  'shrink-0 px-5 py-3 text-sm transition-all border-b-2',
+                  'shrink-0 px-5 py-3 text-[15px] transition-all border-b-2',
                   active
                     ? 'border-brand text-brand font-medium'
                     : 'border-transparent text-secondary hover:text-brand hover:border-brand/30'

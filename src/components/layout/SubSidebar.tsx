@@ -34,6 +34,7 @@ function useMenuConfig(variant: Variant) {
           items: [
             { label: t.navSub.greeting, href: '/about' },
             { label: t.navSub.history, href: '/about/history' },
+            { label: t.navSub.productionLine, href: '/about/production-line' },
             { label: t.navSub.location, href: '/about/location' },
           ],
         };
@@ -53,7 +54,6 @@ function useMenuConfig(variant: Variant) {
           title: t.nav.contactUs,
           items: [
             { label: t.mega.notices, href: '/support' },
-            { label: t.mega.inquiry, href: '/support/inquiry' },
           ],
         };
     }
@@ -68,7 +68,7 @@ export default function SubSidebar({ variant }: SubSidebarProps) {
 
   return (
     <aside className="w-52 shrink-0 hidden lg:block">
-      <h3 className="text-base font-semibold text-foreground tracking-tight mb-3">{title}</h3>
+      <h3 className="text-lg font-semibold text-foreground tracking-tight mb-3">{title}</h3>
       <nav className="space-y-0.5">
         {items.map((item) => {
           let isActive = false;
@@ -93,7 +93,7 @@ export default function SubSidebar({ variant }: SubSidebarProps) {
               href={item.href}
               scroll={false}
               className={cn(
-                'block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors border-l-2',
+                'block rounded-lg px-3 py-2.5 text-[15px] font-medium transition-colors border-l-2',
                 isActive
                   ? 'border-l-4 border-l-white bg-brand text-white shadow-sm'
                   : 'border-transparent text-secondary hover:text-foreground hover:bg-hover'

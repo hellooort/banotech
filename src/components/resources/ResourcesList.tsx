@@ -42,8 +42,8 @@ export default async function ResourcesList({ tab }: { tab: TabKey }) {
         >
           <FileText size={20} className="text-muted shrink-0" />
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-medium text-foreground truncate">{doc.title}</h3>
-            <p className="text-xs text-muted mt-0.5">{formatDate(doc.created_at)}</p>
+            <h3 className="text-[15px] font-medium text-foreground truncate">{doc.title}</h3>
+            <p className="text-sm text-muted mt-0.5">{formatDate(doc.created_at)}</p>
           </div>
           <Download size={18} className="text-muted shrink-0" />
         </a>

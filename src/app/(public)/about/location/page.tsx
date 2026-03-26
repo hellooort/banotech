@@ -32,7 +32,7 @@ export default async function LocationPage() {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold text-foreground mb-8">오시는 길</h2>
+      <h2 className="text-xl font-semibold text-foreground mb-8">오시는 길</h2>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Map */}
@@ -56,7 +56,7 @@ export default async function LocationPage() {
 
         {/* Contact Info */}
         <div>
-          <table className="w-full text-sm">
+          <table className="w-full text-base">
             <tbody>
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium w-20">주소</td>

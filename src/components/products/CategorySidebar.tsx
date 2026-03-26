@@ -60,7 +60,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
     >
       {/* 1차 카테고리 */}
       <div className="w-[160px] shrink-0 border-r border-border pr-2">
-        <h3 className="px-2 pb-2 text-sm font-semibold text-foreground tracking-tight">
+        <h3 className="px-2 pb-2 text-[15px] font-semibold text-foreground tracking-tight">
           {t.products.category}
         </h3>
         <nav>
@@ -71,18 +71,10 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
             const isSelected = selectedId === cat.id;
 
             return (
-              <button
-                type="button"
+              <div
                 key={cat.id}
-                onClick={() => {
-                  if (children.length === 0) {
-                    setOpenParent(null);
-                    return;
-                  }
-                  setOpenParent((prev) => (prev === cat.id ? null : cat.id));
-                }}
                 className={cn(
-                  'flex w-full items-center justify-between rounded-md px-2 py-1.5 text-[13px] font-medium transition-colors text-left',
+                  'flex w-full items-center rounded-md text-[15px] font-medium transition-colors',
                   isActive
                     ? 'bg-brand text-white shadow-sm'
                     : isSelected && children.length > 0
@@ -90,13 +82,19 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
                       : 'text-secondary hover:text-foreground hover:bg-hover'
                 )}
               >
-                <Link href={href} className="flex-1 truncate" onClick={(e) => e.stopPropagation()}>
+                <Link href={href} className="flex-1 truncate px-2 py-1.5">
                   {getCategoryName(cat, locale)}
                 </Link>
                 {children.length > 0 ? (
-                  <ChevronRight size={12} className={cn('shrink-0 opacity-40 transition-transform', isSelected && 'rotate-90')} />
+                  <button
+                    type="button"
+                    onClick={() => setOpenParent((prev) => (prev === cat.id ? null : cat.id))}
+                    className="flex h-full items-center px-2 py-1.5 shrink-0"
+                  >
+                    <ChevronRight size={14} className={cn('opacity-50 transition-transform', isSelected && 'rotate-90')} />
+                  </button>
                 ) : null}
-              </button>
+              </div>
             );
           })}
         </nav>
@@ -114,7 +112,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
                   key={child.id}
                   href={childHref}
                   className={cn(
-                    'block rounded-md px-2 py-1.5 text-[13px] font-bold transition-colors',
+                    'block rounded-md px-2 py-1.5 text-[15px] font-bold transition-colors',
                     childActive
                       ? 'bg-brand text-white shadow-sm'
                       : 'text-foreground hover:text-brand hover:bg-hover'

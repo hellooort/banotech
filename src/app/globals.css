@@ -6,7 +6,7 @@
   --color-surface: #FFFFFF;
   --color-primary: #333333;
   --color-secondary: #666666;
-  --color-muted: #999999;
+  --color-muted: #6b6b6b;
   --color-border: #E5E5E5;
   --color-accent: #1A1A1A;
   --color-brand: #f59e02;
@@ -21,7 +21,8 @@ body {
   background: #ffffff;
   color: var(--color-foreground);
   font-family: var(--font-sans);
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

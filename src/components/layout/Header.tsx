@@ -69,7 +69,6 @@ export default memo(function Header() {
     { key: 'company', label: t.nav.company, href: '/about' },
     { key: 'products', label: t.nav.products, href: '/products' },
     { key: 'download', label: t.nav.download, href: '/resources' },
-    { key: 'contactUs', label: t.nav.contactUs, href: '/support/inquiry' },
   ];
 
   const PRODUCT_GROUPS = useMemo(() => {
@@ -98,9 +97,9 @@ export default memo(function Header() {
       )}
       onMouseLeave={() => setOpenMega(null)}
     >
-      <div className="mx-auto grid h-[72px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-0 px-6 lg:grid-cols-[auto_1fr_160px] lg:gap-4">
+      <div className="mx-auto grid h-[80px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-0 px-6 lg:grid-cols-[auto_1fr_160px] lg:gap-4">
         {/* 1열: 로고 */}
-        <Link href="/" className="relative block h-8 w-24 shrink-0">
+        <Link href="/" className="relative block h-10 w-32 shrink-0">
           <Image
             src="/logo_black.png"
             alt="VANO"
@@ -118,7 +117,7 @@ export default memo(function Header() {
               key={item.key}
               onMouseEnter={() => setOpenMega(item.key)}
               className={cn(
-                'flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-3 py-2.5 text-[13px] tracking-wide transition-colors',
+                'flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-4 py-2.5 text-[16px] tracking-wide transition-colors',
                 pathname.startsWith(item.href)
                   ? 'bg-brand text-white font-semibold shadow-sm [&_svg]:text-white/90'
                   : 'text-secondary hover:bg-hover hover:text-foreground'
@@ -132,7 +131,7 @@ export default memo(function Header() {
             type="button"
             onClick={openEcatalogueFlipbook}
             disabled={ecatalogueLoading}
-            className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md bg-brand px-3 py-2.5 text-[12px] font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark disabled:opacity-60"
+            className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md bg-brand px-4 py-2.5 text-[15px] font-semibold text-white shadow-sm transition-colors hover:bg-brand-dark disabled:opacity-60"
           >
             <BookOpen size={14} className="opacity-95" />
             {ecatalogueLoading ? '…' : t.nav.ecatalogue}
@@ -145,7 +144,7 @@ export default memo(function Header() {
           <button
             type="button"
             onClick={() => setLocale(locale === 'ko' ? 'en' : 'ko')}
-            className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-border bg-background px-2 py-1 text-[11px] font-medium tracking-wide transition-colors lg:inline-flex"
+            className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-border bg-background px-2.5 py-1 text-[13px] font-medium tracking-wide transition-colors lg:inline-flex"
           >
             <span className={cn('rounded-full px-2 py-0.5', locale === 'ko' ? 'bg-brand font-bold text-white' : 'text-muted')}>{t.nav.langKo}</span>
             <span className="text-border">/</span>
@@ -179,7 +178,7 @@ export default memo(function Header() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t.search.placeholder}
-              className="flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted"
+              className="flex-1 bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted"
             />
             <button type="submit" className="shrink-0 text-muted hover:text-foreground transition-colors">
               <Search size={16} />
@@ -213,6 +212,7 @@ export default memo(function Header() {
               {[
                 { icon: Building2, label: t.navSub.greeting, desc: locale === 'ko' ? '바노테크를 소개합니다' : 'About VANO', href: '/about' },
                 { icon: History, label: t.navSub.history, desc: locale === 'ko' ? '1999년부터 이어온 여정' : 'Our journey since 1999', href: '/about/history' },
+                { icon: ShieldCheck, label: t.navSub.productionLine, desc: locale === 'ko' ? '국내 자체 생산시설 안내' : 'Domestic production facilities', href: '/about/production-line' },
                 { icon: MapPin, label: t.navSub.location, desc: locale === 'ko' ? '본사 및 공장 위치 안내' : 'Office & factory location', href: '/about/location' },
               ].map((item) => (
                 <Link
@@ -224,8 +224,8 @@ export default memo(function Header() {
                     <item.icon size={18} />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[13px] font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-0.5 text-[12px] leading-snug text-muted">{item.desc}</p>
+                    <p className="text-[16px] font-semibold text-foreground">{item.label}</p>
+                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{item.desc}</p>
                   </div>
                 </Link>
               ))}
@@ -237,10 +237,10 @@ export default memo(function Header() {
               <div className="grid grid-cols-4 gap-4">
                 {PRODUCT_GROUPS.map((group) => (
                   <div key={group.title}>
-                    <p className="mb-2 border-b border-border pb-2 text-[13px] font-bold text-foreground">{group.title}</p>
+                    <p className="mb-2 border-b border-border pb-2 text-[16px] font-bold text-foreground">{group.title}</p>
                     <div className="space-y-1.5">
                       {group.items.map((item) => (
-                        <Link key={item} href="/products" className="block rounded-md px-2 py-1.5 text-[12.5px] text-secondary transition-colors hover:bg-brand-light hover:text-brand">
+                        <Link key={item} href="/products" className="block rounded-md px-2 py-1.5 text-[15px] text-secondary transition-colors hover:bg-brand-light hover:text-brand">
                           {item}
                         </Link>
                       ))}
@@ -250,10 +250,10 @@ export default memo(function Header() {
               </div>
               <div className="flex w-[200px] flex-col justify-between rounded-xl bg-gradient-to-br from-brand-light to-brand-light/40 p-5">
                 <div>
-                  <p className="text-[13px] font-bold text-foreground">{t.nav.products}</p>
-                  <p className="mt-1.5 text-[12px] leading-snug text-muted">{t.mega.productsDesc}</p>
+                  <p className="text-[16px] font-bold text-foreground">{t.nav.products}</p>
+                  <p className="mt-1.5 text-[14px] leading-snug text-muted">{t.mega.productsDesc}</p>
                 </div>
-                <Link href="/products" className="mt-4 inline-flex items-center gap-1 text-[12px] font-semibold text-brand hover:text-brand-dark">
+                <Link href="/products" className="mt-4 inline-flex items-center gap-1 text-[15px] font-semibold text-brand hover:text-brand-dark">
                   {t.mega.viewAllProducts} <ArrowRight size={13} />
                 </Link>
               </div>
@@ -278,8 +278,8 @@ export default memo(function Header() {
                     <item.icon size={18} />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[13px] font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-0.5 text-[12px] leading-snug text-muted">{item.desc}</p>
+                    <p className="text-[16px] font-semibold text-foreground">{item.label}</p>
+                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{item.desc}</p>
                   </div>
                 </Link>
               ))}
@@ -302,8 +302,8 @@ export default memo(function Header() {
                     <item.icon size={18} />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[13px] font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-0.5 text-[12px] leading-snug text-muted">{item.desc}</p>
+                    <p className="text-[16px] font-semibold text-foreground">{item.label}</p>
+                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{item.desc}</p>
                   </div>
                 </Link>
               ))}
@@ -342,6 +342,7 @@ export default memo(function Header() {
                   <div className="pb-2 pl-4">
                     <Link href="/about" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.navSub.greeting}</Link>
                     <Link href="/about/history" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.navSub.history}</Link>
+                    <Link href="/about/production-line" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.navSub.productionLine}</Link>
                     <Link href="/about/location" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.navSub.location}</Link>
                   </div>
                 )}
