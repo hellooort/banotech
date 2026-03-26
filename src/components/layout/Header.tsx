@@ -69,6 +69,7 @@ export default memo(function Header() {
     { key: 'company', label: t.nav.company, href: '/about' },
     { key: 'products', label: t.nav.products, href: '/products' },
     { key: 'download', label: t.nav.download, href: '/resources' },
+    { key: 'contactUs', label: t.nav.contactUs, href: '/support' },
   ];
 
   const PRODUCT_GROUPS = useMemo(() => {
@@ -290,7 +291,6 @@ export default memo(function Header() {
             <div className="flex gap-4">
               {[
                 { icon: Bell, label: t.mega.notices, desc: locale === 'ko' ? '공지사항 및 소식 확인' : 'Latest notices & news', href: '/support' },
-                { icon: MessageSquare, label: t.mega.inquiry, desc: locale === 'ko' ? '제품·거래 문의 접수' : 'Submit product & business inquiry', href: '/support/inquiry' },
                 { icon: Mail, label: t.mega.emailInquiry, desc: locale === 'ko' ? 'vanovano@naver.com' : 'vanovano@naver.com', href: 'mailto:vanovano@naver.com', external: true },
               ].map((item) => (
                 <Link

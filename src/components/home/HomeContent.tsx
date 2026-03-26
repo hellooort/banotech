@@ -178,7 +178,7 @@ export default function HomeContent({ categories, recentProducts, catSlugMap }: 
       <section className="relative">
         <div className="relative min-h-[560px] overflow-hidden md:min-h-[600px]">
           {/* Left half — brand color */}
-          <div className="absolute inset-0 bg-[#25282d]" />
+          <div className="absolute inset-0 bg-[#274b87]" />
           {/* Right half — white for product image */}
           <div className="absolute right-0 top-0 bottom-0 hidden w-1/2 bg-white md:block" />
 
