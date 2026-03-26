@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { ArrowLeft, Download, FileText, FileImage, FileCode } from 'lucide-react';
+import { ArrowLeft, Download, FileText, FileImage, FileCode, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useI18n } from '@/lib/i18n/context';
 import { getProductName, getProductDescription } from '@/lib/i18n/helpers';
 import type { Product, ProductImage as ProductImageType, Document as DocType } from '@/types/database';
@@ -30,6 +30,28 @@ const SPEC_FIELDS = [
 export default function ProductDetail({ product, images, documents, categorySlug }: ProductDetailProps) {
   const { locale, t } = useI18n();
   const [pdfViewerUrl, setPdfViewerUrl] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const allImages: string[] = [
+    ...(product.thumbnail_url ? [product.thumbnail_url] : []),
+    ...images.map((img) => img.image_url),
+  ];
+
+  const openLightbox = useCallback((idx: number) => setLightboxIndex(idx), []);
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const prevImage = useCallback(() => setLightboxIndex((i) => (i !== null && i > 0 ? i - 1 : allImages.length - 1)), [allImages.length]);
+  const nextImage = useCallback(() => setLightboxIndex((i) => (i !== null && i < allImages.length - 1 ? i + 1 : 0)), [allImages.length]);
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') prevImage();
+      if (e.key === 'ArrowRight') nextImage();
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [lightboxIndex, closeLightbox, prevImage, nextImage]);
 
   const displayName = getProductName(product, locale);
   const displayDesc = getProductDescription(product, locale);
@@ -72,13 +94,18 @@ export default function ProductDetail({ product, images, documents, categorySlug
           >
             <ArrowLeft size={16} /> {t.products.backToList}
           </Link>
-          <div className="relative aspect-square overflow-hidden border border-border bg-background">
+          <button
+            type="button"
+            onClick={() => product.thumbnail_url && openLightbox(0)}
+            className="relative aspect-square w-full overflow-hidden border border-border bg-background cursor-zoom-in"
+          >
             {product.thumbnail_url ? (
               <Image
                 src={product.thumbnail_url}
                 alt={displayName}
                 fill
                 className="object-cover"
+                sizes="400px"
                 priority
               />
             ) : (
@@ -86,14 +113,19 @@ export default function ProductDetail({ product, images, documents, categorySlug
                 No Image
               </div>
             )}
-          </div>
+          </button>
 
           {images.length > 0 && (
             <div className="mt-3 grid grid-cols-5 gap-2">
-              {images.map((img) => (
-                <div key={img.id} className="relative aspect-square overflow-hidden border border-border bg-background">
+              {images.map((img, i) => (
+                <button
+                  type="button"
+                  key={img.id}
+                  onClick={() => openLightbox(product.thumbnail_url ? i + 1 : i)}
+                  className="relative aspect-square overflow-hidden border border-border bg-background cursor-zoom-in"
+                >
                   <Image src={img.image_url} alt="" fill className="object-cover" sizes="80px" />
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -183,6 +215,62 @@ export default function ProductDetail({ product, images, documents, categorySlug
           )}
         </div>
       </div>
+
+      {/* Lightbox */}
+      {lightboxIndex !== null && allImages[lightboxIndex] && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={closeLightbox}
+        >
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+          >
+            <X size={24} />
+          </button>
+
+          {allImages.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                className="absolute left-4 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+              >
+                <ChevronLeft size={28} />
+              </button>
+              <button
+                type="button"
+                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                className="absolute right-4 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+              >
+                <ChevronRight size={28} />
+              </button>
+            </>
+          )}
+
+          <div
+            className="relative max-h-[90vh] max-w-[90vw]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={allImages[lightboxIndex]}
+              alt={displayName}
+              width={1200}
+              height={1200}
+              className="max-h-[90vh] max-w-[90vw] w-auto h-auto object-contain"
+              quality={100}
+              unoptimized
+            />
+          </div>
+
+          {allImages.length > 1 && (
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm">
+              {lightboxIndex + 1} / {allImages.length}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
