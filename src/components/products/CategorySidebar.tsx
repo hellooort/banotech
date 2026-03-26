@@ -55,7 +55,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
     <aside
       className={cn(
         'hidden shrink-0 lg:flex',
-        selectedChildren.length > 0 ? 'w-[340px]' : 'w-[160px]'
+        selectedChildren.length > 0 ? 'w-[400px]' : 'w-[160px]'
       )}
     >
       {/* 1차 카테고리 */}
@@ -102,7 +102,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
 
       {/* 2차 서브카테고리 — 1차에 하위가 있을 때만 영역 표시 */}
       {selectedChildren.length > 0 && (
-        <div className="w-[180px] shrink-0 pl-3">
+        <div className="w-[240px] shrink-0 pl-3">
           <nav className="pt-7">
             {selectedChildren.map((child) => {
               const childHref = `/products/${child.slug}`;

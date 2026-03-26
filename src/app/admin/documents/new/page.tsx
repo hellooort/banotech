@@ -60,7 +60,7 @@ export default function NewDocumentPage() {
           <label className="mb-1.5 block text-sm font-medium text-foreground">유형</label>
           <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
             className="h-10 w-full border border-border bg-surface px-3 text-sm text-foreground focus:border-primary focus:outline-none">
-            <option value="catalog">카탈로그</option>
+            <option value="catalog">카타로그</option>
             <option value="drawing">도면</option>
             <option value="manual">설명서</option>
             <option value="certificate">인증서</option>

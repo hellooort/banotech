@@ -27,6 +27,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.transition-colors {
+  font-weight: 700;
+}
+
 ::selection {
   background-color: #f59e02;
   color: #ffffff;

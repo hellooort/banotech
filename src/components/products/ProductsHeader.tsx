@@ -7,7 +7,7 @@ export default function ProductsHeader() {
 
   return (
     <div className="bg-surface">
-      <div className="mx-auto max-w-[1280px] px-6 pt-12 pb-0">
+      <div className="mx-auto max-w-[1680px] px-6 pt-12 pb-0">
         <p className="text-[15px] tracking-[0.2em] uppercase text-brand mb-2">{t.products.label}</p>
         <h1 className="text-4xl font-semibold tracking-tight text-foreground">{t.products.title}</h1>
       </div>

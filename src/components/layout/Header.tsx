@@ -53,7 +53,7 @@ export default memo(function Header() {
       if (error || !data?.file_url) {
         window.alert(
           locale === 'ko'
-            ? '등록된 카탈로그 PDF가 없습니다. 관리자 > 자료 관리에서 카탈로그를 등록해 주세요.'
+            ? '등록된 카다로그 PDF가 없습니다. 관리자 > 자료 관리에서 카타로그를 등록해 주세요.'
             : 'No catalog PDF found. Please upload one in Admin > Documents.'
         );
         return;
@@ -89,12 +89,16 @@ export default memo(function Header() {
     ];
   }, [locale, t.mega]);
 
+  const isHome = pathname === '/';
+
   return (
     <>
     <header
       className={cn(
-        'sticky top-0 z-40 bg-white backdrop-blur-md transition-[box-shadow,border-color] duration-150',
-        openMega ? 'border-b border-transparent shadow-none' : 'border-b border-border/70 shadow-[0_1px_8px_rgba(0,0,0,0.03)]'
+        'sticky top-0 z-40 backdrop-blur-md transition-[box-shadow,border-color] duration-150',
+        isHome
+          ? cn('bg-white', openMega ? 'border-b border-transparent shadow-none' : 'border-b border-border/70 shadow-[0_1px_8px_rgba(0,0,0,0.03)]')
+          : cn('bg-[#274b87]', openMega ? 'border-b border-transparent shadow-none' : 'border-b border-white/10 shadow-[0_1px_8px_rgba(0,0,0,0.1)]')
       )}
       onMouseLeave={() => setOpenMega(null)}
     >
@@ -102,10 +106,10 @@ export default memo(function Header() {
         {/* 1열: 로고 */}
         <Link href="/" className="relative block h-10 w-32 shrink-0">
           <Image
-            src="/logo_black.png"
+            src={isHome ? '/logo_black.png' : '/logo.png'}
             alt="VANO"
             fill
-            className="object-contain object-left"
+            className={cn('object-contain object-left', !isHome && 'brightness-0 invert')}
             priority
           />
         </Link>
@@ -121,7 +125,9 @@ export default memo(function Header() {
                 'flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-4 py-2.5 text-[16px] tracking-wide transition-colors',
                 pathname.startsWith(item.href)
                   ? 'bg-brand text-white font-semibold shadow-sm [&_svg]:text-white/90'
-                  : 'text-secondary hover:bg-hover hover:text-foreground'
+                  : isHome
+                    ? 'text-secondary hover:bg-hover hover:text-foreground'
+                    : 'text-white/70 hover:bg-white/10 hover:text-white'
               )}
             >
               {item.label}
@@ -145,24 +151,30 @@ export default memo(function Header() {
           <button
             type="button"
             onClick={() => setLocale(locale === 'ko' ? 'en' : 'ko')}
-            className="hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-border bg-background px-2.5 py-1 text-[13px] font-medium tracking-wide transition-colors lg:inline-flex"
+            className={cn(
+              'hidden shrink-0 items-center gap-1 whitespace-nowrap rounded-full border px-2.5 py-1 text-[13px] font-medium tracking-wide transition-colors lg:inline-flex',
+              isHome ? 'border-border bg-background' : 'border-white/20 bg-white/10'
+            )}
           >
-            <span className={cn('rounded-full px-2 py-0.5', locale === 'ko' ? 'bg-brand font-bold text-white' : 'text-muted')}>{t.nav.langKo}</span>
-            <span className="text-border">/</span>
-            <span className={cn('rounded-full px-2 py-0.5', locale === 'en' ? 'bg-brand font-bold text-white' : 'text-muted')}>{t.nav.langEn}</span>
+            <span className={cn('rounded-full px-2 py-0.5', locale === 'ko' ? 'bg-brand font-bold text-white' : isHome ? 'text-muted' : 'text-white')}>{t.nav.langKo}</span>
+            <span className={isHome ? 'text-border' : 'text-white'}>/</span>
+            <span className={cn('rounded-full px-2 py-0.5', locale === 'en' ? 'bg-brand font-bold text-white' : isHome ? 'text-muted' : 'text-white')}>{t.nav.langEn}</span>
           </button>
 
           {/* 모바일 언어 토글 */}
           <button
             type="button"
             onClick={() => setLocale(locale === 'ko' ? 'en' : 'ko')}
-            className="shrink-0 whitespace-nowrap rounded-full border border-border bg-background px-2.5 py-1 text-[10px] font-medium tracking-wide text-muted lg:hidden"
+            className={cn(
+              'shrink-0 whitespace-nowrap rounded-full border px-2.5 py-1 text-[10px] font-medium tracking-wide lg:hidden',
+              isHome ? 'border-border bg-background text-muted' : 'border-white bg-white/10 text-white'
+            )}
           >
             {locale === 'ko' ? t.nav.langEn : t.nav.langKo}
           </button>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden text-foreground"
+            className={cn('lg:hidden', isHome ? 'text-foreground' : 'text-white')}
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -170,34 +182,34 @@ export default memo(function Header() {
       </div>
 
       {/* Search bar — right-aligned under nav */}
-      <div className="hidden lg:block bg-white">
+      <div className={cn('hidden lg:block', isHome ? 'bg-white' : 'bg-[#274b87]')}>
         <div className="mx-auto flex max-w-[1280px] justify-end px-6 pb-2">
-          <form onSubmit={handleSearch} className="flex w-[280px] items-center gap-2 border border-border rounded px-3 py-1.5">
+          <form onSubmit={handleSearch} className={cn('flex w-[280px] items-center gap-2 border rounded px-3 py-1.5', isHome ? 'border-border' : 'border-white')}>
             <input
               ref={searchInputRef}
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={t.search.placeholder}
-              className="flex-1 bg-transparent text-[16px] text-foreground outline-none placeholder:text-muted"
+              className={cn('flex-1 bg-transparent text-[16px] outline-none', isHome ? 'text-foreground placeholder:text-muted' : 'text-white placeholder:text-white/70')}
             />
-            <button type="submit" className="shrink-0 text-muted hover:text-foreground transition-colors">
+            <button type="submit" className={cn('shrink-0 transition-colors', isHome ? 'text-muted hover:text-foreground' : 'text-white hover:text-white')}>
               <Search size={16} />
             </button>
           </form>
         </div>
       </div>
       {/* Mobile search bar */}
-      <div className="lg:hidden bg-white border-t border-border/40">
+      <div className={cn('lg:hidden border-t', isHome ? 'bg-white border-border/40' : 'bg-[#274b87] border-white/10')}>
         <form onSubmit={handleSearch} className="mx-auto flex max-w-[1280px] items-center gap-2 px-6 py-2">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={t.search.placeholder}
-            className="flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-muted"
+            className={cn('flex-1 bg-transparent text-sm outline-none', isHome ? 'text-foreground placeholder:text-muted' : 'text-white placeholder:text-white/70')}
           />
-          <button type="submit" className="shrink-0 text-muted hover:text-foreground transition-colors">
+          <button type="submit" className={cn('shrink-0 transition-colors', isHome ? 'text-muted hover:text-foreground' : 'text-white hover:text-white')}>
             <Search size={16} />
           </button>
         </form>
@@ -205,7 +217,12 @@ export default memo(function Header() {
 
       {/* Desktop Mega Panel */}
       {openMega && (
-        <div className="absolute left-0 right-0 top-full z-50 hidden border-b border-border/70 bg-white shadow-[0_12px_24px_-6px_rgba(0,0,0,0.08)] lg:block">
+        <div className={cn(
+          'absolute left-0 right-0 top-full z-50 hidden border-b lg:block',
+          isHome
+            ? 'border-border/70 bg-white shadow-[0_12px_24px_-6px_rgba(0,0,0,0.08)]'
+            : 'border-white/10 bg-[#274b87] shadow-[0_12px_24px_-6px_rgba(0,0,0,0.2)]'
+        )}>
           <div className="mx-auto max-w-[1280px] px-6 py-5">
 
           {openMega === 'company' && (
@@ -219,14 +236,20 @@ export default memo(function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all hover:border-brand/30 hover:bg-brand-light/60"
+                  className={cn(
+                    'group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all',
+                    isHome ? 'hover:border-brand/30 hover:bg-brand-light/60' : 'hover:border-white/20 hover:bg-white/10'
+                  )}
                 >
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                  <span className={cn(
+                    'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:bg-brand group-hover:text-white',
+                    isHome ? 'bg-brand-light text-brand' : 'bg-white/15 text-white'
+                  )}>
                     <item.icon size={18} />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[16px] font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{item.desc}</p>
+                    <p className={cn('text-[16px] font-semibold', isHome ? 'text-foreground' : 'text-white')}>{item.label}</p>
+                    <p className={cn('mt-0.5 text-[14px] leading-snug', isHome ? 'text-muted' : 'text-white/60')}>{item.desc}</p>
                   </div>
                 </Link>
               ))}
@@ -238,10 +261,13 @@ export default memo(function Header() {
               <div className="grid grid-cols-4 gap-4">
                 {PRODUCT_GROUPS.map((group) => (
                   <div key={group.title}>
-                    <p className="mb-2 border-b border-border pb-2 text-[16px] font-bold text-foreground">{group.title}</p>
+                    <p className={cn('mb-2 border-b pb-2 text-[16px] font-bold', isHome ? 'border-border text-foreground' : 'border-white/20 text-white')}>{group.title}</p>
                     <div className="space-y-1.5">
                       {group.items.map((item) => (
-                        <Link key={item} href="/products" className="block rounded-md px-2 py-1.5 text-[15px] text-secondary transition-colors hover:bg-brand-light hover:text-brand">
+                        <Link key={item} href="/products" className={cn(
+                          'block rounded-md px-2 py-1.5 text-[15px] transition-colors',
+                          isHome ? 'text-secondary hover:bg-brand-light hover:text-brand' : 'text-white/70 hover:bg-white/10 hover:text-white'
+                        )}>
                           {item}
                         </Link>
                       ))}
@@ -249,10 +275,10 @@ export default memo(function Header() {
                   </div>
                 ))}
               </div>
-              <div className="flex w-[200px] flex-col justify-between rounded-xl bg-gradient-to-br from-brand-light to-brand-light/40 p-5">
+              <div className={cn('flex w-[200px] flex-col justify-between rounded-xl p-5', isHome ? 'bg-gradient-to-br from-brand-light to-brand-light/40' : 'bg-white/10')}>
                 <div>
-                  <p className="text-[16px] font-bold text-foreground">{t.nav.products}</p>
-                  <p className="mt-1.5 text-[14px] leading-snug text-muted">{t.mega.productsDesc}</p>
+                  <p className={cn('text-[16px] font-bold', isHome ? 'text-foreground' : 'text-white')}>{t.nav.products}</p>
+                  <p className={cn('mt-1.5 text-[14px] leading-snug', isHome ? 'text-muted' : 'text-white/60')}>{t.mega.productsDesc}</p>
                 </div>
                 <Link href="/products" className="mt-4 inline-flex items-center gap-1 text-[15px] font-semibold text-brand hover:text-brand-dark">
                   {t.mega.viewAllProducts} <ArrowRight size={13} />
@@ -264,7 +290,7 @@ export default memo(function Header() {
           {openMega === 'download' && (
             <div className="flex gap-4">
               {[
-                { icon: BookOpen, label: t.mega.catalog, desc: locale === 'ko' ? '제품 전체 카탈로그 PDF' : 'Full product catalog PDF', href: '/resources?tab=catalog' },
+                { icon: BookOpen, label: t.mega.catalog, desc: locale === 'ko' ? '제품 전체 카타로그 PDF' : 'Full product catalog PDF', href: '/resources?tab=catalog' },
                 { icon: PenTool, label: t.mega.drawingManual, desc: locale === 'ko' ? 'CAD 도면 및 설치 설명서' : 'CAD drawings & manuals', href: '/resources?tab=drawing' },
                 { icon: ShieldCheck, label: t.mega.certificates, desc: locale === 'ko' ? 'KS 인증서, 시험성적서' : 'KS certificates & test reports', href: '/resources?tab=certificate' },
                 { icon: FileCheck, label: t.mega.approvalDocs, desc: locale === 'ko' ? '관급공사 승인서류' : 'Government project approvals', href: '/resources?tab=approval' },
@@ -273,14 +299,20 @@ export default memo(function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all hover:border-brand/30 hover:bg-brand-light/60"
+                  className={cn(
+                    'group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all',
+                    isHome ? 'hover:border-brand/30 hover:bg-brand-light/60' : 'hover:border-white/20 hover:bg-white/10'
+                  )}
                 >
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                  <span className={cn(
+                    'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:bg-brand group-hover:text-white',
+                    isHome ? 'bg-brand-light text-brand' : 'bg-white/15 text-white'
+                  )}>
                     <item.icon size={18} />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[16px] font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{item.desc}</p>
+                    <p className={cn('text-[16px] font-semibold', isHome ? 'text-foreground' : 'text-white')}>{item.label}</p>
+                    <p className={cn('mt-0.5 text-[14px] leading-snug', isHome ? 'text-muted' : 'text-white/60')}>{item.desc}</p>
                   </div>
                 </Link>
               ))}
@@ -296,14 +328,20 @@ export default memo(function Header() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all hover:border-brand/30 hover:bg-brand-light/60"
+                  className={cn(
+                    'group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all',
+                    isHome ? 'hover:border-brand/30 hover:bg-brand-light/60' : 'hover:border-white/20 hover:bg-white/10'
+                  )}
                 >
-                  <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand-light text-brand transition-colors group-hover:bg-brand group-hover:text-white">
+                  <span className={cn(
+                    'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:bg-brand group-hover:text-white',
+                    isHome ? 'bg-brand-light text-brand' : 'bg-white/15 text-white'
+                  )}>
                     <item.icon size={18} />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[16px] font-semibold text-foreground">{item.label}</p>
-                    <p className="mt-0.5 text-[14px] leading-snug text-muted">{item.desc}</p>
+                    <p className={cn('text-[16px] font-semibold', isHome ? 'text-foreground' : 'text-white')}>{item.label}</p>
+                    <p className={cn('mt-0.5 text-[14px] leading-snug', isHome ? 'text-muted' : 'text-white/60')}>{item.desc}</p>
                   </div>
                 </Link>
               ))}
@@ -367,7 +405,6 @@ export default memo(function Header() {
                 {mobileSection === item.key && item.key === 'contactUs' && (
                   <div className="pb-2 pl-4">
                     <Link href="/support" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.notices}</Link>
-                    <Link href="/support/inquiry" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.inquiry}</Link>
                     <a href="mailto:vanovano@naver.com" className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.emailInquiry}</a>
                   </div>
                 )}

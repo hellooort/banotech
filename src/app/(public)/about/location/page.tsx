@@ -73,7 +73,7 @@ export default async function LocationPage() {
               <tr className="border-b border-border">
                 <td className="py-3 pr-6 text-muted font-medium">팩스</td>
                 <td className="py-3 text-foreground">
-                  {locationInfo.fax || '031-529-1224'}
+                  031-529-1225
                 </td>
               </tr>
               <tr className="border-b border-border">

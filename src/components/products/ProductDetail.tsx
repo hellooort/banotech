@@ -63,9 +63,9 @@ export default function ProductDetail({ product, images, documents, categorySlug
 
   return (
     <div>
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1px_1fr] lg:gap-0">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[2fr_1px_3fr] lg:gap-0">
         {/* Images */}
-        <div className="lg:pr-10 pt-6">
+        <div className="lg:pr-10 pt-2">
           <Link
             href={`/products/${categorySlug}`}
             className="mb-6 inline-flex items-center gap-1 text-[15px] text-muted hover:text-foreground transition-colors"
@@ -103,7 +103,7 @@ export default function ProductDetail({ product, images, documents, categorySlug
         <div className="hidden lg:block bg-border" />
 
         {/* Info */}
-        <div className="lg:pl-10 pt-6 lg:pt-[4.25rem] flex flex-col">
+        <div className="lg:pl-10 pt-2 lg:pt-[2.5rem] flex flex-col">
           <div>
             <h1 className="text-3xl font-bold text-foreground tracking-tight">
               {product.model_name || displayName}

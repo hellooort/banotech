@@ -9,7 +9,7 @@ import { formatDate } from '@/lib/utils';
 import { revalidateDocuments } from '@/app/actions/revalidate';
 
 const COLUMNS = [
-  { type: 'catalog', label: '카탈로그', color: 'text-blue-600', bgColor: 'bg-blue-50' },
+  { type: 'catalog', label: '카다로그', color: 'text-blue-600', bgColor: 'bg-blue-50' },
   { type: 'drawing', label: '도면 및 설명서', color: 'text-green-600', bgColor: 'bg-green-50' },
   { type: 'certificate', label: '인증서', color: 'text-amber-700', bgColor: 'bg-amber-50' },
   { type: 'approval', label: '승인서류', color: 'text-violet-700', bgColor: 'bg-violet-50' },
@@ -93,21 +93,21 @@ export default function AdminDocumentsPage() {
     <div>
       <div>
         <h1 className="text-xl font-semibold text-foreground">자료 관리</h1>
-        <p className="mt-1 text-sm text-muted">카탈로그, 도면 및 설명서, 인증서, 승인서류, 기타 자료를 관리합니다</p>
+        <p className="mt-1 text-sm text-muted">카다로그, 도면 및 설명서, 인증서, 승인서류, 기타 자료를 관리합니다</p>
       </div>
 
-      {/* E-카탈로그 현황 */}
+      {/* E-카다로그 현황 */}
       <div className="mt-6 border border-blue-200 bg-blue-50/50 px-5 py-4">
         <div className="flex items-center gap-2 mb-2">
           <BookOpen size={16} className="text-blue-600" />
-          <h2 className="text-sm font-semibold text-blue-900">E-카탈로그 (홈페이지 플립북)</h2>
+          <h2 className="text-sm font-semibold text-blue-900">E-카다로그 (홈페이지 플립북)</h2>
         </div>
         {currentEcatalog ? (
           <div className="flex items-center gap-4">
             <div className="flex-1 min-w-0">
               <p className="text-sm text-foreground truncate">{currentEcatalog.title}</p>
               <p className="text-xs text-muted mt-0.5">
-                등록일: {formatDate(currentEcatalog.created_at)} · 카탈로그 컬럼의 가장 최신 파일이 E-카탈로그로 사용됩니다
+                등록일: {formatDate(currentEcatalog.created_at)} · 카다로그 컬럼의 가장 최신 파일이 E-카다로그로 사용됩니다
               </p>
             </div>
             <a
@@ -127,7 +127,7 @@ export default function AdminDocumentsPage() {
           </div>
         ) : (
           <div className="flex items-center gap-4">
-            <p className="flex-1 text-sm text-muted">등록된 카탈로그 PDF가 없습니다. 아래 카탈로그 컬럼에서 등록하면 E-카탈로그로 사용됩니다.</p>
+            <p className="flex-1 text-sm text-muted">등록된 카다로그 PDF가 없습니다. 아래 카다로그 컬럼에서 등록하면 E-카다로그로 사용됩니다.</p>
           </div>
         )}
 
@@ -136,7 +136,7 @@ export default function AdminDocumentsPage() {
             <input
               value={ecatalogForm.title}
               onChange={(e) => setEcatalogForm({ ...ecatalogForm, title: e.target.value })}
-              placeholder="카탈로그 제목 (예: 2026년 상반기 카탈로그)"
+              placeholder="카다로그 제목 (예: 2026년 상반기 카다로그)"
               className="h-9 w-full border border-blue-300 bg-white px-3 text-sm text-foreground focus:border-blue-500 focus:outline-none"
               autoFocus
             />
@@ -153,7 +153,7 @@ export default function AdminDocumentsPage() {
                 disabled={ecatalogSaving || !ecatalogForm.title.trim() || !ecatalogForm.file_url}
                 className="h-8 bg-blue-600 text-white text-xs font-medium px-4 hover:bg-blue-700 disabled:bg-muted disabled:cursor-not-allowed transition-colors"
               >
-                {ecatalogSaving ? '등록 중...' : '새 카탈로그 등록'}
+                {ecatalogSaving ? '등록 중...' : '새 카다로그 등록'}
               </button>
               <button
                 onClick={() => { setReplacingEcatalog(false); setEcatalogForm({ title: '', file_url: '' }); }}

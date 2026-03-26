@@ -26,7 +26,7 @@ export default async function ProductsLayout({
   return (
     <>
       <ProductsHeader />
-      <div className="mx-auto flex max-w-[1280px] gap-6 px-6 py-10">
+      <div className="mx-auto flex max-w-[1680px] gap-6 px-6 py-10">
         <CategorySidebar categories={categories} />
         <div className="min-w-0 flex-1 border-t border-border">{children}</div>
       </div>
