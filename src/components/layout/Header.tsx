@@ -102,9 +102,9 @@ export default memo(function Header() {
       )}
       onMouseLeave={() => setOpenMega(null)}
     >
-      <div className="mx-auto grid h-[80px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-0 px-6 lg:grid-cols-[auto_1fr_160px] lg:gap-4">
+      <div className="mx-auto grid h-[80px] max-w-[1280px] grid-cols-[auto_1fr_auto] items-center gap-0 px-6 pt-4 lg:grid-cols-[auto_1fr_160px] lg:gap-4">
         {/* 1열: 로고 */}
-        <Link href="/" className="relative block h-10 w-32 shrink-0">
+        <Link href="/" className="relative block h-[60px] w-[166px] shrink-0">
           <Image
             src={isHome ? '/logo_black.png' : '/logo.png'}
             alt="VANO"
