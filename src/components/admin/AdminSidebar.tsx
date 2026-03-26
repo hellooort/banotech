@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Award,
   LogOut,
+  ExternalLink,
 } from 'lucide-react';
 
 const ADMIN_NAV = [
@@ -67,7 +68,15 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div className="border-t border-border p-4">
+      <div className="border-t border-border p-4 space-y-1">
+        <Link
+          href="/"
+          target="_blank"
+          className="flex w-full items-center gap-3 px-2 py-2 text-sm text-muted hover:text-foreground transition-colors"
+        >
+          <ExternalLink size={18} />
+          홈페이지 보기
+        </Link>
         <button
           onClick={handleLogout}
           className="flex w-full items-center gap-3 px-2 py-2 text-sm text-muted hover:text-foreground transition-colors"

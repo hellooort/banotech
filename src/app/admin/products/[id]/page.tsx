@@ -172,9 +172,10 @@ export default function EditProductPage({ params }: Props) {
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-foreground">대표 이미지</label>
+          <label className="mb-1.5 block text-sm font-medium text-foreground">대표 이미지 / 이미지 도면</label>
+          <p className="mb-2 text-xs text-muted">대표 이미지가 이미지 도면으로도 사용됩니다</p>
           <FileUpload bucket="products" folder="thumbnails"
-            onUploaded={(url) => setForm({ ...form, thumbnail_url: url })}
+            onUploaded={(url) => setForm({ ...form, thumbnail_url: url, drawing_img_url: url })}
             currentUrl={form.thumbnail_url || undefined} />
         </div>
 
@@ -193,12 +194,6 @@ export default function EditProductPage({ params }: Props) {
               <FileUpload bucket="documents" folder="drawings/dwg" accept=".dwg,.dxf"
                 onUploaded={(url) => setForm({ ...form, drawing_dwg_url: url })}
                 currentUrl={form.drawing_dwg_url || undefined} />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-xs font-medium text-muted uppercase tracking-wide">이미지 도면</label>
-              <FileUpload bucket="documents" folder="drawings/img" accept="image/*"
-                onUploaded={(url) => setForm({ ...form, drawing_img_url: url })}
-                currentUrl={form.drawing_img_url || undefined} />
             </div>
           </div>
         </div>
