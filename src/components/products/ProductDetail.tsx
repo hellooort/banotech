@@ -97,14 +97,14 @@ export default function ProductDetail({ product, images, documents, categorySlug
           <button
             type="button"
             onClick={() => product.thumbnail_url && openLightbox(0)}
-            className="relative aspect-square w-full overflow-hidden border border-border bg-background cursor-zoom-in"
+            className="relative aspect-square w-full overflow-hidden border border-border bg-white cursor-zoom-in"
           >
             {product.thumbnail_url ? (
               <Image
                 src={product.thumbnail_url}
                 alt={displayName}
                 fill
-                className="object-cover"
+                className="object-contain"
                 sizes="400px"
                 priority
               />
@@ -122,9 +122,9 @@ export default function ProductDetail({ product, images, documents, categorySlug
                   type="button"
                   key={img.id}
                   onClick={() => openLightbox(product.thumbnail_url ? i + 1 : i)}
-                  className="relative aspect-square overflow-hidden border border-border bg-background cursor-zoom-in"
+                  className="relative aspect-square overflow-hidden border border-border bg-white cursor-zoom-in"
                 >
-                  <Image src={img.image_url} alt="" fill className="object-cover" sizes="80px" />
+                  <Image src={img.image_url} alt="" fill className="object-contain" sizes="80px" />
                 </button>
               ))}
             </div>

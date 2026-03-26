@@ -22,13 +22,13 @@ export default memo(function ProductCard({ product, categorySlug, slugMap }: Pro
       href={`/products/${categorySlug || slugMap?.[product.category_id] || 'all'}/${product.id}`}
       className="group block overflow-hidden rounded-2xl border border-border/80 bg-surface transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-[0_10px_24px_rgba(0,0,0,0.07)]"
     >
-      <div className="relative aspect-square overflow-hidden bg-[#faf9f7]">
+      <div className="relative aspect-square overflow-hidden bg-white">
         {product.thumbnail_url ? (
           <Image
             src={product.thumbnail_url}
             alt={displayName}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-contain transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (

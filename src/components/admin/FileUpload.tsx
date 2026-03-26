@@ -23,6 +23,31 @@ export default function FileUpload({
   const [preview, setPreview] = useState<string | null>(currentUrl ?? null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const makeSquare = (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+      const img = new window.Image();
+      img.onload = () => {
+        const size = Math.max(img.width, img.height);
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d')!;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, size, size);
+        const x = (size - img.width) / 2;
+        const y = (size - img.height) / 2;
+        ctx.drawImage(img, x, y, img.width, img.height);
+        canvas.toBlob(
+          (blob) => (blob ? resolve(blob) : reject(new Error('Canvas toBlob failed'))),
+          'image/jpeg',
+          0.95,
+        );
+      };
+      img.onerror = reject;
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -30,12 +55,15 @@ export default function FileUpload({
     setUploading(true);
     try {
       const supabase = createClient();
-      const ext = file.name.split('.').pop();
+      const isImage = file.type.startsWith('image/');
+      const uploadFile = isImage ? await makeSquare(file) : file;
+      const ext = isImage ? 'jpg' : file.name.split('.').pop();
       const fileName = `${folder ? folder + '/' : ''}${Date.now()}.${ext}`;
 
-      const { error } = await supabase.storage.from(bucket).upload(fileName, file, {
+      const { error } = await supabase.storage.from(bucket).upload(fileName, uploadFile, {
         cacheControl: '3600',
         upsert: false,
+        contentType: isImage ? 'image/jpeg' : undefined,
       });
 
       if (error) throw error;
