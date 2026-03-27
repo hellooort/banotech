@@ -60,7 +60,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
     >
       {/* 1차 카테고리 */}
       <div className="w-[336px] shrink-0 border-r border-border pr-2">
-        <h3 className="px-2 pb-2 text-[15px] font-semibold text-foreground tracking-tight">
+        <h3 className="px-2 pb-3 text-[18px] font-bold text-foreground tracking-tight">
           {t.products.category}
         </h3>
         <nav>

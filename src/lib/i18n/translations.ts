@@ -50,7 +50,7 @@ const translations = {
     products: {
       title: '제품소개',
       label: 'Products',
-      category: '제품 카테고리',
+      category: '[ Product Category ]',
       backToList: '목록으로',
       productInfo: '제품 정보',
       drawingDownload: '도면 다운로드',
