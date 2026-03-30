@@ -29,7 +29,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
   const activeParent = (() => {
     const m = pathname.match(/^\/products\/([^/]+)/);
     if (!m) return undefined;
-    const slug = m[1];
+    const slug = decodeURIComponent(m[1]);
     let current: Category | undefined = categories.find((c) => c.slug === slug);
     if (!current) return undefined;
     while (current?.parent_id) {
@@ -106,7 +106,8 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
           <nav className="pt-7">
             {selectedChildren.map((child) => {
               const childHref = `/products/${child.slug}`;
-              const childActive = pathname === childHref;
+              const decodedPathname = decodeURIComponent(pathname);
+              const childActive = decodedPathname === childHref;
               return (
                 <Link
                   key={child.id}

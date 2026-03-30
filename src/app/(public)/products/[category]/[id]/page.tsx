@@ -28,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductDetailPage({ params }: Props) {
-  const { category: categorySlug, id } = await params;
+  const { category: rawSlug, id } = await params;
+  const categorySlug = decodeURIComponent(rawSlug);
 
   let product: Product | null = null;
   let images: ProductImage[] = [];

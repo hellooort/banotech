@@ -12,7 +12,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { category: slug } = await params;
+  const { category: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   try {
     const supabase = await createClient();
     const { data } = await supabase.from('categories').select('name').eq('slug', slug).single();
@@ -27,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const { category: categorySlug } = await params;
+  const { category: rawSlug } = await params;
+  const categorySlug = decodeURIComponent(rawSlug);
 
   let category: Category | null = null;
   let products: Product[] = [];
@@ -36,13 +38,18 @@ export default async function CategoryPage({ params }: Props) {
 
   const [catRes, allCats] = await Promise.all([
     supabase.from('categories').select('*').eq('slug', categorySlug).single(),
-    supabase.from('categories').select('id, parent_id, slug'),
+    supabase.from('categories').select('id, parent_id, slug, name'),
   ]);
 
   if (!catRes.data) return notFound();
   category = catRes.data as Category;
 
-  const childIds = (allCats.data ?? [])
+  const allCategories = allCats.data ?? [];
+  const parentCategory = category.parent_id
+    ? allCategories.find(c => c.id === category!.parent_id)
+    : null;
+
+  const childIds = allCategories
     .filter(c => c.parent_id === category!.id)
     .map(c => c.id);
   const categoryIds = [category!.id, ...childIds];
@@ -55,9 +62,13 @@ export default async function CategoryPage({ params }: Props) {
 
   products = prodData ?? [];
 
+  const displayName = parentCategory
+    ? `${parentCategory.name} - ${category.name}`
+    : category.name;
+
   return (
     <div className="pt-6">
-      <h2 className="mb-6 text-base font-medium text-foreground">{category?.name}</h2>
+      <h2 className="mb-6 text-base font-medium text-foreground">{displayName}</h2>
       <ProductGrid products={products} categorySlug={categorySlug} />
     </div>
   );
