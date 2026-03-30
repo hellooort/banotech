@@ -128,11 +128,15 @@ export default function EditProductPage({ params }: Props) {
           onChange={(e) => {
             const v = e.target.value;
             setForm({ ...form, name: v });
-            setSpecs((prev) => ({ ...prev, product_name: v, product_name_en: v }));
+            setSpecs((prev) => ({ ...prev, product_name: v }));
           }} required />
 
         <Input id="name_en" label="제품명 (영문)" placeholder="Product name in English" value={form.name_en}
-          onChange={(e) => setForm({ ...form, name_en: e.target.value })} />
+          onChange={(e) => {
+            const v = e.target.value;
+            setForm({ ...form, name_en: v });
+            setSpecs((prev) => ({ ...prev, product_name_en: v }));
+          }} />
 
         <Input id="model_name" label="모델명" value={form.model_name}
           onChange={(e) => {

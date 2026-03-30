@@ -33,7 +33,7 @@ export default function NewProductPage() {
     finish_color: '', finish_color_en: '',
     size: '', size_en: '',
     brand: 'vano', brand_en: 'vano',
-    manufacturer: '(주)바노테크', manufacturer_en: 'VANOTECH CO., LTD.',
+    manufacturer: 'VANOTECH CO., LTD.', manufacturer_en: 'VANOTECH CO., LTD.',
   });
 
   useEffect(() => {
@@ -90,11 +90,15 @@ export default function NewProductPage() {
           value={form.name} onChange={(e) => {
             const v = e.target.value;
             setForm({ ...form, name: v });
-            setSpecs((prev) => ({ ...prev, product_name: v, product_name_en: v }));
+            setSpecs((prev) => ({ ...prev, product_name: v }));
           }} required />
 
         <Input id="name_en" label="제품명 (영문)" placeholder="Product name in English"
-          value={form.name_en} onChange={(e) => setForm({ ...form, name_en: e.target.value })} />
+          value={form.name_en} onChange={(e) => {
+            const v = e.target.value;
+            setForm({ ...form, name_en: v });
+            setSpecs((prev) => ({ ...prev, product_name_en: v }));
+          }} />
 
         <Input id="model_name" label="모델명" placeholder="모델명을 입력하세요"
           value={form.model_name} onChange={(e) => {
