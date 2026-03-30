@@ -87,13 +87,21 @@ export default function NewProductPage() {
         />
 
         <Input id="name" label="제품명 (한글)" placeholder="제품명을 입력하세요"
-          value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+          value={form.name} onChange={(e) => {
+            const v = e.target.value;
+            setForm({ ...form, name: v });
+            setSpecs((prev) => ({ ...prev, product_name: v, product_name_en: v }));
+          }} required />
 
         <Input id="name_en" label="제품명 (영문)" placeholder="Product name in English"
           value={form.name_en} onChange={(e) => setForm({ ...form, name_en: e.target.value })} />
 
         <Input id="model_name" label="모델명" placeholder="모델명을 입력하세요"
-          value={form.model_name} onChange={(e) => setForm({ ...form, model_name: e.target.value })} />
+          value={form.model_name} onChange={(e) => {
+            const v = e.target.value;
+            setForm({ ...form, model_name: v });
+            setSpecs((prev) => ({ ...prev, model_number: v, model_number_en: v }));
+          }} />
 
         <Textarea id="description" label="설명 (한글)" placeholder="제품 설명을 입력하세요"
           value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
@@ -105,11 +113,28 @@ export default function NewProductPage() {
         <div className="border-t border-border pt-5">
           <h3 className="text-sm font-semibold text-foreground mb-4">제품 상세 정보</h3>
           <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <Input id="model_number" label="품번 (모델명에서 자동 입력)" value={specs.model_number} readOnly
+                className="bg-hover cursor-not-allowed" />
+              <Input id="product_name" label="품명 (제품명에서 자동 입력)" value={specs.product_name} readOnly
+                className="bg-hover cursor-not-allowed" />
+            </div>
+
             {([
-              { key: 'model_number', label: '품번' },
-              { key: 'product_name', label: '품명' },
               { key: 'finish_color', label: '마감색상' },
               { key: 'size', label: '사이즈' },
+            ] as const).map(({ key, label }) => (
+              <Input
+                key={key}
+                id={key}
+                label={label}
+                placeholder={label}
+                value={specs[key]}
+                onChange={(e) => setSpecs({ ...specs, [key]: e.target.value, [`${key}_en`]: e.target.value })}
+              />
+            ))}
+
+            {([
               { key: 'brand', label: '브랜드' },
               { key: 'manufacturer', label: '제조사' },
             ] as const).map(({ key, label }) => (
