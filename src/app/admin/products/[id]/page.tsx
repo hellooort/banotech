@@ -32,6 +32,12 @@ export default function EditProductPage({ params }: Props) {
     drawing_dwg_url: '',
     drawing_img_url: '',
   });
+  const [originalFileUrls, setOriginalFileUrls] = useState({
+    thumbnail_url: '',
+    drawing_pdf_url: '',
+    drawing_dwg_url: '',
+    drawing_img_url: '',
+  });
   const [specs, setSpecs] = useState({
     model_number: '', model_number_en: '',
     product_name: '', product_name_en: '',
@@ -51,6 +57,12 @@ export default function EditProductPage({ params }: Props) {
       setCategories(catRes.data ?? []);
       if (prodRes.data) {
         const p = prodRes.data as Product;
+        const fileUrls = {
+          thumbnail_url: p.thumbnail_url ?? '',
+          drawing_pdf_url: p.drawing_pdf_url ?? '',
+          drawing_dwg_url: p.drawing_dwg_url ?? '',
+          drawing_img_url: p.drawing_img_url ?? '',
+        };
         setForm({
           name: p.name,
           name_en: p.name_en ?? '',
@@ -58,11 +70,9 @@ export default function EditProductPage({ params }: Props) {
           category_id: p.category_id,
           description: p.description ?? '',
           description_en: p.description_en ?? '',
-          thumbnail_url: p.thumbnail_url ?? '',
-          drawing_pdf_url: p.drawing_pdf_url ?? '',
-          drawing_dwg_url: p.drawing_dwg_url ?? '',
-          drawing_img_url: p.drawing_img_url ?? '',
+          ...fileUrls,
         });
+        setOriginalFileUrls(fileUrls);
         const s = p.specs ?? {};
         setSpecs({
           model_number: s.model_number ?? '',
@@ -92,6 +102,13 @@ export default function EditProductPage({ params }: Props) {
     const cleanSpecs: Record<string, string> = {};
     Object.entries(specs).forEach(([k, v]) => { if (v.trim()) cleanSpecs[k] = v.trim(); });
 
+    const resolveFileUrl = (key: keyof typeof originalFileUrls) => {
+      const current = form[key];
+      const original = originalFileUrls[key];
+      if (current === original) return original || null;
+      return current || null;
+    };
+
     const { error } = await supabase.from('products').update({
       name: form.name,
       name_en: form.name_en || null,
@@ -99,10 +116,10 @@ export default function EditProductPage({ params }: Props) {
       category_id: form.category_id,
       description: form.description || null,
       description_en: form.description_en || null,
-      thumbnail_url: form.thumbnail_url || null,
-      drawing_pdf_url: form.drawing_pdf_url || null,
-      drawing_dwg_url: form.drawing_dwg_url || null,
-      drawing_img_url: form.drawing_img_url || null,
+      thumbnail_url: resolveFileUrl('thumbnail_url'),
+      drawing_pdf_url: resolveFileUrl('drawing_pdf_url'),
+      drawing_dwg_url: resolveFileUrl('drawing_dwg_url'),
+      drawing_img_url: resolveFileUrl('drawing_img_url'),
       specs: cleanSpecs,
     }).eq('id', id);
 

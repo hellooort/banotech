@@ -136,107 +136,109 @@ export default function AdminProductsPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-semibold text-foreground">제품 관리</h1>
-          <p className="mt-1 text-sm text-muted">
-            총 {allProducts.length}개 제품
-            {(primaryCatId || search) &&
-              ` · 표시 ${orderedProducts.length}개`}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          {orderDirty && (
-            <Button onClick={handleSaveOrder} disabled={saving}>
-              {saving ? (
-                <Loader2 size={16} className="mr-1 animate-spin" />
-              ) : (
-                <Save size={16} className="mr-1" />
-              )}
-              순서 저장
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-10 -mx-8 -mt-8 bg-background px-8 pt-8 pb-3 border-b border-border">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-semibold text-foreground">제품 관리</h1>
+            <p className="mt-1 text-sm text-muted">
+              총 {allProducts.length}개 제품
+              {(primaryCatId || search) &&
+                ` · 표시 ${orderedProducts.length}개`}
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {orderDirty && (
+              <Button onClick={handleSaveOrder} disabled={saving}>
+                {saving ? (
+                  <Loader2 size={16} className="mr-1 animate-spin" />
+                ) : (
+                  <Save size={16} className="mr-1" />
+                )}
+                순서 저장
+              </Button>
+            )}
+            <Button onClick={() => router.push('/admin/products/new')}>
+              <Plus size={16} className="mr-1" /> 새 제품
             </Button>
-          )}
-          <Button onClick={() => router.push('/admin/products/new')}>
-            <Plus size={16} className="mr-1" /> 새 제품
-          </Button>
+          </div>
         </div>
-      </div>
 
-      {/* 1차 카테고리 필터 */}
-      <div className="mt-4 flex flex-wrap gap-1.5">
-        <button
-          type="button"
-          onClick={() => handlePrimaryClick(null)}
-          className={cn(
-            'px-3 py-1.5 text-sm border transition-colors',
-            !primaryCatId
-              ? 'border-brand bg-brand text-white'
-              : 'border-border bg-surface text-secondary hover:text-foreground hover:border-brand/40',
-          )}
-        >
-          전체
-        </button>
-        {primaryCategories.map((cat) => (
+        {/* 1차 카테고리 필터 */}
+        <div className="mt-4 flex flex-wrap gap-1.5">
           <button
-            key={cat.id}
             type="button"
-            onClick={() => handlePrimaryClick(cat.id)}
+            onClick={() => handlePrimaryClick(null)}
             className={cn(
               'px-3 py-1.5 text-sm border transition-colors',
-              primaryCatId === cat.id
+              !primaryCatId
                 ? 'border-brand bg-brand text-white'
                 : 'border-border bg-surface text-secondary hover:text-foreground hover:border-brand/40',
             )}
           >
-            {cat.name}
-          </button>
-        ))}
-      </div>
-
-      {/* 2차 카테고리 필터 */}
-      {secondaryCategories.length > 0 && (
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          <button
-            type="button"
-            onClick={() => handleSecondaryClick(null)}
-            className={cn(
-              'px-2.5 py-1 text-xs border transition-colors',
-              !secondaryCatId
-                ? 'border-brand/60 bg-brand/10 text-brand-dark'
-                : 'border-border bg-surface text-muted hover:text-foreground',
-            )}
-          >
             전체
           </button>
-          {secondaryCategories.map((cat) => (
+          {primaryCategories.map((cat) => (
             <button
               key={cat.id}
               type="button"
-              onClick={() => handleSecondaryClick(cat.id)}
+              onClick={() => handlePrimaryClick(cat.id)}
               className={cn(
-                'px-2.5 py-1 text-xs border transition-colors',
-                secondaryCatId === cat.id
-                  ? 'border-brand/60 bg-brand/10 text-brand-dark'
-                  : 'border-border bg-surface text-muted hover:text-foreground',
+                'px-3 py-1.5 text-sm border transition-colors',
+                primaryCatId === cat.id
+                  ? 'border-brand bg-brand text-white'
+                  : 'border-border bg-surface text-secondary hover:text-foreground hover:border-brand/40',
               )}
             >
               {cat.name}
             </button>
           ))}
         </div>
-      )}
 
-      {/* Search */}
-      <div className="mt-4 relative">
-        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="검색할 품번이나 품명을 입력하세요"
-          className="h-10 w-full border border-border bg-surface pl-10 pr-4 text-sm text-foreground placeholder:text-muted focus:border-brand focus:outline-none"
-        />
+        {/* 2차 카테고리 필터 */}
+        {secondaryCategories.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            <button
+              type="button"
+              onClick={() => handleSecondaryClick(null)}
+              className={cn(
+                'px-2.5 py-1 text-xs border transition-colors',
+                !secondaryCatId
+                  ? 'border-brand/60 bg-brand/10 text-brand-dark'
+                  : 'border-border bg-surface text-muted hover:text-foreground',
+              )}
+            >
+              전체
+            </button>
+            {secondaryCategories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => handleSecondaryClick(cat.id)}
+                className={cn(
+                  'px-2.5 py-1 text-xs border transition-colors',
+                  secondaryCatId === cat.id
+                    ? 'border-brand/60 bg-brand/10 text-brand-dark'
+                    : 'border-border bg-surface text-muted hover:text-foreground',
+                )}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Search */}
+        <div className="mt-3 relative">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="검색할 품번이나 품명을 입력하세요"
+            className="h-10 w-full border border-border bg-surface pl-10 pr-4 text-sm text-foreground placeholder:text-muted focus:border-brand focus:outline-none"
+          />
+        </div>
       </div>
 
       {/* 순서 변경 안내 */}

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import ProductGrid from '@/components/products/ProductGrid';
+import CategoryHeading from '@/components/products/CategoryHeading';
 import type { Product, Category } from '@/types/database';
 import { notFound } from 'next/navigation';
 
@@ -38,7 +39,7 @@ export default async function CategoryPage({ params }: Props) {
 
   const [catRes, allCats] = await Promise.all([
     supabase.from('categories').select('*').eq('slug', categorySlug).single(),
-    supabase.from('categories').select('id, parent_id, slug, name'),
+    supabase.from('categories').select('id, parent_id, slug, name, name_en'),
   ]);
 
   if (!catRes.data) return notFound();
@@ -62,13 +63,9 @@ export default async function CategoryPage({ params }: Props) {
 
   products = prodData ?? [];
 
-  const displayName = parentCategory
-    ? `${parentCategory.name} - ${category.name}`
-    : category.name;
-
   return (
     <div className="pt-6">
-      <h2 className="mb-6 text-base font-medium text-foreground">{displayName}</h2>
+      <CategoryHeading category={category} parentCategory={parentCategory as { name: string; name_en: string | null } | null} />
       <ProductGrid products={products} categorySlug={categorySlug} />
     </div>
   );
