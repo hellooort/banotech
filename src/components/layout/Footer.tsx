@@ -40,7 +40,6 @@ export default memo(function Footer() {
               <li><Link href="/resources?tab=catalog" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.catalog}</Link></li>
               <li><Link href="/resources?tab=drawing" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.drawingManual}</Link></li>
               <li><Link href="/resources?tab=certificate" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.certificates}</Link></li>
-              <li><Link href="/resources?tab=approval" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.approvalDocs}</Link></li>
             </ul>
           </div>
 

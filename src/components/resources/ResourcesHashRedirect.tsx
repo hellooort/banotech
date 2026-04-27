@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-const ALLOWED = ['catalog', 'drawing', 'certificate', 'approval', 'other'];
+const ALLOWED = ['catalog', 'drawing', 'certificate', 'other'];
 
 export default function ResourcesHashRedirect() {
   const router = useRouter();

@@ -5,9 +5,9 @@ import ResourcesLoading from './loading';
 
 export const revalidate = 120;
 
-type TabKey = 'catalog' | 'drawing' | 'certificate' | 'approval' | 'other';
+type TabKey = 'catalog' | 'drawing' | 'certificate' | 'other';
 
-const ALLOWED_TABS: TabKey[] = ['catalog', 'drawing', 'certificate', 'approval', 'other'];
+const ALLOWED_TABS: TabKey[] = ['catalog', 'drawing', 'certificate', 'other'];
 
 interface Props {
   searchParams: Promise<{ tab?: string }>;

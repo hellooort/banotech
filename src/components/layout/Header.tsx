@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { Menu, X, ChevronDown, BookOpen, Building2, History, MapPin, FileText, PenTool, ShieldCheck, FileCheck, FolderOpen, Bell, MessageSquare, Mail, ArrowRight, Search } from 'lucide-react';
+import { Menu, X, ChevronDown, BookOpen, Building2, History, MapPin, FileText, PenTool, ShieldCheck, FolderOpen, Bell, MessageSquare, Mail, ArrowRight, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useI18n } from '@/lib/i18n/context';
 import { createClient } from '@/lib/supabase/client';
@@ -130,7 +130,7 @@ export default memo(function Header() {
                     : 'text-white/70 hover:bg-white/10 hover:text-white'
               )}
             >
-              {item.label}
+              {item.label.toUpperCase()}
               <ChevronDown size={12} className="opacity-50" />
             </Link>
           ))}
@@ -184,7 +184,7 @@ export default memo(function Header() {
       {/* Search bar — right-aligned under nav */}
       <div className={cn('hidden lg:block', isHome ? 'bg-white' : 'bg-[#274b87]')}>
         <div className="mx-auto flex max-w-[1280px] justify-end px-6 pb-2">
-          <form onSubmit={handleSearch} className={cn('flex w-[280px] items-center gap-2 border rounded px-3 py-1.5', isHome ? 'border-border' : 'border-white')}>
+          <form onSubmit={handleSearch} className={cn('flex w-[380px] items-center gap-2 border rounded px-3 py-1.5', isHome ? 'border-border' : 'border-white')}>
             <input
               ref={searchInputRef}
               type="text"
@@ -293,7 +293,6 @@ export default memo(function Header() {
                 { icon: BookOpen, label: t.mega.catalog, desc: locale === 'ko' ? '제품 전체 카타로그 PDF' : 'Full product catalog PDF', href: '/resources?tab=catalog' },
                 { icon: PenTool, label: t.mega.drawingManual, desc: locale === 'ko' ? 'CAD 도면 및 설치 설명서' : 'CAD drawings & manuals', href: '/resources?tab=drawing' },
                 { icon: ShieldCheck, label: t.mega.certificates, desc: locale === 'ko' ? 'KS 인증서, 시험성적서' : 'KS certificates & test reports', href: '/resources?tab=certificate' },
-                { icon: FileCheck, label: t.mega.approvalDocs, desc: locale === 'ko' ? '관급공사 승인서류' : 'Government project approvals', href: '/resources?tab=approval' },
                 { icon: FolderOpen, label: t.mega.otherResources, desc: locale === 'ko' ? '기타 참고 자료' : 'Other reference materials', href: '/resources?tab=other' },
               ].map((item) => (
                 <Link
@@ -398,7 +397,6 @@ export default memo(function Header() {
                     <Link href="/resources?tab=catalog" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.catalog}</Link>
                     <Link href="/resources?tab=drawing" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.drawingManual}</Link>
                     <Link href="/resources?tab=certificate" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.certificates}</Link>
-                    <Link href="/resources?tab=approval" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.approvalDocs}</Link>
                     <Link href="/resources?tab=other" onClick={() => setMobileOpen(false)} className="block py-2 text-sm text-muted hover:text-foreground">{t.mega.otherResources}</Link>
                   </div>
                 )}

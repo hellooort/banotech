@@ -3,7 +3,7 @@ import { Download, FileText } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import type { Document as DocType } from '@/types/database';
 
-type TabKey = 'catalog' | 'drawing' | 'certificate' | 'approval' | 'other';
+type TabKey = 'catalog' | 'drawing' | 'certificate' | 'other';
 
 function typesForTab(tab: TabKey): string[] {
   if (tab === 'drawing') return ['drawing', 'manual'];

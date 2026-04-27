@@ -45,7 +45,6 @@ function useMenuConfig(variant: Variant) {
             { label: t.mega.catalog, href: '/resources?tab=catalog' },
             { label: t.mega.drawingManual, href: '/resources?tab=drawing' },
             { label: t.mega.certificates, href: '/resources?tab=certificate' },
-            { label: t.mega.approvalDocs, href: '/resources?tab=approval' },
             { label: t.mega.otherResources, href: '/resources?tab=other' },
           ],
         };

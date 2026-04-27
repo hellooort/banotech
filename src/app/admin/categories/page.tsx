@@ -123,7 +123,7 @@ export default function AdminCategoriesPage() {
     if (e.key === 'Escape') cancelAll();
   };
 
-  const InlineRow = ({ isChild, onSave }: { isChild: boolean; onSave: () => void }) => (
+  const renderInlineRow = (isChild: boolean, onSave: () => void) => (
     <div className={`flex items-center gap-2 px-4 py-2 ${isChild ? 'pl-10 bg-background' : 'bg-brand-light/30'}`}>
       {isChild && <ChevronRight size={14} className="text-muted shrink-0" />}
       <input
@@ -186,7 +186,7 @@ export default function AdminCategoriesPage() {
             <div key={cat.id} className="border border-border">
               {/* Parent row */}
               {isEditingThis ? (
-                <InlineRow isChild={false} onSave={() => handleUpdate(cat.id)} />
+                renderInlineRow(false, () => handleUpdate(cat.id))
               ) : (
                 <div className="flex items-center gap-3 px-4 py-3 bg-surface group">
                   <div className="flex-1 min-w-0">
@@ -215,7 +215,7 @@ export default function AdminCategoriesPage() {
                   {children.map((child) => {
                     const isEditingChild = editingId === child.id;
                     return isEditingChild ? (
-                      <InlineRow key={child.id} isChild onSave={() => handleUpdate(child.id)} />
+                      <div key={child.id}>{renderInlineRow(true, () => handleUpdate(child.id))}</div>
                     ) : (
                       <div key={child.id} className="flex items-center gap-3 px-4 py-2.5 pl-10 bg-background group">
                         <ChevronRight size={14} className="text-muted shrink-0" />
@@ -239,7 +239,7 @@ export default function AdminCategoriesPage() {
               {/* Inline add child for this parent */}
               {addingParent === cat.id && (
                 <div className="border-t border-border">
-                  <InlineRow isChild onSave={() => handleAdd(cat.id)} />
+                  {renderInlineRow(true, () => handleAdd(cat.id))}
                 </div>
               )}
             </div>
@@ -249,7 +249,7 @@ export default function AdminCategoriesPage() {
         {/* Inline add top-level */}
         {addingParent === null && (
           <div className="border border-brand/40 border-dashed">
-            <InlineRow isChild={false} onSave={() => handleAdd(null)} />
+            {renderInlineRow(false, () => handleAdd(null))}
           </div>
         )}
 

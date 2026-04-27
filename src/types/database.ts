@@ -41,7 +41,7 @@ export interface Document {
   id: string;
   product_id: string | null;
   title: string;
-  type: 'catalog' | 'drawing' | 'manual' | 'other' | 'certificate' | 'approval';
+  type: 'catalog' | 'drawing' | 'manual' | 'other' | 'certificate';
   file_url: string;
   created_at: string;
 }
