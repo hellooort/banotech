@@ -47,7 +47,7 @@ export default memo(function Footer() {
             <h4 className="text-base font-semibold text-white">{t.nav.contactUs}</h4>
             <ul className="mt-3 space-y-2.5">
               <li><Link href="/support" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.notices}</Link></li>
-              <li><Link href="/support/inquiry" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.emailInquiry}</Link></li>
+              <li><a href="https://mail.google.com/mail/?view=cm&fs=1&to=vanovano@naver.com" target="_blank" rel="noopener noreferrer" className="text-[15px] text-white/50 hover:text-brand transition-colors">{t.mega.emailInquiry}</a></li>
             </ul>
           </div>
         </div>
