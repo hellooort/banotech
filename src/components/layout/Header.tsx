@@ -321,29 +321,37 @@ export default memo(function Header() {
           {openMega === 'contactUs' && (
             <div className="flex gap-4">
               {[
-                { icon: Bell, label: t.mega.notices, desc: locale === 'ko' ? '공지사항 및 소식 확인' : 'Latest notices & news', href: '/support' },
+                { icon: Bell, label: t.mega.notices, desc: locale === 'ko' ? '공지사항 및 소식 확인' : 'Latest notices & news', href: '/support', external: false },
                 { icon: Mail, label: t.mega.emailInquiry, desc: locale === 'ko' ? 'vanovano@naver.com' : 'vanovano@naver.com', href: 'mailto:vanovano@naver.com', external: true },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all',
-                    isHome ? 'hover:border-brand/30 hover:bg-brand-light/60' : 'hover:border-white/20 hover:bg-white/10'
-                  )}
-                >
-                  <span className={cn(
-                    'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:bg-brand group-hover:text-white',
-                    isHome ? 'bg-brand-light text-brand' : 'bg-white/15 text-white'
-                  )}>
-                    <item.icon size={18} />
-                  </span>
-                  <div className="min-w-0">
-                    <p className={cn('text-[16px] font-semibold', isHome ? 'text-foreground' : 'text-white')}>{item.label}</p>
-                    <p className={cn('mt-0.5 text-[14px] leading-snug', isHome ? 'text-muted' : 'text-white/60')}>{item.desc}</p>
-                  </div>
-                </Link>
-              ))}
+              ].map((item) => {
+                const className = cn(
+                  'group flex flex-1 items-start gap-3 rounded-xl border border-transparent p-4 transition-all',
+                  isHome ? 'hover:border-brand/30 hover:bg-brand-light/60' : 'hover:border-white/20 hover:bg-white/10'
+                );
+                const inner = (
+                  <>
+                    <span className={cn(
+                      'mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors group-hover:bg-brand group-hover:text-white',
+                      isHome ? 'bg-brand-light text-brand' : 'bg-white/15 text-white'
+                    )}>
+                      <item.icon size={18} />
+                    </span>
+                    <div className="min-w-0">
+                      <p className={cn('text-[16px] font-semibold', isHome ? 'text-foreground' : 'text-white')}>{item.label}</p>
+                      <p className={cn('mt-0.5 text-[14px] leading-snug', isHome ? 'text-muted' : 'text-white/60')}>{item.desc}</p>
+                    </div>
+                  </>
+                );
+                return item.external ? (
+                  <a key={item.href} href={item.href} className={className}>
+                    {inner}
+                  </a>
+                ) : (
+                  <Link key={item.href} href={item.href} className={className}>
+                    {inner}
+                  </Link>
+                );
+              })}
             </div>
           )}
 
