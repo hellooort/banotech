@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { Download, FileText } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
-import type { Document as DocType } from '@/types/database';
+import type { Document as DocType, Certificate } from '@/types/database';
 
 type TabKey = 'catalog' | 'drawing' | 'certificate' | 'other';
 
@@ -11,6 +12,54 @@ function typesForTab(tab: TabKey): string[] {
 }
 
 export default async function ResourcesList({ tab }: { tab: TabKey }) {
+  if (tab === 'certificate') {
+    let certificates: Certificate[] = [];
+    try {
+      const supabase = await createClient();
+      const { data } = await supabase
+        .from('certificates')
+        .select('*')
+        .order('sort_order');
+      certificates = data ?? [];
+    } catch {
+      // fallback
+    }
+
+    if (certificates.length === 0) {
+      return <p className="text-sm text-muted py-12 text-center">등록된 인증서가 없습니다.</p>;
+    }
+
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {certificates.map((cert) => (
+          <a
+            key={cert.id}
+            href={cert.image_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group border border-border bg-surface transition-colors hover:border-primary/30"
+          >
+            <div className="relative aspect-[3/4] bg-background overflow-hidden">
+              <Image
+                src={cert.image_url}
+                alt={cert.name}
+                fill
+                className="object-contain p-2"
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              />
+            </div>
+            <div className="p-3 text-center">
+              <p className="text-sm font-medium text-foreground truncate">{cert.name}</p>
+              {cert.name_en && (
+                <p className="text-xs text-muted mt-0.5 truncate">{cert.name_en}</p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    );
+  }
+
   let documents: DocType[] = [];
 
   try {

@@ -8,6 +8,7 @@ import Input from '@/components/ui/Input';
 import FileUpload from '@/components/admin/FileUpload';
 import { Plus, Trash2, GripVertical, Award } from 'lucide-react';
 import type { Certificate } from '@/types/database';
+import { revalidateCertificates } from '@/app/actions/revalidate';
 
 export default function AdminCertificatesPage() {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
@@ -49,6 +50,7 @@ export default function AdminCertificatesPage() {
     if (!error) {
       setForm({ name: '', name_en: '', image_url: '' });
       setShowForm(false);
+      await revalidateCertificates();
       fetchCertificates();
     }
     setSaving(false);
@@ -58,6 +60,7 @@ export default function AdminCertificatesPage() {
     if (!confirm('이 인증서를 삭제하시겠습니까?')) return;
     const supabase = createClient();
     await supabase.from('certificates').delete().eq('id', id);
+    await revalidateCertificates();
     fetchCertificates();
   };
 
@@ -70,6 +73,7 @@ export default function AdminCertificatesPage() {
       supabase.from('certificates').update({ sort_order: prev.sort_order }).eq('id', curr.id),
       supabase.from('certificates').update({ sort_order: curr.sort_order }).eq('id', prev.id),
     ]);
+    await revalidateCertificates();
     fetchCertificates();
   };
 

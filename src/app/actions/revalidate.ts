@@ -23,3 +23,8 @@ export async function revalidateCategories() {
   revalidatePath('/', 'page');
   revalidatePath('/products', 'layout');
 }
+
+export async function revalidateCertificates() {
+  revalidatePath('/resources', 'page');
+  revalidatePath('/about/certificates', 'page');
+}

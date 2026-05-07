@@ -11,7 +11,6 @@ import { revalidateDocuments } from '@/app/actions/revalidate';
 const COLUMNS = [
   { type: 'catalog', label: '카다로그', color: 'text-blue-600', bgColor: 'bg-blue-50' },
   { type: 'drawing', label: '도면 및 설명서', color: 'text-green-600', bgColor: 'bg-green-50' },
-  { type: 'certificate', label: '인증서', color: 'text-amber-600', bgColor: 'bg-amber-50' },
   { type: 'other', label: '기타 자료', color: 'text-gray-600', bgColor: 'bg-gray-50' },
 ];
 
@@ -165,7 +164,7 @@ export default function AdminDocumentsPage() {
         )}
       </div>
 
-      <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
         {COLUMNS.map((col) => {
           const docs = getDocsByType(col.type);
           const isAdding = addingType === col.type;
