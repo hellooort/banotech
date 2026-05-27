@@ -55,11 +55,13 @@ export default async function CategoryPage({ params }: Props) {
     .map(c => c.id);
   const categoryIds = [category!.id, ...childIds];
 
+  // 1차 카테고리(parent_id가 null): global_sort_order, 2차 카테고리: sort_order
+  const isTopLevelCategory = !category.parent_id;
   const { data: prodData } = await supabase
     .from('products')
     .select('*')
     .in('category_id', categoryIds)
-    .order('sort_order');
+    .order(isTopLevelCategory ? 'global_sort_order' : 'sort_order');
 
   products = prodData ?? [];
 

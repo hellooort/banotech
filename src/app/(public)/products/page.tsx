@@ -27,7 +27,8 @@ export default async function ProductsPage({ searchParams }: Props) {
     }
 
     const [prodRes, catRes] = await Promise.all([
-      prodQuery.order('sort_order').limit(query ? 100 : 40),
+      // 전체 보기: global_sort_order 기준, 검색 시: sort_order 기준
+      prodQuery.order(query ? 'sort_order' : 'global_sort_order').limit(query ? 100 : 40),
       supabase.from('categories').select('id, slug'),
     ]);
     products = prodRes.data ?? [];

@@ -51,6 +51,7 @@ export default function AdminProductsPage() {
   );
 
   const isSpecificCategory = !!secondaryCatId;
+  const isGlobalView = !secondaryCatId; // 전체 또는 1차 카테고리 선택 시
 
   const filteredProducts = useMemo(() => {
     let result = allProducts;
@@ -103,8 +104,11 @@ export default function AdminProductsPage() {
   const handleSaveOrder = async () => {
     setSaving(true);
     const supabase = createClient();
+
+    // 2차 카테고리 선택 시 sort_order, 그 외(전체/1차)는 global_sort_order 업데이트
+    const fieldToUpdate = isSpecificCategory ? 'sort_order' : 'global_sort_order';
     const updates = orderedProducts.map((p, i) =>
-      supabase.from('products').update({ sort_order: i }).eq('id', p.id),
+      supabase.from('products').update({ [fieldToUpdate]: i }).eq('id', p.id),
     );
     await Promise.all(updates);
     await revalidateProducts();
@@ -113,7 +117,7 @@ export default function AdminProductsPage() {
       const map = new Map(prev.map((p) => [p.id, p]));
       orderedProducts.forEach((p, i) => {
         const existing = map.get(p.id);
-        if (existing) map.set(p.id, { ...existing, sort_order: i });
+        if (existing) map.set(p.id, { ...existing, [fieldToUpdate]: i });
       });
       return Array.from(map.values()).sort((a, b) => a.sort_order - b.sort_order);
     });
@@ -242,9 +246,11 @@ export default function AdminProductsPage() {
       </div>
 
       {/* 순서 변경 안내 */}
-      {isSpecificCategory && !search && (
+      {!search && (
         <p className="mt-3 text-xs text-muted">
           드래그하여 순서를 변경할 수 있습니다. 변경 후 &ldquo;순서 저장&rdquo; 버튼을 눌러주세요.
+          {isGlobalView && <span className="ml-1 text-brand">(전체 보기 순서)</span>}
+          {isSpecificCategory && <span className="ml-1 text-brand">(카테고리 내 순서)</span>}
         </p>
       )}
 
@@ -255,7 +261,7 @@ export default function AdminProductsPage() {
         ) : (
           <ProductSortableList
             products={orderedProducts}
-            isDragEnabled={isSpecificCategory && !search}
+            isDragEnabled={!search}
             onReorder={handleReorder}
             onEdit={handleEdit}
             onDelete={handleDelete}

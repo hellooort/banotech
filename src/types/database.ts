@@ -23,6 +23,7 @@ export interface Product {
   drawing_dwg_url: string | null;
   drawing_img_url: string | null;
   sort_order: number;
+  global_sort_order: number;
   created_at: string;
 }
 
