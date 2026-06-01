@@ -54,7 +54,7 @@ export default function CategorySidebar({ categories }: CategorySidebarProps) {
   return (
     <aside
       className={cn(
-        'hidden shrink-0 lg:flex',
+        'hidden shrink-0 lg:flex self-start sticky top-24',
         selectedChildren.length > 0 ? 'w-[656px]' : 'w-[336px]'
       )}
     >

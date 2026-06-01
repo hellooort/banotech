@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Upload, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
@@ -22,6 +22,11 @@ export default function FileUpload({
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(currentUrl ?? null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // currentUrl prop이 변경되면 preview 업데이트
+  useEffect(() => {
+    setPreview(currentUrl ?? null);
+  }, [currentUrl]);
 
   const makeSquare = (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {

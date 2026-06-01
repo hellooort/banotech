@@ -77,6 +77,10 @@ export default function AdminProductsPage() {
       );
     }
 
+    // 2차 카테고리 선택 시 sort_order, 전체/1차 선택 시 global_sort_order로 정렬
+    const sortField = secondaryCatId ? 'sort_order' : 'global_sort_order';
+    result = [...result].sort((a, b) => (a[sortField] ?? 0) - (b[sortField] ?? 0));
+
     return result;
   }, [allProducts, categories, primaryCatId, secondaryCatId, search]);
 

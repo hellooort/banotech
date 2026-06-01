@@ -122,9 +122,9 @@ export default memo(function Header() {
               key={item.key}
               onMouseEnter={() => setOpenMega(item.key)}
               className={cn(
-                'flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-4 py-2.5 text-[16px] tracking-wide transition-colors',
+                'flex shrink-0 items-center gap-1 whitespace-nowrap rounded-md px-4 py-2.5 text-[16px] font-semibold tracking-wide transition-colors',
                 pathname.startsWith(item.href)
-                  ? 'bg-brand text-white font-semibold shadow-sm [&_svg]:text-white/90'
+                  ? 'bg-brand text-white shadow-sm [&_svg]:text-white/90'
                   : isHome
                     ? 'text-secondary hover:bg-hover hover:text-foreground'
                     : 'text-white/70 hover:bg-white/10 hover:text-white'
